@@ -1,0 +1,76 @@
+﻿@page
+@model PizzaManagement.Pages.Staff.Orders.IndexModel
+@{
+}
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Order List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-page="/Staff/Orders/Create" class="btn btn-primary">
+                <i class="bi bi-pencil-square"></i>
+                &nbsp;Create new Order
+            </a>
+        </div>
+    </div>
+    <br />
+
+    <form method="get" class="row">
+        <div class="col-md-4">
+            <input type="date" name="StartDate" value="@Model.StartDate?.ToString("yyyy-MM-dd")" asp-for="@Model.StartDate" class="form-control" placeholder="Start Date">
+        </div>
+        <div class="col-md-4">
+            <input type="date" name="EndDate" value="@Model.EndDate?.ToString("yyyy-MM-dd")" asp-for="@Model.EndDate" class="form-control" placeholder="End Date">
+        </div>
+       <div class="col-md-4">
+            <button type="submit" class="btn btn-primary">Filter</button>
+            @* <a asp-page="/Staff/Orders/Export" asp-route-startdate="@Model.StartDate?.ToString("yyyy-MM-dd")" asp-route-enddate="@Model.EndDate?.ToString("yyyy-MM-dd")" class="btn btn-success">
+                Export to Excel
+            </a>
+            <a asp-page="/Staff/Orders/ExportPdf" asp-route-startdate="@Model.StartDate?.ToString("yyyy-MM-dd")" asp-route-enddate="@Model.EndDate?.ToString("yyyy-MM-dd")" class="btn btn-danger">
+                Export to PDF
+            </a> *@
+        </div>
+    </form>
+    <br /> <br />
+
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Account</th>
+                <th>Customer</th>
+                <th>Order Date</th>
+                <th>Required Date</th>
+                <th>Shipped Date</th>
+                <th>Freight</th>
+                <th>Ship Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.Orders)
+            {
+                <tr>
+                    <td width="12%">@order.OrderID</td>
+                    <td width="12%">@order.Accounts.UserName</td>
+                    <td width="12%">@order.Customer.ContactName</td>
+                    <td width="12%">@order.OrderDate</td>
+                    <td width="12%">@order.RequiredDate</td>
+                    <td width="12%">@order.ShippedDate</td>
+                    <td width="12%">@order.Freight</td>
+                    <td width="12%">@order.ShipAddress</td>
+                    <td>
+                        <div class="w-75 btn-group" role="group">
+                            <a asp-page="/Staff/Orders/Edit" asp-route-id="@order.OrderID" class="btn btn-primary mx-2">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a asp-page="/Staff/Orders/Delete" asp-route-id="@order.OrderID" class="btn btn-danger mx-2">
+                                <i class="bi bi-trash-fill"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+    </table>
+</div>

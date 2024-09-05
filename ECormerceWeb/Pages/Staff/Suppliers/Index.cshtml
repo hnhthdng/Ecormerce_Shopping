@@ -1,0 +1,51 @@
+﻿@page
+@model PizzaManagement.Pages.Staff.Suppliers.IndexModel
+@{
+}
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Suppliers List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-page="create" class="btn btn-primary">
+                <i class="bi bi-pencil-square"></i>
+                &nbsp;Create new Supplier
+            </a>
+        </div>
+    </div>
+    <br /> <br />
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Company Name</th>
+                <th>Address</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var supplier in Model.Suppliers)
+            {
+                <tr>
+                    <td width="20%">@supplier.SupplierID</td>
+                    <td width="30%">@supplier.CompanyName</td>
+                    <td width="30%">@supplier.Address</td>
+                    <td width="20%">@supplier.Phone</td>
+                    <td>
+                        <div class="w-75 btn-group" role="group">
+                            <a asp-page="ProductBySupplier" asp-route-supplierId="@supplier.SupplierID" class="btn btn-success mx-2">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a asp-page="edit" asp-route-id="@supplier.SupplierID" class="btn btn-primary mx-2">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a asp-page="delete" asp-route-id="@supplier.SupplierID" class="btn btn-danger mx-2">
+                                <i class="bi bi-trash-fill"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+    </table>
+</div>

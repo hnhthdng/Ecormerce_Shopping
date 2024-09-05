@@ -1,0 +1,54 @@
+﻿@page
+@model PizzaManagement.Pages.Staff.Orders.EditModel
+@{
+}
+
+<form class="border p-3 mt-4" method="post" enctype="multipart/form-data">
+    <div class="row pb-2">
+        <h2 class="text-primary p-lg-3">Update Order</h2>
+        <hr />
+    </div>
+    <input type="hidden" asp-for="Order.OrderID" />
+    <div asp-validation-summary="All"></div>
+    <div class="mb-3">
+        <label asp-for="Order.Accounts.Email"></label>
+        <input asp-for="@Model.Order.Accounts.Email" class="form-control"  disabled/>
+        <span asp-validation-for="Order.AccountId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Order.Customer.ContactName"></label>
+        <input asp-for="@Model.Order.Customer.ContactName" class="form-control" disabled />
+        <span asp-validation-for="Order.Customer.ContactName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Order.OrderDate"></label>
+        <input type="date" asp-for="Order.OrderDate" class="form-control" disabled/>
+        <span asp-validation-for="Order.OrderDate" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Order.RequiredDate"></label>
+        <input type="date" asp-for="Order.RequiredDate" class="form-control" />
+        <span asp-validation-for="Order.RequiredDate" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Order.ShippedDate"></label>
+        <input type="date" asp-for="Order.ShippedDate" class="form-control" />
+        <span asp-validation-for="Order.ShippedDate" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Order.Freight"></label>
+        <input type="number" asp-for="Order.Freight" class="form-control" />
+        <span asp-validation-for="Order.Freight" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Order.ShipAddress"></label>
+        <input  asp-for="Order.ShipAddress" class="form-control" />
+        <span asp-validation-for="Order.ShipAddress" class="text-danger"></span>
+    </div>
+    
+    <button type="submit" class="btn btn-primary" style="width:150px">Update</button>
+    <a asp-page="Index" class="btn btn-secondary" style="width:150px">Back to List</a>
+
+</form>

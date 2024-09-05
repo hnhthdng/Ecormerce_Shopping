@@ -1,0 +1,57 @@
+﻿@page
+@model PizzaManagement.Pages.DetailsModel
+@{
+    ViewData["Title"] = Model.Product.ProductName;
+}
+
+<div class="container my-5">
+    <form method="post">
+        <input asp-for="Product.ProductID" hidden />
+
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h1 class="text-primary m-0">@Model.Product.ProductName</h1>
+                <h1 class="text-muted m-0">$@Model.Product.UnitPrice</h1>
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+                    <!-- Product Info Section -->
+                    <div class="col-lg-8 col-12 mb-4">
+                        <div class="mb-3">
+                            <span class="badge bg-warning text-dark p-2 fs-5 me-2">
+                                @Model.Product.Category.CategoryName
+                            </span>
+                            <span class="badge bg-dark text-light p-2 fs-5">
+                                @Model.Product.Supplier.CompanyName
+                            </span>
+                        </div>
+
+                        <div class="my-3">
+                            <h5 class="fw-bold">Quantity Per Unit:</h5>
+                            <p>@Model.Product.QuantityPerUnit</p>
+                        </div>
+                    </div>
+
+                    <!-- Product Image Section -->
+                    <div class="col-lg-4 col-12 text-center">
+                        <img src="@Model.Product.ProductImageURL" class="img-fluid rounded shadow-sm" style="max-height: 300px; object-fit: cover;" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer d-flex justify-content-between">
+                <a asp-page="Index" class="btn btn-success btn-lg w-50 me-2" style="height: 50px;">
+                    Back to List
+                </a>
+                <button type="submit" asp-page-handler="AddToCart" asp-route-id="@Model.Product.ProductID" class="btn btn-primary btn-lg w-50" style="height: 50px;">
+                    Add to Cart
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

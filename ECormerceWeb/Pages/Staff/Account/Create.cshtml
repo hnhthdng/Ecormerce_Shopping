@@ -1,0 +1,50 @@
+﻿@page
+@model PizzaManagement.Pages.Staff.Account.CreateModel
+@{
+}
+<form class="border p-3 mt-4" method="post">
+    <div class="row pb-2">
+        <h2 class="text-primary p-lg-3">Create Account</h2>
+        <hr />
+    </div>
+    <div asp-validation-summary="All"></div>
+    <div class="mb-3">
+        <label asp-for="Input.Email"></label>
+        <input asp-for="Input.Email" class="form-control" />
+        <span asp-validation-for="Input.Email" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Input.Password"></label>
+        <input asp-for="Input.Password" class="form-control" />
+        <span asp-validation-for="Input.Password" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Input.ConfirmPassword"></label>
+        <input asp-for="Input.ConfirmPassword" class="form-control" />
+        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Input.FullName"></label>
+        <input asp-for="Input.FullName" class="form-control" />
+        <span asp-validation-for="Input.FullName" class="text-danger"></span>
+    </div>
+
+     <div class="mb-3">
+        <label asp-for="Input.PhoneNumber"></label>
+        <input asp-for="Input.PhoneNumber" class="form-control" />
+        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+    </div>
+    
+    <div class=" form-floating my-2">
+        <input type="radio" name="rdUserRole" value="1" />Staff
+        <input type="radio" name="rdUserRole" value="2" />Normal User
+    </div>
+
+    <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
+    <a asp-page="Index" class="btn btn-secondary" style="width:150px">Back to List</a>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

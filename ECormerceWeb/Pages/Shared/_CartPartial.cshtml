@@ -1,0 +1,18 @@
+﻿@using Utility
+@inject IHttpContextAccessor HttpContextAccessor
+
+<div class="dropdown">
+    <a class="nav-link dropdown-toggle text-dark" href="#" id="cartDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Cart (@HttpContextAccessor.HttpContext.Session.GetCart().Sum(item => item.Quantity))
+    </a>
+    <div class="dropdown-menu" aria-labelledby="cartDropdown">
+        @foreach (var item in HttpContextAccessor.HttpContext.Session.GetCart())
+        {
+            <a class="dropdown-item" href="#">
+                @item.ProductName - $@item.UnitPrice x @item.Quantity
+            </a>
+        }
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" asp-page="/Checkout">Checkout</a>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+﻿@page
+@model PizzaManagement.Pages.Staff.Suppliers.CreateModel
+@{
+}
+<form class="border p-3 mt-4" method="post">
+    <div class="row pb-2">
+        <h2 class="text-primary p-lg-3">Create Suppliers</h2>
+        <hr />
+    </div>
+    <div asp-validation-summary="All"></div>
+    <div class="mb-3">
+        <label asp-for="Supplier.CompanyName"></label>
+        <input asp-for="Supplier.CompanyName" class="form-control" />
+        <span asp-validation-for="Supplier.CompanyName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Supplier.Address"></label>
+        <input asp-for="Supplier.Address" class="form-control" />
+        <span asp-validation-for="Supplier.Address" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Supplier.Phone"></label>
+        <input asp-for="Supplier.Phone" class="form-control" />
+        <span asp-validation-for="Supplier.Phone" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
+    <a asp-page="Index" class="btn btn-secondary" style="width:150px">Back to List</a>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

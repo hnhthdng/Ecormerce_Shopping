@@ -1,0 +1,52 @@
+﻿@page
+@model PizzaManagement.Pages.Staff.Products.EditModel
+@{
+}
+<form class="border p-3 mt-4" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Product.ProductID" />
+    <div class="row pb-2">
+        <h2 class="text-primary p-lg-3">Update Product</h2>
+        <hr />
+    </div>
+    <div asp-validation-summary="All"></div>
+    <div class="mb-3">
+        <label asp-for="Product.ProductName"></label>
+        <input asp-for="Product.ProductName" class="form-control" />
+        <span asp-validation-for="Product.ProductName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Product.Category.CategoryName"></label>
+        <select asp-for="Product.CategoryID" class="form-control" asp-items="Model.CategoryList"></select>
+        <span asp-validation-for="Product.CategoryID" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Product.Supplier.CompanyName"></label>
+        <select asp-for="Product.SupplierID" class="form-control" asp-items="Model.SupplierList"></select>
+        <span asp-validation-for="Product.SupplierID" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Product.QuantityPerUnit"></label>
+        <input asp-for="Product.QuantityPerUnit" class="form-control" />
+        <span asp-validation-for="Product.QuantityPerUnit" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Product.UnitPrice"></label>
+        <input type="number" asp-for="Product.UnitPrice" class="form-control" />
+        <span asp-validation-for="Product.UnitPrice" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Product.ProductImageURL"></label>
+        <input type="file" name="files" id="uploadBox" class="form-control" />
+        <span asp-validation-for="Product.ProductImageURL" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary" style="width:150px">Update</button>
+    <a asp-page="Index" class="btn btn-secondary" style="width:150px">Back to List</a>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

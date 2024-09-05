@@ -1,0 +1,46 @@
+﻿@page
+@model PizzaManagement.Pages.Staff.Orders.CreateModel
+@{
+}
+<form class="border p-3 mt-4" method="post" enctype="multipart/form-data">
+    <div class="row pb-2">
+        <h2 class="text-primary p-lg-3">Create Order</h2>
+        <hr />
+    </div>
+    <div asp-validation-summary="All"></div>
+    <div class="mb-3">
+        <label asp-for="Order.Accounts.Email"></label>
+        <select asp-for="Order.AccountId" class="form-control" asp-items="Model.AccountsList"></select>
+        <span asp-validation-for="Order.AccountId" class="text-danger"></span>
+    </div>
+
+
+    <div class="mb-3">
+        <label asp-for="Order.RequiredDate"></label>
+        <input type="date" asp-for="Order.RequiredDate" class="form-control" />
+        <span asp-validation-for="Order.RequiredDate" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3 container p-3">
+        <h2>Shipping to Customer</h2>
+        <div class="mb-3">
+            <label asp-for="Customer.ContactName"></label>
+            <input asp-for="Customer.ContactName" class="form-control" />
+            <span asp-validation-for="Customer.ContactName" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Customer.Address"></label>
+            <input asp-for="Customer.Address" class="form-control" />
+            <span asp-validation-for="Customer.Address" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Customer.Phone"></label>
+            <input asp-for="Customer.Phone" class="form-control" />
+            <span asp-validation-for="Customer.Phone" class="text-danger"></span>
+        </div>
+    </div>
+   
+    <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
+    <a asp-page="Index" class="btn btn-secondary" style="width:150px">Back to List</a>
+
+</form>

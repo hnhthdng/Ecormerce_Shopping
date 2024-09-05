@@ -1,0 +1,58 @@
+﻿@page
+@model IndexModel
+
+<div class="row container pb-3 backgroundWhite">
+    <form method="get" class="mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <input type="text" name="SearchItem" asp-for="@Model.SearchItem" class="form-control" placeholder="Search by Product Name or ID">
+            </div>
+            <div class="col-md-4">
+                <input type="number" name="MinPrice" asp-for="@Model.MinPrice" class="form-control" placeholder="Min Price">
+            </div>
+            <div class="col-md-4">
+                <input type="number" name="MaxPrice" asp-for="@Model.MaxPrice" class="form-control" placeholder="Max Price">
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Search</button>
+            </div>
+        </div>
+    </form>
+
+    @foreach (var category in Model.CategoryList)
+    {
+        <h2 class="text-success pl-1"><b>@category.CategoryName</b></h2>
+        <div class="col-12">
+            <div class="row my-3">
+                @foreach (var product in Model.ProductList.Where(u => u.CategoryID == category.CategoryID))
+                {
+                    <div class="col-lg-4 col-md-6 pb-4 filter">
+                        <div class="card bg-white rounded shadow-sm" style="border:1px solid #222">
+                            <div class="card-body pb-1 row">
+                                <div class="col-8 h5">@product.ProductName</div>
+                                <div class="col-4 text-end"><span class="text-info h4">$@product.UnitPrice</span></div>
+                            </div>
+                            <img class="card-img-top img-fluid d-block mx-auto mb-3"
+                                 src="@product.ProductImageURL"
+                                 alt="menuitem image"
+                                 style="object-fit: cover; height: 200px; width: 100%;">
+                            <div class="card-body p-1 px-3 row">
+                                <div class="col-6">
+                                    <span class="badge p-2 border w-100 text-dark bg-warning ">@product.Category.CategoryName</span>
+                                </div>
+                                <div class="col-6 border-0">
+                                    <span class="badge p-2 border w-100 bg-info ">@product.Supplier.CompanyName</span>
+                                </div>
+                                <div class="col-12 p-1">
+                                    <a asp-page="Details" asp-route-id="@product.ProductID" class="btn btn-dark form-control btn-sm p-2" style="height:40px">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

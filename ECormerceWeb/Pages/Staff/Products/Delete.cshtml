@@ -1,0 +1,23 @@
+﻿@page
+@model PizzaManagement.Pages.Staff.Products.DeleteModel
+@{
+}
+<form class="border p-3 mt-4" method="post">
+    <input type="hidden" asp-for="Product.ProductID" />
+    <div class="row pb-2">
+        <h2 class="text-primary p-lg-3">Delete Account</h2>
+        <hr />
+    </div>
+    <div asp-validation-summary="All"></div>
+    <div class="mb-3">
+        <label asp-for="Product.ProductName"></label>
+        <input asp-for="Product.ProductName" disabled class="form-control" />
+        <span asp-validation-for="Product.ProductName" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary" style="width:150px">Delete</button>
+    <a asp-page="Index" class="btn btn-secondary" style="width:150px">Back to List</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
