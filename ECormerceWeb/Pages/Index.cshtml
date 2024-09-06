@@ -1,58 +1,89 @@
 ﻿@page
 @model IndexModel
 
-<div class="row container pb-3 backgroundWhite">
-    <form method="get" class="mb-4">
-        <div class="row">
-            <div class="col-md-4">
-                <input type="text" name="SearchItem" asp-for="@Model.SearchItem" class="form-control" placeholder="Search by Product Name or ID">
-            </div>
-            <div class="col-md-4">
-                <input type="number" name="MinPrice" asp-for="@Model.MinPrice" class="form-control" placeholder="Min Price">
-            </div>
-            <div class="col-md-4">
-                <input type="number" name="MaxPrice" asp-for="@Model.MaxPrice" class="form-control" placeholder="Max Price">
-            </div>
-        </div>
-        <div class="row mt-2">
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-primary w-100">Search</button>
-            </div>
-        </div>
-    </form>
+<!-- Fixed Top Navigation for Search -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white  border-bottom">
+    <div class="container d-flex justify-content-center">
+        <form class="d-flex mx-auto">
+            <!-- Adjusted input width with custom CSS class -->
+            <input type="text" name="SearchItem" asp-for="@Model.SearchItem" class="form-control rounded-pill me-2 search-input" placeholder="Search for your loving !!!">
+            <button type="submit" class="btn btn-danger rounded-pill">Search</button>
+        </form>
+    </div>
+</nav>
 
-    @foreach (var category in Model.CategoryList)
-    {
-        <h2 class="text-success pl-1"><b>@category.CategoryName</b></h2>
-        <div class="col-12">
-            <div class="row my-3">
-                @foreach (var product in Model.ProductList.Where(u => u.CategoryID == category.CategoryID))
+<div class="container py-4">
+    <div class="row">
+        <!-- Left Column for Filters -->
+        <div class="col-lg-3 col-md-4 mb-4">
+            <h5 class="fw-bold mb-3">Filters</h5>
+           
+            <form method="get">
+                <h6 class="fw-bold">Price Range</h6>
+                <input type="number" name="MinPrice" asp-for="MinPrice" class="form-control mb-2" placeholder="Min Price">
+                <input type="number" name="MaxPrice" asp-for="MaxPrice" class="form-control mb-2" placeholder="Max Price">
+                <h6 class="fw-bold">Category</h6>
+                <select name="CategoryID" asp-for="@Model.CategoryId" class="form-select mb-2">
+                    <option value="">All Categories</option>
+                    @foreach (var category in Model.CategoryList)
+                    {
+                        <option value="@category.CategoryID">@category.CategoryName</option>
+                    }
+                </select>
+                <h6 class="fw-bold">Supplier</h6>
+                <select name="SupplierID" asp-for="@Model.SupplierId" class="form-select mb-2">
+                    <option value="">All Suppliers</option>
+                    @foreach (var supplier in Model.SupplierList)
+                    {
+                        <option value="@supplier.SupplierID">@supplier.CompanyName</option>
+                    }
+                </select>
+                
+                <button type="submit" class="btn btn-outline-primary w-100">Apply Filters</button>
+            </form>
+        </div>
+
+        <!-- Right Column for Product Display -->
+        <div class="col-lg-9 col-md-8">
+            <div class="row g-3">
+                @foreach (var product in Model.ProductList)
                 {
-                    <div class="col-lg-4 col-md-6 pb-4 filter">
-                        <div class="card bg-white rounded shadow-sm" style="border:1px solid #222">
-                            <div class="card-body pb-1 row">
-                                <div class="col-8 h5">@product.ProductName</div>
-                                <div class="col-4 text-end"><span class="text-info h4">$@product.UnitPrice</span></div>
-                            </div>
-                            <img class="card-img-top img-fluid d-block mx-auto mb-3"
+                    <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+                        <div class="card border-0 product-card">
+                            <!-- Product Image -->
+                            <img class="card-img-top rounded-top img-fluid"
                                  src="@product.ProductImageURL"
-                                 alt="menuitem image"
-                                 style="object-fit: cover; height: 200px; width: 100%;">
-                            <div class="card-body p-1 px-3 row">
-                                <div class="col-6">
-                                    <span class="badge p-2 border w-100 text-dark bg-warning ">@product.Category.CategoryName</span>
-                                </div>
-                                <div class="col-6 border-0">
-                                    <span class="badge p-2 border w-100 bg-info ">@product.Supplier.CompanyName</span>
-                                </div>
-                                <div class="col-12 p-1">
-                                    <a asp-page="Details" asp-route-id="@product.ProductID" class="btn btn-dark form-control btn-sm p-2" style="height:40px">View Details</a>
-                                </div>
+                                 alt="@product.ProductName"
+                                 style="object-fit: cover; height: 180px;">
+                            <!-- Product Details -->
+                            <div class="card-body p-2 text-center">
+                                <h6 class="card-title text-truncate">@product.ProductName</h6>
+                                <p class="card-text text-danger h6 fw-bold mb-2">$@product.UnitPrice</p>
+                                <a asp-page="Details" asp-route-id="@product.ProductID" class="btn btn-outline-danger btn-sm w-100">View Details</a>
                             </div>
                         </div>
                     </div>
                 }
             </div>
         </div>
-    }
+    </div>
 </div>
+
+<!-- CSS Styling to Enhance Shopee-like Design -->
+<style>
+    .product-card {
+        transition: all 0.3s ease;
+        border: 1px solid #eee;
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+    /* Adjust the width of the input field */
+    .search-input {
+        width: 700px; /* Set your desired width */
+        max-width: 100%;
+    }
+</style>
