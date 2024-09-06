@@ -22,6 +22,9 @@ namespace DataObject.Model
         [Display(Name = "Product Image")]
         [ValidateNever]
         public string ProductImageURL { get; set; }
+        [Display(Name = "Units In Stock")]
+        public int UnitsInStock { get; set; }
+
 
         // Navigation properties
         [ValidateNever]

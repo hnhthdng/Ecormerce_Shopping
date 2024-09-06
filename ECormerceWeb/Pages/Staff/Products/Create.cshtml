@@ -32,6 +32,11 @@
         <span asp-validation-for="Product.QuantityPerUnit" class="text-danger"></span>
     </div>
     <div class="mb-3">
+        <label asp-for="Product.UnitsInStock"></label>
+        <input type="number" asp-for="Product.UnitsInStock" class="form-control" />
+        <span asp-validation-for="Product.UnitsInStock" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
         <label asp-for="Product.UnitPrice"></label>
         <input type="number" asp-for="Product.UnitPrice" class="form-control" />
         <span asp-validation-for="Product.UnitPrice" class="text-danger"></span>

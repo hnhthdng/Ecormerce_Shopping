@@ -31,6 +31,10 @@
                             <h5 class="fw-bold">Quantity Per Unit:</h5>
                             <p>@Model.Product.QuantityPerUnit</p>
                         </div>
+                        <div class="my-3">
+                            <h5 class="fw-bold">Unit in Stock:</h5>
+                            <p>@Model.Product.UnitsInStock</p>
+                        </div>
                     </div>
 
                     <!-- Product Image Section -->
@@ -44,9 +48,25 @@
                 <a asp-page="Index" class="btn btn-success btn-lg w-50 me-2" style="height: 50px;">
                     Back to List
                 </a>
-                <button type="submit" asp-page-handler="AddToCart" asp-route-id="@Model.Product.ProductID" class="btn btn-primary btn-lg w-50" style="height: 50px;">
-                    Add to Cart
-                </button>
+                @if (Model.Product.UnitsInStock > 0)
+                {
+                    <button type="submit"
+                            asp-page-handler="AddToCart"
+                            asp-route-id="@Model.Product.ProductID"
+                            class="btn btn-primary btn-lg w-50"
+                            style="height: 50px;">
+                        Add to Cart
+                    </button>
+                }
+                else
+                {
+                    <button type="button"
+                            class="btn btn-secondary btn-lg w-50"
+                            style="height: 50px;"
+                            disabled>
+                        Out of Stock
+                    </button>
+                }
             </div>
         </div>
     </form>

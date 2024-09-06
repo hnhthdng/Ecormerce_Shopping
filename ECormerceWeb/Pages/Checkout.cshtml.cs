@@ -35,6 +35,7 @@ namespace PizzaManagement.Pages
 
         public async Task<IActionResult> OnPost()
         {
+            LoadCartData();
             //Create new order for this user
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
@@ -104,7 +105,13 @@ namespace PizzaManagement.Pages
                 ModelState.AddModelError(string.Empty, "Please select or create a customer.");
                 return Page();
             }
-
+            foreach (var item in CartItems)
+            {
+                Product product = _unitOfWork.Product.GetFirstOrDefault(u => u.ProductID == item.ProductID);
+                product.UnitsInStock -= item.Quantity;
+                _unitOfWork.Product.Update(product);
+                _unitOfWork.Save();
+            }
             _httpContextAccessor.HttpContext.Session.SetCart(new List<CartItem>());
             // Redirect to a confirmation page or order summary
             return RedirectToPage("/OrderConfirmation");
@@ -134,6 +141,34 @@ namespace PizzaManagement.Pages
             Customers = _unitOfWork.Customer.GetAll(u => u.AccountId == claim.Value);
             CartItems = _httpContextAccessor.HttpContext.Session.GetCart();
             CartTotal = CartItems.Sum(item => item.UnitPrice * item.Quantity);
+        }
+
+        public async Task<IActionResult> OnPostUpdateQuantity([FromBody] CartUpdateViewModel cartUpdate)
+        {
+            // Get the current cart from the session
+            var cartItems = _httpContextAccessor.HttpContext.Session.GetCart();
+
+            // Find the cart item by ProductID
+            var cartItem = cartItems.FirstOrDefault(item => item.ProductID == cartUpdate.ProductId);
+
+            if (cartItem != null)
+            {
+                // Update the quantity of the cart item
+                cartItem.Quantity = cartUpdate.Quantity;
+                _httpContextAccessor.HttpContext.Session.SetCart(cartItems);
+
+                // Recalculate the total
+                CartTotal = cartItems.Sum(item => item.UnitPrice * item.Quantity);
+
+                return new JsonResult(new { success = true, newTotal = CartTotal.ToString("C") });
+            }
+            return new JsonResult(new { success = false });
+        }
+
+        public class CartUpdateViewModel
+        {
+            public int ProductId { get; set; }
+            public int Quantity { get; set; }
         }
     }
 

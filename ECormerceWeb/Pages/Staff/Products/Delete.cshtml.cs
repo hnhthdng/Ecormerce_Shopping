@@ -22,7 +22,7 @@ namespace PizzaManagement.Pages.Staff.Products
         }
         public async Task<IActionResult> OnPost()
         {
-            var objFromDb = _unitOfWork.Product.GetFirstOrDefault(u => u.CategoryID == Product.ProductID);
+            var objFromDb = _unitOfWork.Product.GetFirstOrDefault(u => u.ProductID == Product.ProductID);
             if (objFromDb != null)
             {
                 _unitOfWork.Product.Remove(objFromDb);

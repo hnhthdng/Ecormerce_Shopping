@@ -24,6 +24,7 @@ namespace DataAccess.Repository
             objFromDb.SupplierID = product.SupplierID;
             objFromDb.CategoryID = product.CategoryID;
             objFromDb.QuantityPerUnit = product.QuantityPerUnit;
+            objFromDb.UnitsInStock = product.UnitsInStock;
             objFromDb.UnitPrice = product.UnitPrice;
             if (product.ProductImageURL != null)
             {
