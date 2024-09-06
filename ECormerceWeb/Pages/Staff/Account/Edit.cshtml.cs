@@ -53,6 +53,12 @@ namespace PizzaManagement.Pages.Staff.Account
             {
                 return NotFound();
             }
+            var isExistEmail = _unitOfWork.Account.GetFirstOrDefault(u => u.Email == Input.Email && u.Id != id);
+            if (isExistEmail != null)
+            {
+                ModelState.AddModelError(string.Empty, "Email already exist");
+                return Page();
+            }
             user.Email = Input.Email;
             user.FullName = Input.FullName;
             user.PhoneNumber = Input.PhoneNumber;

@@ -16,21 +16,49 @@
     </div>
     <br />
 
-    <form method="get" class="row">
-        <div class="col-md-4">
-            <input type="date" name="StartDate" value="@Model.StartDate?.ToString("yyyy-MM-dd")" asp-for="@Model.StartDate" class="form-control" placeholder="Start Date">
-        </div>
-        <div class="col-md-4">
-            <input type="date" name="EndDate" value="@Model.EndDate?.ToString("yyyy-MM-dd")" asp-for="@Model.EndDate" class="form-control" placeholder="End Date">
-        </div>
-       <div class="col-md-4">
-            <button type="submit" class="btn btn-primary">Filter</button>
-            @* <a asp-page="/Staff/Orders/Export" asp-route-startdate="@Model.StartDate?.ToString("yyyy-MM-dd")" asp-route-enddate="@Model.EndDate?.ToString("yyyy-MM-dd")" class="btn btn-success">
-                Export to Excel
-            </a>
-            <a asp-page="/Staff/Orders/ExportPdf" asp-route-startdate="@Model.StartDate?.ToString("yyyy-MM-dd")" asp-route-enddate="@Model.EndDate?.ToString("yyyy-MM-dd")" class="btn btn-danger">
-                Export to PDF
-            </a> *@
+    <form method="get" >
+        <div class="container">
+            <div class="row">
+                <!-- 7 parts width for input fields -->
+                <div class="col-md-10">
+                    <div class="row mb-2">
+                        <!-- Parent column for the entire label and input row -->
+                        <div class="col-md-6 d-flex align-items-center">
+                            <!-- Label with fixed width -->
+                            <label class="col-form-label me-2 w-25">Order ID:</label>
+                            <!-- Input field taking the remaining width -->
+                            <input name="OrderId" value="@Model.OrderId" asp-for="@Model.OrderId" class="form-control flex-grow-1" placeholder="" />
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6 d-flex align-items-center">
+                            <!-- Label with fixed width -->
+                            <label class="col-form-label me-2 w-25">Account:</label>
+                            <input name="Account" value="@Model.Account" asp-for="@Model.Account" class="form-control flex-grow-1" placeholder="Find Customer (Account/Email)">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            Start Date: <input type="date" name="StartDate" value="@Model.StartDate?.ToString("yyyy-MM-dd")" asp-for="@Model.StartDate" class="form-control" placeholder="Start Date">
+                        </div>
+                        <div class="col-md-6">
+                            End Date: <input type="date" name="EndDate" value="@Model.EndDate?.ToString("yyyy-MM-dd")" asp-for="@Model.EndDate" class="form-control" placeholder="End Date">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3 parts width for buttons -->
+                <div class="col-md-2 d-flex flex-column align-items-end justify-content-center">
+                    <button type="submit" class="btn btn-primary w-100 mb-1">Filter</button>
+                    <a asp-page="/Staff/Orders/Index" asp-page-handler="Export" asp-route-OrderId="@Model.OrderId" asp-route-Account="@Model.Account" asp-route-StartDate="@Model.StartDate" asp-route-EndDate="@Model.EndDate" class="btn btn-success w-100 mb-1">
+                        Export to Excel
+                    </a>
+                    <a asp-page="/Staff/Orders/OnGetExportPdf" class="btn btn-danger w-100">
+                        Export to PDF
+                    </a>
+                </div>
+            </div>
         </div>
     </form>
     <br /> <br />

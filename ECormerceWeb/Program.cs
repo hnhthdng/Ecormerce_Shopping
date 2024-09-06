@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Utility;
+using DataAccess.Service;
+using DataAccess.Service.IService;
+using OfficeOpenXml;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +47,14 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
+// Set EPPlus license context to NonCommercial
+ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+// Register the ExportService
+builder.Services.AddScoped<IOrderExportService, ExportService>();
+
+
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

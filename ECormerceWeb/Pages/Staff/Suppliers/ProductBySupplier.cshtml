@@ -34,7 +34,12 @@
                     <td width="16%">@product.ProductName</td>
                     <td width="16%">@product.QuantityPerUnit</td>
                     <td width="16%">@product.UnitPrice</td>
-                    <td width="16%">@product.ProductImageURL</td>
+                    <td width="16%">
+                        <img class="card-img-top img-fluid d-block mx-auto mb-3"
+                             src="@product.ProductImageURL"
+                             alt="menuitem image"
+                             style="object-fit: cover; height: 100%; width: 100%;">
+                    </td>
                     <td width="16%">@product.Category.CategoryName</td>
                     <td>
                         <div class="w-75 btn-group" role="group">
