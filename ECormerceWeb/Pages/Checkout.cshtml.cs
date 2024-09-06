@@ -35,7 +35,6 @@ namespace PizzaManagement.Pages
 
         public async Task<IActionResult> OnPost()
         {
-            await LoadCartData();
             //Create new order for this user
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
@@ -111,6 +110,22 @@ namespace PizzaManagement.Pages
             return RedirectToPage("/OrderConfirmation");
         }
 
+        public IActionResult OnPostRemoveFromCart(int id)
+        {
+            CartItems = _httpContextAccessor.HttpContext.Session.GetCart();
+            // Find the cart item by ProductID
+            var cartItem = CartItems.Where(item => item.ProductID == id).FirstOrDefault();
+
+            if (cartItem != null)
+            {
+                // Remove the item from the cart
+                CartItems.Remove(cartItem);
+                _httpContextAccessor.HttpContext.Session.SetCart(CartItems);
+            }
+            return RedirectToPage();
+        }
+
+
         private async Task LoadCartData()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
@@ -120,8 +135,6 @@ namespace PizzaManagement.Pages
             CartItems = _httpContextAccessor.HttpContext.Session.GetCart();
             CartTotal = CartItems.Sum(item => item.UnitPrice * item.Quantity);
         }
-
-
     }
 
 }

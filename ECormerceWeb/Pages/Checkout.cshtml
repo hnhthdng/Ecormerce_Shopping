@@ -8,73 +8,126 @@
 
 <h2>Checkout</h2>
 
-@if (Model.CartItems.Any())
-{
-    <h3>Your Cart:</h3>
-    <table class="table">
-        <thead>
-            <tr>
-                <th width="25%"></th>
-                <th width="25%">Product Name</th>
-                <th width="25%">Quantity</th>
-                <th width="25%">Price</th>
-                <th width="25%">Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.CartItems)
-            {
+<form method="post">
+    @if (Model.CartItems.Any())
+    {
+        <h3>Your Cart:</h3>
+        <table class="table">
+            <thead>
                 <tr>
-                    <td><img src="@item.imageURL" class="img-fluid rounded shadow-sm" style="max-height: 100px; object-fit: cover;" /></td>
-                    <td>@item.ProductName</td>
-                    <td>@item.Quantity</td>
-                    <td>@item.UnitPrice.ToString("C")</td>
-                    <td>$@(item.UnitPrice * item.Quantity)</td>
+                    <th width="20%"></th>
+                    <th width="20%">Product Name</th>
+                    <th width="16%">Quantity</th>
+                    <th width="16%">Price</th>
+                    <th width="16%">Total</th>
+                    <th width="16%"></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-
-    <h4 >Total: @Model.CartTotal.ToString("C")</h4>
-
-    <h3>Customer Information:</h3>
-
-    <form method="post">
-
-        <div class="form-group">
-            <label for="existingCustomer">Select Existing Receiver:</label>
-            <select id="existingCustomer" name="SelectedCustomerId" class="form-control">
-                <option value="">-- Select a Receiver --</option>
-                @foreach (var customer in Model.Customers)
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CartItems)
                 {
-                    <option value="@customer.CustomerID">@customer.ContactName (@customer.Phone) Address: @customer.Address</option>
+                    <tr>
+                        <td><img src="@item.imageURL" class="img-fluid rounded shadow-sm" style="max-height: 100px; object-fit: cover;" /></td>
+                        <td>@item.ProductName</td>
+                        <td><input type="number" min="1" class="form-control quantity-input" data-unitprice="@item.UnitPrice" value="@item.Quantity" /></td>
+                        <td>@item.UnitPrice.ToString("C")</td>
+                        <td class="total-price">$@(item.UnitPrice * item.Quantity)</td>
+                        <th>
+                            <form method="post" asp-page-handler="RemoveFromCart" asp-route-id="@item.ProductID">
+                                <button type="submit" class="btn btn-danger">Remove</button>
+                            </form>
+                        </th>
+                    </tr>
                 }
-            </select>
-        </div>
+            </tbody>
+        </table>
 
-        <hr />
+        <h4 id="cart-total">Total: @Model.CartTotal.ToString("C")</h4>
+        <input type="hidden" id="cart-total-input" name="CartTotal" value="@Model.CartTotal" />
 
-        <h4>Or Create a New Receiver:</h4>
-        <div class="form-group">
-            <label for="newCustomerName">Name:</label>
-            <input type="text" id="newCustomerName" name="NewCustomer.ContactName" class="form-control" asp-for="NewCustomer.ContactName" />
-            <span asp-validation-for="NewCustomer.ContactName" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label for="newCustomerAddress">Address:</label>
-            <input type="text" id="newCustomerAddress" name="NewCustomer.Address" class="form-control" asp-for="NewCustomer.Address"/>
-            <span asp-validation-for="NewCustomer.Address" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label for="newCustomerPhone">Phone:</label>
-            <input type="text" id="newCustomerPhone" name="NewCustomer.Phone" class="form-control" asp-for="NewCustomer.Phone" />
-            <span asp-validation-for="NewCustomer.Phone" class="text-danger"></span>
-        </div>
+        <h3>Customer Information:</h3>
 
-        <button type="submit" class="btn btn-primary mt-4">Confirm Purchase</button>
-    </form>
-}
-else
-{
-    <p>Your cart is empty. <a asp-page="/Index">Continue shopping</a>.</p>
+            <div class="form-group">
+                <label for="existingCustomer">Select Existing Receiver:</label>
+                <select id="existingCustomer" name="SelectedCustomerId" class="form-control">
+                    <option value="">-- Select a Receiver --</option>
+                    @foreach (var customer in Model.Customers)
+                    {
+                        <option value="@customer.CustomerID">@customer.ContactName (@customer.Phone) Address: @customer.Address</option>
+                    }
+                </select>
+            </div>
+
+            <hr />
+
+            <h4>Or Create a New Receiver:</h4>
+            <div class="form-group">
+                <label for="newCustomerName">Name:</label>
+                <input type="text" id="newCustomerName" name="NewCustomer.ContactName" class="form-control" asp-for="NewCustomer.ContactName" />
+                <span asp-validation-for="NewCustomer.ContactName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="newCustomerAddress">Address:</label>
+                <input type="text" id="newCustomerAddress" name="NewCustomer.Address" class="form-control" asp-for="NewCustomer.Address" />
+                <span asp-validation-for="NewCustomer.Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="newCustomerPhone">Phone:</label>
+                <input type="text" id="newCustomerPhone" name="NewCustomer.Phone" class="form-control" asp-for="NewCustomer.Phone" />
+                <span asp-validation-for="NewCustomer.Phone" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-4">Confirm Purchase</button>
+    }
+    else
+    {
+        <p>Your cart is empty. <a asp-page="/Index">Continue shopping</a>.</p>
+    }
+</form>
+
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Select all quantity input fields
+            const quantityInputs = document.querySelectorAll(".quantity-input");
+
+            // Add input event listener to each quantity input
+            quantityInputs.forEach(input => {
+                input.addEventListener("input", function () {
+                    // Get the closest row
+                    const row = this.closest("tr");
+
+                    // Retrieve unit price from data attribute
+                    const unitPrice = parseFloat(this.getAttribute("data-unitprice"));
+
+                    // Get the new quantity value
+                    const newQuantity = parseInt(this.value) || 1; // Defaults to 1 if NaN
+
+                    // Calculate new total price
+                    const newTotal = unitPrice * newQuantity;
+
+                    // Update the total price in the corresponding cell
+                    row.querySelector(".total-price").textContent = "$" + newTotal.toFixed(2);
+                    updateCartTotal();
+                });
+            });
+        });
+
+        // Function to calculate and update the overall cart total
+        function updateCartTotal() {
+            let total = 0;
+
+            // Sum up all the total prices from each row
+            document.querySelectorAll(".total-price").forEach(cell => {
+                total += parseFloat(cell.textContent.replace('$', ''));
+            });
+
+            // Update the cart total display
+            document.getElementById("cart-total").textContent = "Total: $" + total.toFixed(2);
+
+            // Update the hidden input field for the cart total
+            document.getElementById("cart-total-input").value = total.toFixed(2);
+        }
+    </script>
 }
