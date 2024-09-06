@@ -1,0 +1,44 @@
+﻿@page "{id:int}"
+@model ECormerceWeb.Pages.Staff.OrderDetails.IndexModel
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<h2>Order Details </h2>
+
+@if (Model.OrderDetail != null && Model.OrderDetail.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th width="16%">Product Name</th>
+                <th width="16%"></th>
+                <th width="16%">Unit Price</th>
+                <th width="16%">Quantity</th>
+                <th width="16%">Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderDetail)
+            {
+                <tr>
+                    <td>@item.Product.ProductName</td>
+                    <td>
+                        <img class="card-img-top img-fluid d-block mx-auto mb-3"
+                             src="@item.Product.ProductImageURL"
+                             alt="menuitem image"
+                             style="object-fit: cover; height: 100%; width: 100%;">
+                    </td>
+                    <td>@item.UnitPrice.ToString("C")</td>
+                    <td>@item.Quantity</td>
+                    <td>$@(item.UnitPrice * item.Quantity)</td>
+                    
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No products found for this order.</p>
+}

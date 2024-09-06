@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{A7041389-0A17-459D-B243-7789EA81B1A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{A7041389-0A17-459D-B243-7789EA81B1A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataObject", "DataObject\DataObject.csproj", "{51D279BD-8307-4513-A979-54B2ADFA6B4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataObject", "DataObject\DataObject.csproj", "{51D279BD-8307-4513-A979-54B2ADFA6B4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{0A1163B5-0F26-4AB7-A1BD-FC898571206A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utility", "Utility\Utility.csproj", "{0A1163B5-0F26-4AB7-A1BD-FC898571206A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECormerceWeb", "ECormerceWeb\ECormerceWeb.csproj", "{F7EEE392-97B2-464E-8C15-20C766138E1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECormerceWeb", "ECormerceWeb\ECormerceWeb.csproj", "{F7EEE392-97B2-464E-8C15-20C766138E1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

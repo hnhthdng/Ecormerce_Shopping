@@ -17,6 +17,7 @@
                     <th>Freight</th>
                     <th>Ship Address</th>
                     <th>Customer</th>
+                    <th>Order Received</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,6 +31,18 @@
                         <td>@order.Freight</td>
                         <td>@order.ShipAddress</td>
                         <td>@order.Customer.ContactName</td>
+                        <td>
+                            @if (string.IsNullOrEmpty(order.ShippedDate.ToString()))
+                            {
+                                <form method="post" asp-page-handler="ReceiveOrder" asp-route-id="@order.OrderID">
+                                    <button type="submit" class="btn btn-success">Received</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <span class="text-success">Received</span>
+                            }
+                        </td>
                     </tr>
                 }
             </tbody>
