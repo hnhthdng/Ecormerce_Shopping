@@ -25,6 +25,12 @@ namespace PizzaManagement.Pages
         [BindProperty(SupportsGet = true)]
         public int? SupplierId { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public int CurrentPage { get; set; } = 1; // New property for current page
+
+        public int TotalPages { get; set; } // New property for total pages
+        public int PageSize { get; set; } = 8; // Number of items per page
+
         public IEnumerable<Product> ProductList { get; set; }
         public IEnumerable<Category> CategoryList { get; set; }
         public IEnumerable<Supplier> SupplierList { get; set; }
@@ -60,6 +66,12 @@ namespace PizzaManagement.Pages
             {
                 ProductList = ProductList.Where(p => p.SupplierID == SupplierId.Value).ToList();
             }
+
+            // Calculate total pages
+            TotalPages = (int)Math.Ceiling(ProductList.Count() / (double)PageSize);
+
+            // Apply pagination
+            ProductList = ProductList.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
         }
 
     }
