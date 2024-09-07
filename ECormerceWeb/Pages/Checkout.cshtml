@@ -26,7 +26,7 @@
                 <tr data-productid="@item.ProductID">
                     <td><img src="@item.imageURL" class="img-fluid rounded shadow-sm" style="max-height: 100px; object-fit: cover;" /></td>
                     <td>@item.ProductName</td>
-                    <td><input type="number" min="1" class="form-control quantity-input" data-unitprice="@item.UnitPrice" value="@item.Quantity" /></td>
+                    <td><input type="number" min="1" max="@item.Stock" class="form-control quantity-input" data-unitprice="@item.UnitPrice" value="@item.Quantity" /></td>
                     <td>@item.UnitPrice.ToString("C")</td>
                     <td class="total-price">$@(item.UnitPrice * item.Quantity)</td>
                     <th>

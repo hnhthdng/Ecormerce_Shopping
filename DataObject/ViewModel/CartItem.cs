@@ -13,5 +13,6 @@ namespace DataObject.ViewModel
         public decimal UnitPrice { get; set; }
         public int Quantity { get; set; }
         public string imageURL { get;set; }
+        public int Stock { get; set; }
     }
 }

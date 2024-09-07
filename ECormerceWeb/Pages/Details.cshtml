@@ -10,8 +10,8 @@
 
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h1 class="text-primary m-0">@Model.Product.ProductName</h1>
-                <h1 class="text-muted m-0">$@Model.Product.UnitPrice</h1>
+                <h1 class="text-danger m-0 ">@Model.Product.ProductName</h1>
+                <h1 class="text-dark m-0">$@Model.Product.UnitPrice</h1>
             </div>
 
             <div class="card-body">
@@ -20,10 +20,10 @@
                     <div class="col-lg-8 col-12 mb-4">
                         <div class="mb-3">
                             <span class="badge bg-warning text-dark p-2 fs-5 me-2">
-                                @Model.Product.Category.CategoryName
+                                Category: @Model.Product.Category.CategoryName
                             </span>
                             <span class="badge bg-dark text-light p-2 fs-5">
-                                @Model.Product.Supplier.CompanyName
+                                Supplier: @Model.Product.Supplier.CompanyName
                             </span>
                         </div>
 

@@ -140,6 +140,11 @@ namespace PizzaManagement.Pages
 
             Customers = _unitOfWork.Customer.GetAll(u => u.AccountId == claim.Value);
             CartItems = _httpContextAccessor.HttpContext.Session.GetCart();
+            foreach (var item in CartItems)
+            {
+                Product product = _unitOfWork.Product.GetFirstOrDefault(u => u.ProductID == item.ProductID);
+                item.Stock = product.UnitsInStock;
+            }
             CartTotal = CartItems.Sum(item => item.UnitPrice * item.Quantity);
         }
 
