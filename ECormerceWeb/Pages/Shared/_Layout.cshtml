@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/PizzaManagement.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ECormerceWeb.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
@@ -50,6 +50,18 @@
                             <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="" asp-page="/OrderHistory">Order History</a>
                             </li>
+                        }
+                        @if(User.IsInRole("Staff"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-page="/Staff/AdminChat">Admin Chat</a>
+                            </li>
+                        }
+                        else if (User.IsInRole("NormalUser"))
+                        {
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-page="/NormalUser/CustomerChat">Customer Chat</a>
+                        </li>
                         }
                     </ul>
                     @await Html.PartialAsync("_CartPartial")

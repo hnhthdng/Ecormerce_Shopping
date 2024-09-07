@@ -60,6 +60,9 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
 
+//add realtime signalR
+builder.Services.AddSignalR();
+
 builder.Services.AddRazorPages();
 
 
@@ -93,6 +96,7 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
+app.MapHub<ChatHub>("/chathub");
 app.Run();
 
 async Task SeedRoles(IHost app)
