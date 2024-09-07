@@ -16,12 +16,15 @@ public class ChatHub : Hub
         // If there are available admins, assign the customer to one
         if (availableAdmins.Count > 0)
         {
+            var user = Context.User;
+            var emailUser = user.FindFirst(ClaimTypes.Email)?.Value;
+
             string assignedAdmin = availableAdmins.FirstOrDefault();
             if (assignedAdmin != null)
             {
                 string connectionId = Context.ConnectionId;
                 customerAdminMapping.TryAdd(connectionId, assignedAdmin);
-                await Clients.Client(assignedAdmin).SendAsync("NewCustomerAssigned", assignedAdmin, connectionId);
+                await Clients.Client(assignedAdmin).SendAsync("NewCustomerAssigned", assignedAdmin, connectionId, emailUser);
                 await Clients.Caller.SendAsync("AdminAssigned", assignedAdmin, connectionId);
             }
         }

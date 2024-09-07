@@ -5,14 +5,23 @@
 @{
     ViewData["Title"] = "Customer Chat";
 }
-<h2>Customer Chat</h2>
+<h2 class="text-center mt-4">Customer Chat</h2>
 
-<div id="chatBox">
-    <ul id="messagesList"></ul>
+<div class="container mt-3">
+    <div id="chatBox" class="card">
+        <div class="waiting-message">
+            <span>Waiting for connect to admin...</span>
+        </div>
+        <div class="card-body chat-container">
+            <ul id="messagesList" class="list-unstyled"></ul>
+        </div>
+    </div>
+
+    <div class="input-group mt-3">
+        <input type="text" id="messageInput" class="form-control" placeholder="Type your message here..." />
+        <button id="sendMessageBtn" class="btn btn-primary">Send</button>
+    </div>
 </div>
-
-<input type="text" id="messageInput" placeholder="Type your message here..." />
-<button id="sendMessageBtn">Send</button>
 
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.9/signalr.min.js"></script>
@@ -28,6 +37,11 @@
 
         connection.on("AdminAssigned", function (adminId, connectionId) {
             console.log("Connected to admin: " + adminId);
+
+            // Update the content inside the div to show the connecting message
+            var connectingMessage = document.querySelector(".waiting-message");
+            connectingMessage.innerHTML = "Success connecting with Admin";
+
             customerId = connectionId;
         });
 
@@ -36,24 +50,100 @@
         });
 
         connection.on("ReceiveMessageFromAdmin", function (message) {
+            var messageLength = message.length; // Get the length of the message
+
             var li = document.createElement("li");
-            li.textContent = "Admin: " + message;
+            if (messageLength > 50) {
+                li.style.width = "100%"; // If the message is long, make the width 100%
+            } else {
+                li.style.width = (messageLength+2) + "em"; // Set width based on message length
+            }
+            li.className = "list-group-item-staff";
+            li.textContent = message;
             document.getElementById("messagesList").appendChild(li);
         });
 
         document.getElementById("sendMessageBtn").addEventListener("click", function (event) {
             var message = document.getElementById("messageInput").value;
+            var messageLength = message.length; // Get the length of the message
 
-            var li = document.createElement("li");
-            li.textContent = "Customer " + customerId + ": " + message;
-            document.getElementById("messagesList").appendChild(li);
+            if (message === null || message.trim() === "") {
+            }
+            else {
+                var li = document.createElement("li");
+                li.className = "list-group-item-cus bg-primary text-white"; // Adds rounded corners
+                if (messageLength > 50) {
+                    li.style.width = "100%"; // If the message is long, make the width 100%
+                } else {
+                    li.style.width = (messageLength+2) + "em"; // Set width based on message length
+                }
+                li.textContent = message;
+                document.getElementById("messagesList").appendChild(li);
 
-
-            connection.invoke("SendMessageToAdmin", customerId, message).catch(function (err) {
-                return console.error(err.toString());
-            });
-
-            event.preventDefault();
+                connection.invoke("SendMessageToAdmin", customerId, message).catch(function (err) {
+                    return console.error(err.toString());
+                });
+                document.getElementById("messageInput").value = ""; // Clear input after sending
+                event.preventDefault();
+            }
         });
+
     </script>
+
 }
+
+<style>
+    .chat-container {
+        max-height: 500px;
+        height: 500px;
+        overflow-y: scroll;
+        scrollbar-width: none; /* Firefox: Hide scrollbar */
+        -ms-overflow-style: none; /* Internet Explorer 10+: Hide scrollbar */
+    }
+
+    #messageInput {
+        flex-grow: 1;
+    }
+
+    #messagesList {
+        padding: 0;
+    }
+
+
+    .list-group-item-cus {
+        border: 1px solid #ddd; /* Light grey border */
+        border-radius: 20px; /* Slight rounding of corners */
+        padding: 10px;
+        margin-bottom: 5px;
+        display: block; /* Forces each message to appear on a new line */
+        word-wrap: break-word; /* Ensures long words are wrapped */
+        max-width: 40%; /* Ensures messages do not exceed 70% of the chat width */
+        margin-left: auto; /* Aligns customer messages to the right */
+        text-align: right; /* Right-aligns text within the message bubble */
+    }
+
+    .list-group-item-staff{
+        border: 1px solid #ddd; /* Light grey border */
+        border-radius: 20px; /* Slight rounding of corners */
+        padding: 10px;
+        margin-bottom: 5px;
+        display: block; /* Forces each message to appear on a new line */
+        word-wrap: break-word; /* Ensures long words are wrapped */
+        max-width: 40%; /* Ensures messages do not exceed 70% of the chat width */
+        margin-right: auto; /* Aligns customer messages to the right */
+        text-align: left; /* Right-aligns text within the message bubble */
+
+        background-color: #e3e3de !important; /* New custom color (orange-red) */
+        color: black !important; /* Ensure text remains white for contrast */
+    }
+
+    .waiting-message {
+        display: flex; /* Use flexbox for alignment */
+        justify-content: center; /* Center items horizontally */
+        align-items: center; /* Center items vertically */
+        flex-direction: column; /* Stack items vertically */
+        color: grey; /* Set text color to grey */
+        padding: 10px; /* Add some padding around the text */
+        height: 60px; /* Define a fixed height for alignment */
+    }
+</style>
