@@ -58,15 +58,17 @@ builder.Services.AddScoped<IOrderExportService, ExportService>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddSingleton<IEmailSender, EmailSender>();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 //add realtime signalR
 builder.Services.AddSignalR();
-
+// Register your EmailWorker service
+builder.Services.AddHostedService<EmailWorker>();
 builder.Services.AddRazorPages();
 
 
 var app = builder.Build();
+
 
 // Call the role seeding method
 await SeedRoles(app);
