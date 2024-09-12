@@ -20,7 +20,8 @@ namespace DataAccess.Repository
             OrderDetail = new OrderDetailRepository(_db);
             Product = new ProductRepository(_db);
             Category = new CategoryRepository(_db);
-            Supplier = new SupplierRepository(_db); 
+            Supplier = new SupplierRepository(_db);
+            Ads = new AdsRepository(_db);
 
         }
         public IAccountRepository Account { get; private set; }
@@ -30,6 +31,7 @@ namespace DataAccess.Repository
         public IProductRepository Product { get; private set; }
         public ICategoryRepository Category { get; private set; }
         public ISupplierRepository Supplier { get; private set; }
+        public IAdsRepository Ads { get; private set; }
 
         public void Dispose()
         {

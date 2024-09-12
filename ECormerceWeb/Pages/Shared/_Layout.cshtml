@@ -42,6 +42,8 @@
                                     <a class="dropdown-item" asp-area="" asp-page="/Staff/Suppliers/Index">Supplier Management</a>
                                     <a class="dropdown-item" asp-area="" asp-page="/Staff/Products/Index">Product Management</a>
                                     <a class="dropdown-item" asp-area="" asp-page="/Staff/Orders/Index">Order Management</a>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Staff/Adses/Index">Ads Management</a>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Staff/AdminChat">Admin Chat</a>
                                 </div>
                             </li>
                         }
@@ -50,12 +52,6 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="" asp-page="/OrderHistory">Order History</a>
-                            </li>
-                        }
-                        @if(User.IsInRole("Staff"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-page="/Staff/AdminChat">Admin Chat</a>
                             </li>
                         }
                         else if (User.IsInRole("NormalUser"))

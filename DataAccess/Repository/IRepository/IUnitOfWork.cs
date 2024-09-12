@@ -15,6 +15,7 @@ namespace DataAccess.Repository.IRepository
         IProductRepository Product { get; }
         ICategoryRepository Category { get; }
         ISupplierRepository Supplier { get; }
+        IAdsRepository Ads { get; }
         void Save();
     }
 }

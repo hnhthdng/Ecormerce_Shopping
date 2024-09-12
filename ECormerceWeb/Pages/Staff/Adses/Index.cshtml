@@ -1,0 +1,52 @@
+﻿@page
+@model ECormerceWeb.Pages.Staff.Adses.IndexModel
+@{
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Ads List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-page="/Staff/Adses/Create" class="btn btn-primary">
+                <i class="bi bi-pencil-square"></i>
+                &nbsp;Create new Ads
+            </a>
+        </div>
+    </div>
+    <br /> <br />
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>Ads ID</th>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th></th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ads in Model.Adses)
+            {
+                <tr>
+                    <td width="16%">@ads.Id</td>
+                    <td width="16%">@ads.Title</td>
+                    <td width="16%">@ads.Content</td>
+                    <td width="16%">@ads.StartDate</td>
+                    <td width="16%">@ads.EndDate</td>
+                    <td>
+                        <div class="w-75 btn-group" role="group">
+
+                            <a asp-page="/Staff/Adses/Edit" asp-route-id="@ads.Id" class="btn btn-primary mx-2">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a asp-page="/Staff/Adses/Delete" asp-route-id="@ads.Id" class="btn btn-danger mx-2">
+                                <i class="bi bi-trash-fill"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }

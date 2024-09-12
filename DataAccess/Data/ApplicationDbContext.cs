@@ -24,10 +24,13 @@ namespace DataAccess.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Accounts> Accounts { get; set; }
+        public DbSet<Ads> Adses { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Ads>().HasKey(a => a.Id);
+
             modelBuilder.Entity<OrderDetail>()
         .HasKey(od => new { od.OrderID, od.ProductID });
 
