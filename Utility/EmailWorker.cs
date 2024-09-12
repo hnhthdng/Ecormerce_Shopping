@@ -48,9 +48,9 @@ public class EmailWorker : BackgroundService
                     {
                         _logger.LogError(ex, "An error occurred while processing emails.");
                     }
-                    
-                    // Send email ads to user
-                    //await SendAdsEmail(order, unitOfWork);
+
+                    //Send email ads to user
+                   await SendAdsEmail(unitOfWork);
                 }
 
                 await Task.Delay(TimeSpan.FromHours(24), stoppingToken); // Wait for 24 hours before checking again
@@ -115,7 +115,28 @@ public class EmailWorker : BackgroundService
     private async Task SendAdsEmail(IUnitOfWork unitOfWork)
     {
         // Get user emails
-        var userEmail = unitOfWork.Account.GetAll().Select(a => a.Email);   
+        var userEmail = unitOfWork.Account.GetAll().Select(a => a.Email);
+        var adses = unitOfWork.Ads.GetAll().Where(a => a.StartDate <= DateTime.Now && a.EndDate >= DateTime.Now);
+        if(adses != null)
+        {
+            foreach(var ads in adses)
+            {
+                var emailbody = "<p>Dear Customer,</p>" +
+                                "<p>We have a special promotion for you:</p>";
+                emailbody += $"<p>{ads.Content}</p>";
+                emailbody += "<p>Thank you for choosing us for your shopping needs! We look forward to serving you soon.</p>" +
+                             "<p>Best regards,<br>Customer Service Team</p>";
 
+                foreach (var email in userEmail)
+                {
+                    // Send the email with all order IDs for the current AccountId
+                    await _emailSender.SendEmailAsync(
+                        email,
+                        ads.Title,
+                        emailbody
+                    );
+                }
+            }
+        }
     }
 }
