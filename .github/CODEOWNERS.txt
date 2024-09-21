@@ -1,0 +1,2 @@
+# Quyền sở hữu tất cả các file trong repository
+* @hnhthdng
