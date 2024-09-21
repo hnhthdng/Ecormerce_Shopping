@@ -10,7 +10,7 @@ namespace DataObject.Model
         public int CategoryID { get; set; }
         [Display(Name = "Category Name")]
         public string CategoryName { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         // Navigation properties
         [ValidateNever]
