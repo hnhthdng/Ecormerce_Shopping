@@ -30,6 +30,14 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-page="/Index">Home</a>
                         </li>
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-page="/OrderHistory">Order History</a>
+                            </li>
+                        }
+
                         @if (User.IsInRole("Staff"))
                         {
                             <li class="nav-item dropdown">
@@ -47,18 +55,11 @@
                                 </div>
                             </li>
                         }
-
-                        @if (User.Identity.IsAuthenticated)
+                        @if (User.IsInRole("NormalUser"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-page="/OrderHistory">Order History</a>
+                                <a class="nav-link text-light" asp-area="" asp-page="/NormalUser/CustomerChat">Customer Chat</a>
                             </li>
-                        }
-                        else if (User.IsInRole("NormalUser"))
-                        {
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-page="/NormalUser/CustomerChat">Customer Chat</a>
-                        </li>
                         }
                     </ul>
                     @await Html.PartialAsync("_CartPartial")
