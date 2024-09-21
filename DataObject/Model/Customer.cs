@@ -14,7 +14,7 @@ namespace DataObject.Model
         public string AccountId { get; set; }   
         public string? Password { get; set; }
         [Display(Name = "Contact Name")]
-        public string ContactName { get; set; }
+        public string? ContactName { get; set; }
         public string Address { get; set; }
         [Phone]
         public string Phone { get; set; }
