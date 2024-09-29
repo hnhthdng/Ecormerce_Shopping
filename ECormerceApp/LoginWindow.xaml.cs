@@ -85,5 +85,12 @@ namespace ECormerceApp
             }
         }
 
+        private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // Lấy MainWindow từ ServiceProvider để inject các dependency (nếu có)
+            var registerWindow = App.ServiceProvider.GetRequiredService<RegisterWindow>();
+            registerWindow.Show();
+            this.Close();
+        }
     }
 }
