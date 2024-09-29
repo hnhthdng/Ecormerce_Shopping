@@ -2,6 +2,7 @@
 using DataAccess.Repository;
 using DataAccess.Repository.IRepository;
 using DataObject.Model;
+using ECormerceApp.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -85,11 +86,19 @@ namespace ECormerceApp
             }
         }
 
-        private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void TextBlock_MouseLeftButtonDown_SignUp(object sender, MouseButtonEventArgs e)
         {
             // Lấy MainWindow từ ServiceProvider để inject các dependency (nếu có)
             var registerWindow = App.ServiceProvider.GetRequiredService<RegisterWindow>();
             registerWindow.Show();
+            this.Close();
+        }
+
+        private void TextBlock_MouseLeftButtonDown_Reset(object sender, MouseButtonEventArgs e)
+        {
+            // Lấy MainWindow từ ServiceProvider để inject các dependency (nếu có)
+            var ForgotPassword = App.ServiceProvider.GetRequiredService<ForgotPassword>();
+            ForgotPassword.Show();
             this.Close();
         }
     }

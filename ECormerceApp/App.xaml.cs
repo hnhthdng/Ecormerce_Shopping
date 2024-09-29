@@ -2,6 +2,7 @@
 using DataAccess.Repository;
 using DataAccess.Repository.IRepository;
 using DataObject.Model;
+using ECormerceApp.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -68,6 +69,7 @@ namespace ECormerceApp
             services.AddTransient<MainWindow>();
             services.AddTransient<LoginWindow>();
             services.AddTransient<RegisterWindow>();
+            services.AddTransient<ForgotPassword>();
 
             // Đăng ký UnitOfWork và các repository
             services.AddScoped<IUnitOfWork, UnitOfWork>();
