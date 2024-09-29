@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utility", "Utility\Utility.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECormerceWeb", "ECormerceWeb\ECormerceWeb.csproj", "{F7EEE392-97B2-464E-8C15-20C766138E1B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECormerceApp", "ECormerceApp\ECormerceApp.csproj", "{6AD44042-5455-41BE-8A9D-49005B529DA8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{F7EEE392-97B2-464E-8C15-20C766138E1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7EEE392-97B2-464E-8C15-20C766138E1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7EEE392-97B2-464E-8C15-20C766138E1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AD44042-5455-41BE-8A9D-49005B529DA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AD44042-5455-41BE-8A9D-49005B529DA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AD44042-5455-41BE-8A9D-49005B529DA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AD44042-5455-41BE-8A9D-49005B529DA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
