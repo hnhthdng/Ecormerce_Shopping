@@ -3,7 +3,6 @@ using DataAccess.Repository;
 using DataAccess.Repository.IRepository;
 using DataObject.Model;
 using ECormerceApp.Admin;
-using ECormerceApp.Auth;
 using ECormerceApp.NormalUser;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;

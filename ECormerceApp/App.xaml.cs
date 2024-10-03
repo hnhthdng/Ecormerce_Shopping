@@ -3,7 +3,6 @@ using DataAccess.Repository;
 using DataAccess.Repository.IRepository;
 using DataObject.Model;
 using ECormerceApp.Admin;
-using ECormerceApp.Auth;
 using ECormerceApp.NormalUser;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -87,7 +86,6 @@ namespace ECormerceApp
             // Đăng ký các window
             services.AddTransient<LoginWindow>();
             services.AddTransient<RegisterWindow>();
-            services.AddTransient<ForgotPassword>();
             services.AddTransient<AdminMainWindow>();
             services.AddTransient<UserMainWindow>();
 

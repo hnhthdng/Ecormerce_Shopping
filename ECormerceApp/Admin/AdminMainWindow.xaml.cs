@@ -1,21 +1,13 @@
 ﻿using DataAccess.Repository.IRepository;
 using DataObject.Model;
+using ECormerceApp.UserControls;
+using LiveCharts;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Identity.Client.NativeInterop;
-using Microsoft.VisualBasic.ApplicationServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ECormerceApp.Admin
 {
@@ -27,6 +19,7 @@ namespace ECormerceApp.Admin
         public Accounts loggedInUser;
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<Accounts> _userManager;
+        public ChartValues<decimal> ProfitValues { get; set; }
 
         public AdminMainWindow(IUnitOfWork unitOfWork, UserManager<Accounts> userManager)
         {
@@ -39,8 +32,6 @@ namespace ECormerceApp.Admin
         {
             // Ẩn tất cả các StackPanel
             Welcome_Dashboard.Visibility = Visibility.Hidden;
-            AccountContent.Visibility = Visibility.Hidden;
-            CategoryContent.Visibility = Visibility.Hidden;
             ProfileContent.Visibility = Visibility.Hidden;
             ChangePasswordContent.Visibility = Visibility.Hidden;
             // Hiển thị StackPanel mong muốn
@@ -62,6 +53,9 @@ namespace ECormerceApp.Admin
             }
             txtWelcomeUser.Text = "Welcome " + loggedInUser.FullName;
             ShowOnlyStackPanel(Welcome_Dashboard);
+            Show3TotalOnDashBoardCard();
+            Show5LatestOrder();
+            LoadProfitChartData();
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
@@ -173,20 +167,56 @@ namespace ECormerceApp.Admin
         #endregion
 
         #region Button Daskboard
+        private void Show3TotalOnDashBoardCard()
+        {
+            //Show Total Product
+            TotalProduct_Dashboard.Number = _unitOfWork.Product.GetAll().Count().ToString();
+            //Show Total Order
+            TotalOrder_Dashboard.Number = _unitOfWork.Order.GetAll().Count().ToString();
+            //Show Total Revenue
+            TotalRevenue_Dashboard.Number = _unitOfWork.Order.GetAll().Sum(x => x.Freight).ToString();
+        }
+        private void Show5LatestOrder()
+        {
+            var orderList = _unitOfWork.Order.GetAll(includeProperty: "OrderDetails,Accounts").OrderByDescending(x => x.OrderDate).Take(5).ToList();
+
+            // Clear existing items
+            LastOrdersStackPanel.Children.Clear();
+
+            // Add the latest orders to the StackPanel
+            foreach (var order in orderList)
+            {
+                var firtOrderDetail = order.OrderDetails.FirstOrDefault();
+                var product = _unitOfWork.Product.GetFirstOrDefault(x => x.ProductID == firtOrderDetail.ProductID);
+                var item = new Item
+                {
+                    Title = "Customer Id: " + order.CustomerID,  // Assuming you have a property for product name
+                    Desc = $"{product.ProductName},... - {order.OrderDate.ToString("HH:mm")}",  // Assuming you have OrderTime and CustomerName
+                    Icon = FontAwesome.Sharp.IconChar.ShoppingBag
+                };
+                LastOrdersStackPanel.Children.Add(item);
+            }
+        }
+        private async void LoadProfitChartData()
+        {
+            List<int> profitEachMonth = new List<int>();
+            for (int i = 1; i <= 12; i++)
+            {
+                var profit = _unitOfWork.Order.GetAll().Where(x => x.OrderDate.Month == i).Sum(x => x.Freight);
+                profitEachMonth.Add((int)profit);
+            }
+            Slm.Values = new ChartValues<int>(profitEachMonth.ToArray());
+
+        }
 
         private void Dashboard_Click(object sender, RoutedEventArgs e)
         {
             ShowOnlyStackPanel(Welcome_Dashboard);
+            Show3TotalOnDashBoardCard();
+            Show5LatestOrder();
+            LoadProfitChartData();
         }
 
         #endregion
-
-        #region Button Account
-        private void Account_Click(object sender, RoutedEventArgs e)
-        {
-            ShowOnlyStackPanel(AccountContent);
-        }
-        #endregion
-
     }
 }
