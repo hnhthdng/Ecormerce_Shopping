@@ -2,14 +2,18 @@
 using DataAccess.Repository;
 using DataAccess.Repository.IRepository;
 using DataObject.Model;
+using ECormerceApp.Admin;
 using ECormerceApp.Auth;
+using ECormerceApp.NormalUser;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using System.Windows;
+using Utility;
 
 namespace ECormerceApp
 {
@@ -64,15 +68,33 @@ namespace ECormerceApp
             services.AddIdentity<Accounts, IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>()
                     .AddDefaultTokenProviders();
+            services.AddIdentity<Accounts, IdentityRole>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+
+                // Lockout settings
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.Zero; // No lockout duration
+                options.Lockout.MaxFailedAccessAttempts = int.MaxValue; // Set to a very high number to effectively disable lockout
+                options.Lockout.AllowedForNewUsers = false; // Optional: Disable lockout for new users
+
+            });
 
             // Đăng ký các window
-            services.AddTransient<MainWindow>();
             services.AddTransient<LoginWindow>();
             services.AddTransient<RegisterWindow>();
             services.AddTransient<ForgotPassword>();
+            services.AddTransient<AdminMainWindow>();
+            services.AddTransient<UserMainWindow>();
 
             // Đăng ký UnitOfWork và các repository
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<IConfiguration>(Configuration);
+            services.AddTransient<IEmailSender, EmailSender>();
         }
     }
 }

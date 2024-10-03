@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using DataObject.Model;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +22,11 @@ namespace ECormerceApp
     /// </summary>
     public partial class RegisterWindow : Window
     {
-        public RegisterWindow()
+        private readonly UserManager<Accounts> _userManager;
+        public RegisterWindow(UserManager<Accounts> userManager)
         {
             InitializeComponent();
+            _userManager = userManager;
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -42,7 +46,42 @@ namespace ECormerceApp
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                string email = txtUser.Text;
+                string password = txtPass.Password;
+                string confirmPassword = txtConfirmPass.Password;
 
+                if (password != confirmPassword)
+                {
+                    MessageBox.Show("Password and Confirm Password do not match");
+                    return;
+                }
+
+                var user = new Accounts
+                {
+                    Email = email,
+                    UserName = email
+                };
+
+                var result = _userManager.CreateAsync(user, password).GetAwaiter().GetResult();
+                if (result.Succeeded)
+                {
+                    _userManager.AddToRoleAsync(user, "NormalUser");
+                    MessageBox.Show("User created successfully");
+                    var loginWindow = App.ServiceProvider.GetRequiredService<LoginWindow>();
+                    loginWindow.Show();
+                    this.Hide();
+                }
+                else
+                {
+                    MessageBox.Show("Error: " + result.Errors);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
         }
 
         private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

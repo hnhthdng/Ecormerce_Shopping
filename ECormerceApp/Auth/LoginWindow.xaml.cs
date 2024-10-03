@@ -2,11 +2,14 @@
 using DataAccess.Repository;
 using DataAccess.Repository.IRepository;
 using DataObject.Model;
+using ECormerceApp.Admin;
 using ECormerceApp.Auth;
+using ECormerceApp.NormalUser;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,38 +54,55 @@ namespace ECormerceApp
 
         private async void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            string email = txtUser.Text;
-            string password = txtPass.Password;
-
-            // Tìm người dùng theo email
-            var user = await _userManager.FindByEmailAsync(email);
-
-            if (user != null)
+            try
             {
-                // Kiểm tra mật khẩu
-                var result = await _userManager.CheckPasswordAsync(user, password);
+                string email = txtUser.Text;
+                string password = txtPass.Password;
 
-                if (result)
+                // Tìm người dùng theo email
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user != null)
                 {
-                    // Đăng nhập thành công
-                    MessageBox.Show("Đăng nhập thành công!");
+                    // Kiểm tra mật khẩu
+                    var result = await _userManager.CheckPasswordAsync(user, password);
 
-                    // Lấy MainWindow từ ServiceProvider để inject các dependency (nếu có)
-                    var mainWindow = App.ServiceProvider.GetRequiredService<MainWindow>();
-                    mainWindow.Show();
-                    this.Hide();
+                    if (result)
+                    {
+                        if (user.Type == 1)
+                        {
+                            // Lấy MainWindow từ ServiceProvider để inject các dependency (nếu có)
+                            var adminMainWindow = App.ServiceProvider.GetRequiredService<AdminMainWindow>();
+                            adminMainWindow.loggedInUser = user;
+                            adminMainWindow.Show();
+                            this.Hide();
 
-                    // Hiển thị lại cửa sổ Login khi MainWindow đóng
-                    mainWindow.Closed += (s, args) => this.Show();
+                            // Hiển thị lại cửa sổ Login khi MainWindow đóng
+                            adminMainWindow.Closed += (s, args) => this.Show();
+                        }
+                        else
+                        {
+                            // Lấy MainWindow từ ServiceProvider để inject các dependency (nếu có)
+                            var userMainWindow = App.ServiceProvider.GetRequiredService<UserMainWindow>();
+                            userMainWindow.Show();
+                            this.Hide();
+
+                            // Hiển thị lại cửa sổ Login khi MainWindow đóng
+                            userMainWindow.Closed += (s, args) => this.Show();
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Mật khẩu không chính xác.");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Mật khẩu không chính xác.");
+                    MessageBox.Show("Email không tồn tại.");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Email không tồn tại.");
+                MessageBox.Show("Please wait a second, dont click too fast, click again !", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -96,10 +116,18 @@ namespace ECormerceApp
 
         private void TextBlock_MouseLeftButtonDown_Reset(object sender, MouseButtonEventArgs e)
         {
-            // Lấy MainWindow từ ServiceProvider để inject các dependency (nếu có)
-            var ForgotPassword = App.ServiceProvider.GetRequiredService<ForgotPassword>();
-            ForgotPassword.Show();
-            this.Close();
+            // Set base URL
+            string baseUrl = "https://localhost:7187/Identity/Account/ForgotPassword"; // Replace with your actual base URL
+
+            // Mở trình duyệt mặc định và điều hướng đến URL
+            try
+            {
+                Process.Start(new ProcessStartInfo(baseUrl) { UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Unable to open browser: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

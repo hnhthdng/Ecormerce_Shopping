@@ -149,7 +149,7 @@
                                Margin="0,5,0,0"/>
 
 
-                    <TextBlock Text="Username"
+                    <TextBlock Text="Email"
                                Foreground="DarkGray"
                                FontSize="12"
                                FontWeight="Medium"
