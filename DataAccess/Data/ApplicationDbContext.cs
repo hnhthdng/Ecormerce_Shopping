@@ -37,7 +37,7 @@ namespace DataAccess.Data
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.Customer)
                 .WithMany(c => c.Orders)
-                .HasForeignKey(o => o.CustomerID);
+                .HasForeignKey(o => o.CustomerID).OnDelete(DeleteBehavior.Restrict); // Ngăn xóa Order khi Customer bị xóa
 
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.Accounts)
@@ -71,8 +71,7 @@ namespace DataAccess.Data
             modelBuilder.Entity<Accounts>()
                 .HasMany(a => a.Customers)
                 .WithOne(c => c.Accounts)
-                .HasForeignKey(c => c.AccountId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .HasForeignKey(c => c.AccountId);
 
             base.OnModelCreating(modelBuilder);
         }

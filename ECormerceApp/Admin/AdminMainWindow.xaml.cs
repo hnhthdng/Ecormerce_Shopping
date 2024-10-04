@@ -3,11 +3,14 @@ using DataObject.Model;
 using ECormerceApp.UserControls;
 using LiveCharts;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Identity.Client.NativeInterop;
+using Microsoft.VisualBasic.ApplicationServices;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Utility;
 
 namespace ECormerceApp.Admin
 {
@@ -16,10 +19,14 @@ namespace ECormerceApp.Admin
     /// </summary>
     public partial class AdminMainWindow : Window
     {
+        public ChartValues<decimal> ProfitValues { get; set; }
+
         public Accounts loggedInUser;
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<Accounts> _userManager;
-        public ChartValues<decimal> ProfitValues { get; set; }
+
+        //Pagination
+        private PaginationHelper<Accounts> paginationHelperAccount;
 
         public AdminMainWindow(IUnitOfWork unitOfWork, UserManager<Accounts> userManager)
         {
@@ -27,16 +34,34 @@ namespace ECormerceApp.Admin
             _unitOfWork = unitOfWork;
             _userManager = userManager;
 
+            paginationHelperAccount = new PaginationHelper<Accounts>(7);
+
         }
+
+        #region Method
         private void ShowOnlyStackPanel(StackPanel visiblePanel)
         {
             // Ẩn tất cả các StackPanel
             Welcome_Dashboard.Visibility = Visibility.Hidden;
             ProfileContent.Visibility = Visibility.Hidden;
             ChangePasswordContent.Visibility = Visibility.Hidden;
+            AccountContent.Visibility = Visibility.Hidden;
+
             // Hiển thị StackPanel mong muốn
             visiblePanel.Visibility = Visibility.Visible;
         }
+
+        private void LoadDataForPage<T>(DataGrid dataGrid, IEnumerable<T> list, PaginationHelper<T> paginationHelper)
+        {
+            var pagedData = paginationHelper.GetPagedData(list);
+
+            dataGrid.ItemsSource = null;
+            dataGrid.ItemsSource = pagedData;
+        }
+
+        #endregion
+
+        #region Window Event
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -70,6 +95,7 @@ namespace ECormerceApp.Admin
         {
             this.Close();
         }
+        #endregion
 
         #region Profile
 
@@ -217,6 +243,74 @@ namespace ECormerceApp.Admin
             LoadProfitChartData();
         }
 
+        #endregion
+
+        #region Account
+        private string currentTableAccount = "Total";
+        private void Account_Click(object sender, RoutedEventArgs e)
+        {
+            currentTableAccount = "Total";
+            ShowOnlyStackPanel(AccountContent);
+            var accounts = _unitOfWork.Account.GetAll();
+            LoadDataForPage<Accounts>(AccountDataGrid, accounts, paginationHelperAccount);
+            TotalAccountWithType.Text = "Total: " + accounts.Count().ToString();
+        }
+
+        private void PreviousPageAccountContentButton_Click(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<Accounts> accounts;
+            // Lọc dựa trên loại bảng hiện tại (Admin, Normal User, Total)
+            if (currentTableAccount == "Admin")
+            {
+                accounts = _unitOfWork.Account.GetAll().Where(a => a.Type == 1);
+            }
+            else if (currentTableAccount == "NormalUser")
+            {
+                accounts = _unitOfWork.Account.GetAll().Where(a => a.Type == 2);
+            }
+            else
+            {
+                accounts = _unitOfWork.Account.GetAll(); // Total - hiển thị tất cả
+            }
+            paginationHelperAccount.PreviousPage();
+            LoadDataForPage<Accounts>(AccountDataGrid, accounts, paginationHelperAccount);
+        }
+
+        private void NextPageAccountContentButton_Click(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<Accounts> accounts;
+            // Lọc dựa trên loại bảng hiện tại (Admin, Normal User, Total)
+            if (currentTableAccount == "Admin")
+            {
+                accounts = _unitOfWork.Account.GetAll().Where(a => a.Type == 1);
+            }
+            else if (currentTableAccount == "NormalUser")
+            {
+                accounts = _unitOfWork.Account.GetAll().Where(a => a.Type == 2);
+            }
+            else
+            {
+                accounts = _unitOfWork.Account.GetAll(); // Total - hiển thị tất cả
+            }
+            paginationHelperAccount.NextPage(accounts);
+            LoadDataForPage<Accounts>(AccountDataGrid, accounts, paginationHelperAccount);
+        }
+
+        private void btn_Account_Admin_GetTotal_Click(object sender, RoutedEventArgs e)
+        {
+            currentTableAccount = "Admin";
+            TotalAccountWithType.Text = "Total: " + _unitOfWork.Account.GetAll().Where(x => x.Type == 1).Count().ToString();
+            var accounts = _unitOfWork.Account.GetAll().Where(x => x.Type == 1);
+            LoadDataForPage<Accounts>(AccountDataGrid, accounts, paginationHelperAccount);
+        }
+
+        private void btn_Account_NormalUser_GetTotal_Click(object sender, RoutedEventArgs e)
+        {
+            currentTableAccount = "NormalUser";
+            TotalAccountWithType.Text = "Total: " + _unitOfWork.Account.GetAll().Where(x => x.Type == 2).Count().ToString();
+            var accounts = _unitOfWork.Account.GetAll().Where(x => x.Type == 2);
+            LoadDataForPage<Accounts>(AccountDataGrid, accounts, paginationHelperAccount);
+        }
         #endregion
     }
 }

@@ -1,19 +1,8 @@
 ﻿using DataObject.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ECormerceApp
 {
@@ -68,6 +57,8 @@ namespace ECormerceApp
                 if (result.Succeeded)
                 {
                     _userManager.AddToRoleAsync(user, "NormalUser");
+                    user.Type = 2;
+                    _userManager.UpdateAsync(user);
                     MessageBox.Show("User created successfully");
                     var loginWindow = App.ServiceProvider.GetRequiredService<LoginWindow>();
                     loginWindow.Show();
