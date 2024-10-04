@@ -59,6 +59,12 @@ namespace ECormerceApp.Admin
             dataGrid.ItemsSource = pagedData;
         }
 
+        private void LoadFullData<T>(DataGrid dataGrid, IEnumerable<T> list)
+        {
+            dataGrid.ItemsSource = null;
+            dataGrid.ItemsSource = list;
+        }
+
         #endregion
 
         #region Window Event
@@ -311,6 +317,42 @@ namespace ECormerceApp.Admin
             var accounts = _unitOfWork.Account.GetAll().Where(x => x.Type == 2);
             LoadDataForPage<Accounts>(AccountDataGrid, accounts, paginationHelperAccount);
         }
+        private void textBoxFilter_AccountContent_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            if (e.Key == Key.Enter)
+            {
+                string filter = textBoxFilter_AccountContent.Text;
+                try
+                {
+                    IEnumerable<Accounts> accounts;
+                    // Lọc dựa trên loại bảng hiện tại (Admin, Normal User, Total)
+                    if (currentTableAccount == "Admin")
+                    {
+                        accounts = _unitOfWork.Account.GetAll().Where(a => a.Type == 1 && a.Email.Substring(0, a.Email.IndexOf("@")).Contains(filter));
+                        LoadFullData(AccountDataGrid, accounts);
+                    }
+                    else if (currentTableAccount == "NormalUser")
+                    {
+                        accounts = _unitOfWork.Account.GetAll().Where(a => a.Type == 2 && a.Email.Substring(0, a.Email.IndexOf("@")).Contains(filter));
+                        LoadFullData(AccountDataGrid, accounts);
+
+                    }
+                    else if (currentTableAccount == "Total")
+                    {
+                        accounts = _unitOfWork.Account.GetAll().Where(a => a.Email.Substring(0, a.Email.IndexOf("@")).Contains(filter));
+                        LoadFullData(AccountDataGrid, accounts);
+
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Filter error");
+                }
+            }
+        }
+
         #endregion
+
     }
 }

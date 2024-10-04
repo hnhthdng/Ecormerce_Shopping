@@ -345,12 +345,10 @@
                     <TextBlock x:Name="TotalAccountWithType" Text="68 Admin" Grid.Row="4" FontSize="18" Margin="15,0,0,0" FontWeight="SemiBold" Foreground="White" HorizontalAlignment="Left" Width="86"/>
 
                     <!--Filter Textbox-->
-                    <Grid Width="200" HorizontalAlignment="Right" Grid.Row="4">
-                        <TextBlock Margin="15 0" VerticalAlignment="Center" Foreground="#B0B9C6" IsHitTestVisible="False"
-               Panel.ZIndex="1" Text="Search in Members ..."
-               Visibility="{Binding ElementName=textBoxFilter}" />
-
-                        <TextBox Name="textBoxFilter" Style="{StaticResource filterTextBox}"/>
+                    <Grid Width="400" HorizontalAlignment="Right" Grid.Row="4">
+                        <!-- Filter Label -->
+                        <TextBlock Text="Filter By Email: " FontWeight="Bold" FontSize="14" Foreground="WhiteSmoke" VerticalAlignment="Center" Height="22"/>
+                        <TextBox Name="textBoxFilter_AccountContent" Style="{StaticResource filterTextBox}" KeyDown="textBoxFilter_AccountContent_KeyDown" Margin="112,0,0,0"/>
                     </Grid>
 
                     <!--Members Data Grid-->
