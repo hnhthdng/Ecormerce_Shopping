@@ -3,6 +3,7 @@ using DataObject.Model;
 using ECormerceApp.UserControls;
 using LiveCharts;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Client.NativeInterop;
 using Microsoft.VisualBasic.ApplicationServices;
 using Newtonsoft.Json;
@@ -354,5 +355,43 @@ namespace ECormerceApp.Admin
 
         #endregion
 
+        private void AddAccount_Click(object sender, RoutedEventArgs e)
+        {
+            var createOrUpdateWindow = App.ServiceProvider.GetRequiredService<CreateOrUpdateWindow>();
+            createOrUpdateWindow.TypeOfWindow = 0;
+            createOrUpdateWindow.TypeOf = 0;
+            createOrUpdateWindow.ShowDialog();
+        }
+
+        private void Btn_UpdateUserInAccountContent_Click(object sender, RoutedEventArgs e)
+        {
+            Button updateButton = sender as Button;
+
+            var selectedAccount = updateButton.DataContext as Accounts;
+            var createOrUpdateWindow = App.ServiceProvider.GetRequiredService<CreateOrUpdateWindow>();
+            createOrUpdateWindow.TypeOfWindow = 0;
+            createOrUpdateWindow.TypeOf = 1;
+            createOrUpdateWindow.updateAccount = selectedAccount;
+            createOrUpdateWindow.ShowDialog();
+
+        }
+
+        private async void Btn_DeleteUserInAccountContent_Click(object sender, RoutedEventArgs e)
+        {
+            Button deleteButton = sender as Button;
+
+            // Lấy đối tượng `UserAccount` liên quan đến dòng chứa nút "Delete" này
+            var selectedAccount = deleteButton.DataContext as Accounts;
+            if (selectedAccount != null)
+            {
+                var result = MessageBox.Show("Are you sure you want to delete this account?", "Delete Account", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    await _userManager.DeleteAsync(selectedAccount);
+                    MessageBox.Show("Delete account successfully");
+                }
+            }
+
+        }
     }
 }

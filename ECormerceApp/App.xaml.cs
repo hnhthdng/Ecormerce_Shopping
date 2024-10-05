@@ -88,6 +88,7 @@ namespace ECormerceApp
             services.AddTransient<RegisterWindow>();
             services.AddTransient<AdminMainWindow>();
             services.AddTransient<UserMainWindow>();
+            services.AddTransient<CreateOrUpdateWindow>();
 
             // Đăng ký UnitOfWork và các repository
             services.AddScoped<IUnitOfWork, UnitOfWork>();

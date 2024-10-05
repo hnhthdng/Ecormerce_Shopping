@@ -325,7 +325,7 @@
                     <TextBlock Text="Account" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="White" HorizontalAlignment="Left"/>
 
                     <!--Add Button-->
-                    <Button Style="{StaticResource addButton}">
+                    <Button Click="AddAccount_Click" Style="{StaticResource addButton}">
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Kind="Plus" VerticalAlignment="Center" Margin="0 1 8 0" Width="11" Height="11"/>
                             <TextBlock Text="Add New Account"/>
@@ -354,13 +354,6 @@
                     <!--Members Data Grid-->
                     <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="AccountDataGrid" Style="{DynamicResource DataGridStyle1}" Height="338">
                         <DataGrid.Columns>
-                            <DataGridCheckBoxColumn Header="C" CanUserResize="False" Width="auto" ElementStyle="{StaticResource CheckBoxStyle1}">
-                                <DataGridCheckBoxColumn.HeaderTemplate>
-                                    <DataTemplate>
-                                        <CheckBox Style="{StaticResource CheckBoxStyle1}"/>
-                                    </DataTemplate>
-                                </DataGridCheckBoxColumn.HeaderTemplate>
-                            </DataGridCheckBoxColumn>
                             <DataGridTextColumn Header="#" IsReadOnly="True" Width="auto" Binding="{Binding Id}"/>
                             <DataGridTextColumn Header="Name" Binding="{Binding FullName}" IsReadOnly="True" Width="*"/>
                             <DataGridTextColumn Header="User Name" Binding="{Binding UserName}" IsReadOnly="True" Width="*"/>
@@ -370,10 +363,10 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <Button Style="{StaticResource gridEditButton}">
+                                            <Button x:Name="Btn_UpdateUserInAccountContent" Style="{StaticResource gridEditButton}" Click="Btn_UpdateUserInAccountContent_Click">
                                                 <Icon:PackIconMaterial Kind="PencilOutline" Style="{StaticResource gridButtonIcon}"/>
                                             </Button>
-                                            <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}">
+                                            <Button x:Name="Btn_DeleteUserInAccountContent" Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="Btn_DeleteUserInAccountContent_Click">
                                                 <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
                                             </Button>
                                         </StackPanel>
