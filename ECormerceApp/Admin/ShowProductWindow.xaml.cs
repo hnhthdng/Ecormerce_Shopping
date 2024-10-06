@@ -29,6 +29,7 @@ namespace ECormerceApp.Admin
         }
         public int OfContent { get; set; }
         public int CategoryID { get; set; }
+        public int SupplierID { get; set; }
 
         private readonly IUnitOfWork _unitOfWork;
         public ShowProductWindow(IUnitOfWork unitOfWork)
@@ -50,6 +51,7 @@ namespace ECormerceApp.Admin
         {
             // Ẩn tất cả các StackPanel
             Border_ProductOfCategory.Visibility = Visibility.Collapsed;
+            Border_ProductOfSupplier.Visibility = Visibility.Collapsed;
             // Hiển thị StackPanel mong muốn
             visibleBorder.Visibility = Visibility.Visible;
         }
@@ -59,12 +61,18 @@ namespace ECormerceApp.Admin
             switch (OfContent)
             {
                 case (int)OfContentType.Category:
+                    ShowOnlyStackPanel(Border_ProductOfCategory);
                     var category = _unitOfWork.Category.GetFirstOrDefault(u => u.CategoryID == CategoryID);
                     var products = _unitOfWork.Product.GetAll(u => u.CategoryID == CategoryID, includeProperty: "Supplier");
                     TotalOfThisProduct.Text = "Total Product of " + category.CategoryName + ": " + products.Count();
                     LoadFullData<Product>(ProductOfCategoryDataGrid, products);
                     break;
                 case (int)OfContentType.Supplier:
+                    ShowOnlyStackPanel(Border_ProductOfSupplier);
+                    var supplier = _unitOfWork.Supplier.GetFirstOrDefault(u => u.SupplierID == SupplierID);
+                    var productsOfSupplier = _unitOfWork.Product.GetAll(u => u.SupplierID == SupplierID, includeProperty: "Category");
+                    TotalOfThisProduct.Text = "Total Product of " + supplier.CompanyName + ": " + productsOfSupplier.Count();
+                    LoadFullData<Product>(ProductOfSupplierDataGrid, productsOfSupplier);
                     break;
                 case (int)OfContentType.Order:
                     break;

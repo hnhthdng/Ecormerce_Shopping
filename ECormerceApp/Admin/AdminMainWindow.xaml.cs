@@ -29,6 +29,7 @@ namespace ECormerceApp.Admin
         //Pagination
         private PaginationHelper<Accounts> paginationHelperAccount;
         private PaginationHelper<Category> paginationHelperCategory;
+        private PaginationHelper<Supplier> paginationHelperSupplier;
 
         public AdminMainWindow(IUnitOfWork unitOfWork, UserManager<Accounts> userManager)
         {
@@ -38,6 +39,7 @@ namespace ECormerceApp.Admin
 
             paginationHelperAccount = new PaginationHelper<Accounts>(7);
             paginationHelperCategory = new PaginationHelper<Category>(7);
+            paginationHelperSupplier = new PaginationHelper<Supplier>(7);
 
         }
 
@@ -50,6 +52,7 @@ namespace ECormerceApp.Admin
             ChangePasswordContent.Visibility = Visibility.Hidden;
             AccountContent.Visibility = Visibility.Hidden;
             CategoryContent.Visibility = Visibility.Hidden;
+            SupplierContent.Visibility = Visibility.Hidden;
 
             // Hiển thị StackPanel mong muốn
             visiblePanel.Visibility = Visibility.Visible;
@@ -504,5 +507,106 @@ namespace ECormerceApp.Admin
         }
         #endregion
 
+
+        #region Supplier
+        private void Supplier_Click(object sender, RoutedEventArgs e)
+        {
+            ShowOnlyStackPanel(SupplierContent);
+            var suppliers = _unitOfWork.Supplier.GetAll();
+            LoadFullData<Supplier>(SupplierDataGrid, suppliers);
+            TotalSupplier.Text = "Total: " + suppliers.Count().ToString();
+        }
+
+        private void textBoxFilter_SupplierContent_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                string filter = textBoxFilter_SupplierContent.Text;
+                try
+                {
+                    var filteredSuppliers = _unitOfWork.Supplier.GetAll()
+                    .Where(a => a.CompanyName.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0);
+
+                    LoadFullData(SupplierDataGrid, filteredSuppliers);
+                }
+                catch
+                {
+                    MessageBox.Show("Filter error");
+                }
+            }
+
+        }
+
+        private void PreviousPageSupplierContentButton_Click(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<Supplier> supplier;
+            supplier = _unitOfWork.Supplier.GetAll();
+            paginationHelperSupplier.PreviousPage();
+            LoadDataForPage<Supplier>(SupplierDataGrid, supplier, paginationHelperSupplier);
+        }
+
+        private void NextPageSupplierContentButton_Click(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<Supplier> supplier;
+            supplier = _unitOfWork.Supplier.GetAll();
+            paginationHelperSupplier.NextPage(supplier);
+            LoadDataForPage<Supplier>(SupplierDataGrid, supplier, paginationHelperSupplier);
+        }
+
+        private void AddSupplier_Click(object sender, RoutedEventArgs e)
+        {
+            var createOrUpdateWindow = App.ServiceProvider.GetRequiredService<CreateOrUpdateWindow>();
+            createOrUpdateWindow.TypeOfWindow = 2;
+            createOrUpdateWindow.TypeOf = 0;
+            createOrUpdateWindow.ShowDialog();
+        }
+
+        private void Btn_UpdateSupplierInSupplierContent_Click(object sender, RoutedEventArgs e)
+        {
+            Button updateButton = sender as Button;
+            var selectedSupplier = updateButton.DataContext as Supplier;
+            var createOrUpdateWindow = App.ServiceProvider.GetRequiredService<CreateOrUpdateWindow>();
+            createOrUpdateWindow.TypeOfWindow = 2;
+            createOrUpdateWindow.TypeOf = 1;
+            createOrUpdateWindow.updateSupplier = selectedSupplier;
+            createOrUpdateWindow.ShowDialog();
+
+        }
+
+        private void Btn_DeleteSupplierInSupplierContent_Click(object sender, RoutedEventArgs e)
+        {
+            Button deleteButton = sender as Button;
+
+            var selectedSupplier = deleteButton.DataContext as Supplier;
+            if (selectedSupplier != null)
+            {
+                var result = MessageBox.Show("Are you sure you want to delete this Supplier?", "Delete Supplier", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    _unitOfWork.Supplier.Remove(selectedSupplier);
+                    _unitOfWork.Save();
+                    MessageBox.Show("Delete Supplier successfully");
+                }
+            }
+
+        }
+        #endregion
+
+        private void SupplierDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            // Check if the clicked item is a valid row
+            if (sender is DataGrid grid)
+            {
+                var selectedRow = grid.SelectedItem as Supplier;
+                if (selectedRow != null)
+                {
+                    var showProductOfSupplier = App.ServiceProvider.GetRequiredService<ShowProductWindow>();
+                    showProductOfSupplier.OfContent = 1;
+                    showProductOfSupplier.SupplierID = selectedRow.SupplierID;
+                    showProductOfSupplier.ShowDialog();
+                }
+            }
+
+        }
     }
 }

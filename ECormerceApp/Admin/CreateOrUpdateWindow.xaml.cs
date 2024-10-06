@@ -28,6 +28,7 @@ namespace ECormerceApp.Admin
         {
             Account,
             Category,
+            Supplier,
         }
         private enum Type
         {
@@ -39,6 +40,7 @@ namespace ECormerceApp.Admin
 
         public Accounts updateAccount;
         public Category updateCategory;
+        public Supplier updateSupplier;
         private readonly UserManager<Accounts> _userManager;
         private readonly IUnitOfWork _unitOfWork;
 
@@ -55,6 +57,8 @@ namespace ECormerceApp.Admin
             CreateOrUpdateAccount.Visibility = Visibility.Collapsed;
             //Category
             CreateOrUpdateCategory.Visibility = Visibility.Collapsed;
+            //Supplier
+            CreateOrUpdateSupplier.Visibility = Visibility.Collapsed;
 
             stackPanel.Visibility = Visibility.Visible;
         }
@@ -72,6 +76,10 @@ namespace ECormerceApp.Admin
                     case (int)TypeWindow.Category:
                         TitleOfCreateOrUpdate.Text = "CATEGORY";
                         ShowOnlyStackPanel(CreateOrUpdateCategory);
+                        break;
+                    case (int)TypeWindow.Supplier:
+                        TitleOfCreateOrUpdate.Text = "SUPPLIER";
+                        ShowOnlyStackPanel(CreateOrUpdateSupplier);
                         break;
                 }
 
@@ -105,6 +113,13 @@ namespace ECormerceApp.Admin
                         ShowOnlyStackPanel(CreateOrUpdateCategory);
                         txtNameInCategoryContent.Text = updateCategory.CategoryName;
                         txtDescriptionInCategoryContent.Text = updateCategory.Description;
+                        break;
+                    case (int)TypeWindow.Supplier:
+                        TitleOfCreateOrUpdate.Text = "SUPPLIER";
+                        ShowOnlyStackPanel(CreateOrUpdateSupplier);
+                        txtCompanyNameInSupplierContent.Text = updateSupplier.CompanyName;
+                        txtAddressInSupplierContent.Text = updateSupplier.Address;
+                        txtPhoneInSupplierContent.Text = updateSupplier.Phone;
                         break;
                 }
             }
@@ -196,6 +211,26 @@ namespace ECormerceApp.Admin
                         _unitOfWork.Save();
                         MessageBox.Show("Create category successfully");
                         break;
+                    case (int)TypeWindow.Supplier:
+                        string companyName = txtCompanyNameInSupplierContent.Text;
+                        string address = txtAddressInSupplierContent.Text;
+                        string phoneSupplier = txtPhoneInSupplierContent.Text;
+                        //Check null
+                        if (string.IsNullOrEmpty(companyName) || string.IsNullOrEmpty(address) || string.IsNullOrEmpty(phoneSupplier))
+                        {
+                            MessageBox.Show("Please fill all fields");
+                            return;
+                        }
+                        var supplier = new Supplier
+                        {
+                            CompanyName = companyName,
+                            Address = address,
+                            Phone = phoneSupplier
+                        };
+                        _unitOfWork.Supplier.Add(supplier);
+                        _unitOfWork.Save();
+                        MessageBox.Show("Create supplier successfully");
+                        break;
 
                 }
 
@@ -262,6 +297,23 @@ namespace ECormerceApp.Admin
                         _unitOfWork.Category.Update(updateCategory);
                         _unitOfWork.Save();
                         MessageBox.Show("Update category successfully");
+                        break;
+                    case (int)TypeWindow.Supplier:
+                        string companyName = txtCompanyNameInSupplierContent.Text;
+                        string address = txtAddressInSupplierContent.Text;
+                        string phoneSupplier = txtPhoneInSupplierContent.Text;
+                        //Check null
+                        if (string.IsNullOrEmpty(companyName) || string.IsNullOrEmpty(address) || string.IsNullOrEmpty(phoneSupplier))
+                        {
+                            MessageBox.Show("Please fill all fields");
+                            return;
+                        }
+                        updateSupplier.CompanyName = companyName;
+                        updateSupplier.Address = address;
+                        updateSupplier.Phone = phoneSupplier;
+                        _unitOfWork.Supplier.Update(updateSupplier);
+                        _unitOfWork.Save();
+                        MessageBox.Show("Update supplier successfully");
                         break;
                 }
             }

@@ -118,6 +118,22 @@
                     </DataGrid>
                 </Border>
 
+
+                <Border  x:Name="Border_ProductOfSupplier" CornerRadius="0 10 10 0" Height="400" VerticalAlignment="Center" Grid.Row="1">
+                    <!--Category Data Grid-->
+                    <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="ProductOfSupplierDataGrid" Style="{DynamicResource DataGridStyle1}" Margin="0,38,0,0" Height="352" VerticalAlignment="Top">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="#" IsReadOnly="True" Width="auto" Binding="{Binding ProductID}"/>
+                            <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Quantity Per Unit" Binding="{Binding QuantityPerUnit}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Unit Price" Binding="{Binding UnitPrice}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Product Image URL" Binding="{Binding ProductImageURL}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Units In Stock" Binding="{Binding UnitsInStock}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Category" Binding="{Binding Category.CategoryName}" IsReadOnly="True" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+                
             </Grid>
 
         </Border>

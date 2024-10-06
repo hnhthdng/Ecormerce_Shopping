@@ -287,7 +287,7 @@
                     </WrapPanel>
                 </StackPanel>
 
-                <!-- Account -->
+                <!-- Category -->
                 <StackPanel x:Name="CreateOrUpdateCategory" Width="320"
                    Grid.Row="1"
                    Orientation="Vertical"
@@ -358,6 +358,106 @@
                     </TextBox>
 
                 </StackPanel>
+                
+                <!-- Supplier -->
+                <StackPanel x:Name="CreateOrUpdateSupplier" Width="320"
+                   Grid.Row="1"
+                   Orientation="Vertical"
+                   Margin="0,35,0,0" Visibility="Visible">
+
+
+                    <TextBlock Text=""
+                      Foreground="LightGray"
+                      FontSize="12"
+                      FontWeight="Medium"
+                      FontFamily="Montserrat"
+                      TextWrapping="Wrap"
+                      TextAlignment="Center"
+                      Margin="0,5,0,0"/>
+
+                    <TextBlock Text="Company Name"
+                      Foreground="DarkGray"
+                      FontSize="12"
+                      FontWeight="Medium"
+                      FontFamily="Montserrat"                             
+                      Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtCompanyNameInSupplierContent"
+                    FontSize="13"
+                    FontWeight="Medium"
+                    FontFamily="Montserrat"                            
+                    Foreground="White"
+                    CaretBrush="LightGray"
+                    BorderBrush="DarkGray"
+                    BorderThickness="0,0,0,2"
+                    Height="28"
+                    VerticalContentAlignment="Center"
+                    Margin="0,5,0,0"
+                    Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                               Stretch="None"
+                               AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                    <TextBlock Text="Address"
+                      Foreground="DarkGray"
+                      FontSize="12"
+                      FontWeight="Medium"
+                      FontFamily="Montserrat"                             
+                      Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtAddressInSupplierContent"
+                    FontSize="13"
+                    FontWeight="Medium"
+                    FontFamily="Montserrat"                            
+                    Foreground="White"
+                    CaretBrush="LightGray"
+                    BorderBrush="DarkGray"
+                    BorderThickness="0,0,0,2"
+                    Height="28"
+                    VerticalContentAlignment="Center"
+                    Margin="0,5,0,0"
+                    Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                   Stretch="None"
+                   AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                    <TextBlock Text="Phone"
+                       Foreground="DarkGray"
+                       FontSize="12"
+                       FontWeight="Medium"
+                       FontFamily="Montserrat"                             
+                       Margin="0,35,0,0"/>
+
+                                        <TextBox x:Name="txtPhoneInSupplierContent"
+                     FontSize="13"
+                     FontWeight="Medium"
+                     FontFamily="Montserrat"                            
+                     Foreground="White"
+                     CaretBrush="LightGray"
+                     BorderBrush="DarkGray"
+                     BorderThickness="0,0,0,2"
+                     Height="28"
+                     VerticalContentAlignment="Center"
+                     Margin="0,5,0,0"
+                     Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                            Stretch="None"
+                            AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                </StackPanel>
+
 
                 <Button x:Name="btnSave"                          
                             BorderThickness="0"
