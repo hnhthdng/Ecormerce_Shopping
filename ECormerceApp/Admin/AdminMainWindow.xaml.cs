@@ -28,6 +28,7 @@ namespace ECormerceApp.Admin
 
         //Pagination
         private PaginationHelper<Accounts> paginationHelperAccount;
+        private PaginationHelper<Category> paginationHelperCategory;
 
         public AdminMainWindow(IUnitOfWork unitOfWork, UserManager<Accounts> userManager)
         {
@@ -36,6 +37,7 @@ namespace ECormerceApp.Admin
             _userManager = userManager;
 
             paginationHelperAccount = new PaginationHelper<Accounts>(7);
+            paginationHelperCategory = new PaginationHelper<Category>(7);
 
         }
 
@@ -47,6 +49,7 @@ namespace ECormerceApp.Admin
             ProfileContent.Visibility = Visibility.Hidden;
             ChangePasswordContent.Visibility = Visibility.Hidden;
             AccountContent.Visibility = Visibility.Hidden;
+            CategoryContent.Visibility = Visibility.Hidden;
 
             // Hiển thị StackPanel mong muốn
             visiblePanel.Visibility = Visibility.Visible;
@@ -92,10 +95,18 @@ namespace ECormerceApp.Admin
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left)
+            try
             {
-                this.DragMove();
+                if (e.ChangedButton == MouseButton.Left)
+                {
+                    this.DragMove();
+                }
             }
+            catch
+            {
+                // Do nothing
+            }
+
         }
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
@@ -320,7 +331,6 @@ namespace ECormerceApp.Admin
         }
         private void textBoxFilter_AccountContent_KeyDown(object sender, KeyEventArgs e)
         {
-
             if (e.Key == Key.Enter)
             {
                 string filter = textBoxFilter_AccountContent.Text;
@@ -352,8 +362,6 @@ namespace ECormerceApp.Admin
                 }
             }
         }
-
-        #endregion
 
         private void AddAccount_Click(object sender, RoutedEventArgs e)
         {
@@ -393,5 +401,108 @@ namespace ECormerceApp.Admin
             }
 
         }
+
+        #endregion
+
+        #region Category
+
+        private void Category_Click(object sender, RoutedEventArgs e)
+        {
+            ShowOnlyStackPanel(CategoryContent);
+            var categories = _unitOfWork.Category.GetAll();
+            LoadFullData<Category>(CategoryDataGrid, categories);
+            TotalCategory.Text = "Total: " + categories.Count().ToString();
+
+        }
+        private void textBoxFilter_CategoryContent_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                string filter = textBoxFilter_CategoryContent.Text;
+                try
+                {
+                    var filteredCategories = _unitOfWork.Category.GetAll()
+                    .Where(a => a.CategoryName.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0);
+
+                    LoadFullData(CategoryDataGrid, filteredCategories);
+                }
+                catch
+                {
+                    MessageBox.Show("Filter error");
+                }
+            }
+        }
+
+        private void PreviousPageCategoryContentButton_Click(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<Category> category;
+            category = _unitOfWork.Category.GetAll();
+            paginationHelperCategory.PreviousPage();
+            LoadDataForPage<Category>(CategoryDataGrid, category, paginationHelperCategory);
+        }
+
+        private void NextPageCategoryContentButton_Click(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<Category> category;
+            category = _unitOfWork.Category.GetAll();
+            paginationHelperCategory.NextPage(category);
+            LoadDataForPage<Category>(CategoryDataGrid, category, paginationHelperCategory);
+        }
+
+        private void AddCategory_Click(object sender, RoutedEventArgs e)
+        {
+            var createOrUpdateWindow = App.ServiceProvider.GetRequiredService<CreateOrUpdateWindow>();
+            createOrUpdateWindow.TypeOfWindow = 1;
+            createOrUpdateWindow.TypeOf = 0;
+            createOrUpdateWindow.ShowDialog();
+        }
+
+        private void Btn_UpdateCategoryInCategoryContent_Click(object sender, RoutedEventArgs e)
+        {
+            Button updateButton = sender as Button;
+            var selectedCategory = updateButton.DataContext as Category;
+            var createOrUpdateWindow = App.ServiceProvider.GetRequiredService<CreateOrUpdateWindow>();
+            createOrUpdateWindow.TypeOfWindow = 1;
+            createOrUpdateWindow.TypeOf = 1;
+            createOrUpdateWindow.updateCategory = selectedCategory;
+            createOrUpdateWindow.ShowDialog();
+        }
+
+        private void Btn_DeleteCategoryInCategoryContent_Click(object sender, RoutedEventArgs e)
+        {
+            Button deleteButton = sender as Button;
+
+            // Lấy đối tượng `UserAccount` liên quan đến dòng chứa nút "Delete" này
+            var selectedCategory = deleteButton.DataContext as Category;
+            if (selectedCategory != null)
+            {
+                var result = MessageBox.Show("Are you sure you want to delete this Category?", "Delete Category", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    _unitOfWork.Category.Remove(selectedCategory);
+                    _unitOfWork.Save();
+                    MessageBox.Show("Delete Category successfully");
+                }
+            }
+        }
+
+        private void CategoryDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            // Check if the clicked item is a valid row
+            if (sender is DataGrid grid)
+            {
+                var selectedRow = grid.SelectedItem as Category;
+                if (selectedRow != null)
+                {
+                    var showProductOfCategory = App.ServiceProvider.GetRequiredService<ShowProductWindow>();
+                    showProductOfCategory.OfContent = 0;
+                    showProductOfCategory.CategoryID = selectedRow.CategoryID;
+                    showProductOfCategory.ShowDialog();
+                }
+
+            }
+        }
+        #endregion
+
     }
 }

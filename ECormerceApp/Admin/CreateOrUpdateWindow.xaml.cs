@@ -1,4 +1,6 @@
-﻿using DataObject.Model;
+﻿using DataAccess.Repository;
+using DataAccess.Repository.IRepository;
+using DataObject.Model;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -25,6 +27,7 @@ namespace ECormerceApp.Admin
         private enum TypeWindow
         {
             Account,
+            Category,
         }
         private enum Type
         {
@@ -35,18 +38,24 @@ namespace ECormerceApp.Admin
         public int TypeOf;
 
         public Accounts updateAccount;
+        public Category updateCategory;
         private readonly UserManager<Accounts> _userManager;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CreateOrUpdateWindow(UserManager<Accounts> userManager)
+        public CreateOrUpdateWindow(UserManager<Accounts> userManager, IUnitOfWork unitOfWork)
         {
             InitializeComponent();
             _userManager = userManager;
+            _unitOfWork = unitOfWork;
         }
 
         private void ShowOnlyStackPanel(StackPanel stackPanel)
         {
             //Account
             CreateOrUpdateAccount.Visibility = Visibility.Collapsed;
+            //Category
+            CreateOrUpdateCategory.Visibility = Visibility.Collapsed;
+
             stackPanel.Visibility = Visibility.Visible;
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -59,6 +68,10 @@ namespace ECormerceApp.Admin
                     case (int)TypeWindow.Account:
                         TitleOfCreateOrUpdate.Text = "ACCOUNT";
                         ShowOnlyStackPanel(CreateOrUpdateAccount);
+                        break;
+                    case (int)TypeWindow.Category:
+                        TitleOfCreateOrUpdate.Text = "CATEGORY";
+                        ShowOnlyStackPanel(CreateOrUpdateCategory);
                         break;
                 }
 
@@ -86,6 +99,12 @@ namespace ECormerceApp.Admin
                         txtBlockPassInAccountContent.Visibility = Visibility.Collapsed;
                         txtPassInAccountContent.Visibility = Visibility.Collapsed;
                         txtConfirmPassInAccountContent.Visibility = Visibility.Collapsed;
+                        break;
+                    case (int)TypeWindow.Category:
+                        TitleOfCreateOrUpdate.Text = "CATEGORY";
+                        ShowOnlyStackPanel(CreateOrUpdateCategory);
+                        txtNameInCategoryContent.Text = updateCategory.CategoryName;
+                        txtDescriptionInCategoryContent.Text = updateCategory.Description;
                         break;
                 }
             }
@@ -153,6 +172,31 @@ namespace ECormerceApp.Admin
                             MessageBox.Show(error.Description);
                         }
                         break;
+                    case (int)TypeWindow.Category:
+                        string name = txtNameInCategoryContent.Text;
+                        string description = txtDescriptionInCategoryContent.Text;
+                        //Check null
+                        if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(description))
+                        {
+                            MessageBox.Show("Please fill all fields");
+                            return;
+                        }
+                        bool isNameExist = _unitOfWork.Category.GetAll().Any(x => x.CategoryName == name);
+                        if (isNameExist)
+                        {
+                            MessageBox.Show("Category name is already exist");
+                            return;
+                        }
+                        var category = new Category
+                        {
+                            CategoryName = name,
+                            Description = description
+                        };
+                       _unitOfWork.Category.Add(category);
+                        _unitOfWork.Save();
+                        MessageBox.Show("Create category successfully");
+                        break;
+
                 }
 
             }
@@ -197,6 +241,27 @@ namespace ECormerceApp.Admin
                             }
                         }
                         MessageBox.Show("Update account successfully");
+                        break;
+                    case (int)TypeWindow.Category:
+                        string name = txtNameInCategoryContent.Text;
+                        string description = txtDescriptionInCategoryContent.Text;
+                        //Check null
+                        if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(description))
+                        {
+                            MessageBox.Show("Please fill all fields");
+                            return;
+                        }
+                        bool isNameExist = _unitOfWork.Category.GetAll().Any(x => x.CategoryName == name && x.CategoryID != updateCategory.CategoryID);
+                        if (isNameExist)
+                        {
+                            MessageBox.Show("Category name is already exist");
+                            return;
+                        }
+                        updateCategory.CategoryName = name;
+                        updateCategory.Description = description;
+                        _unitOfWork.Category.Update(updateCategory);
+                        _unitOfWork.Save();
+                        MessageBox.Show("Update category successfully");
                         break;
                 }
             }
