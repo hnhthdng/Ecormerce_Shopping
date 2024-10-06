@@ -83,7 +83,7 @@
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="Product" Style="{StaticResource menuButton}">
+                <Button x:Name="Product" Style="{StaticResource menuButton}" Click="Product_Click">
                     <StackPanel Orientation="Horizontal">
                         <fa:IconImage Icon="ProductHunt" Style="{StaticResource menuButtonIcon}"/>
                         <TextBlock Text="Product" Style="{StaticResource menuButtonText}"/>
@@ -458,7 +458,7 @@
 
                 </StackPanel>
                 
-                <StackPanel x:Name="SupplierContent" Visibility="Visible" Margin="10,47,10,100" Grid.RowSpan="2">
+                <StackPanel x:Name="SupplierContent" Visibility="Collapsed" Margin="10,47,10,100" Grid.RowSpan="2">
 
                     <!--Page Title-->
                     <TextBlock Text="Supplier" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="White" HorizontalAlignment="Left"/>
@@ -517,6 +517,77 @@
 
                             <!-- Nút Next -->
                             <Button Style="{StaticResource pagingButton}" Click="NextPageSupplierContentButton_Click">
+                                <Icon:PackIconMaterial Kind="ChevronRight" Style="{StaticResource pagingButtonIcon}"/>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+
+
+                </StackPanel>
+                
+                <StackPanel x:Name="ProductContent" Visibility="Visible" Margin="10,47,10,100" Grid.RowSpan="2">
+
+                    <!--Page Title-->
+                    <TextBlock Text="Product" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="White" HorizontalAlignment="Left"/>
+
+                    <!--Add Button-->
+                    <Button Click="AddProduct_Click" Style="{StaticResource addButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="Plus" VerticalAlignment="Center" Margin="0 1 8 0" Width="11" Height="11"/>
+                            <TextBlock Text="Add New Product"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!--Seprator-->
+                    <Separator Height="1" Grid.Row="3" Background="#DAE2EA" Margin="0 -1 0 10"/>
+
+
+                    <!--Counter Title-->
+                    <TextBlock x:Name="TotalProduct" Text="68 Product" Grid.Row="4" FontSize="18" Margin="15,0,0,0" FontWeight="SemiBold" Foreground="White" HorizontalAlignment="Left" Width="110" Height="27"/>
+
+                    <!--Filter Textbox-->
+                    <Grid Width="400" HorizontalAlignment="Right" Grid.Row="4">
+                        <!-- Filter Label -->
+                        <TextBlock Text="Filter By Name: " FontWeight="Bold" FontSize="14" Foreground="WhiteSmoke" VerticalAlignment="Center" Height="22"/>
+                        <TextBox Name="textBoxFilter_ProductContent" Style="{StaticResource filterTextBox}" KeyDown="textBoxFilter_ProductContent_KeyDown" Margin="112,0,0,0"/>
+                    </Grid>
+
+                    <!--Product Data Grid-->
+                    <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="ProductDataGrid"  Style="{DynamicResource DataGridStyle1}" Height="338">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="#" IsReadOnly="True" Width="auto" Binding="{Binding ProductID}"/>
+                            <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Quantity Per Unit" Binding="{Binding QuantityPerUnit}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Unit Price" Binding="{Binding UnitPrice}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Product Image URL" Binding="{Binding ProductImageURL}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Units In Stock" Binding="{Binding UnitsInStock}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Category" Binding="{Binding Category.CategoryName}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Supplier" Binding="{Binding Supplier.CompanyName}" IsReadOnly="True" Width="*"/>
+                            <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button x:Name="Btn_UpdateProductInProductContent" Style="{StaticResource gridEditButton}" Click="Btn_UpdateProductInProductContent_Click">
+                                                <Icon:PackIconMaterial Kind="PencilOutline" Style="{StaticResource gridButtonIcon}"/>
+                                            </Button>
+                                            <Button x:Name="Btn_DeleteProductInSupplierContent" Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="Btn_DeleteProductInSupplierContent_Click">
+                                                <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Border Grid.Row="6" HorizontalAlignment="Right" BorderBrush="#DEE4EC" BorderThickness="1" CornerRadius="5" Padding="5" Background="#ffffff" Margin="0 10 10 10">
+                        <StackPanel Orientation="Horizontal">
+                            <!-- Nút Previous -->
+                            <Button Style="{StaticResource pagingButton}" Click="PreviousPageProductContentButton_Click">
+                                <Icon:PackIconMaterial Kind="ChevronLeft" Style="{StaticResource pagingButtonIcon}"/>
+                            </Button>
+
+                            <!-- Nút Next -->
+                            <Button Style="{StaticResource pagingButton}" Click="NextPageProductContentButton_Click">
                                 <Icon:PackIconMaterial Kind="ChevronRight" Style="{StaticResource pagingButtonIcon}"/>
                             </Button>
                         </StackPanel>

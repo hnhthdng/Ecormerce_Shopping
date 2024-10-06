@@ -12,7 +12,7 @@
         Background="Transparent"
         AllowsTransparency="True" Loaded="Window_Loaded">
 
-    <Border CornerRadius="12">
+    <Border MouseDown="Border_MouseDown" CornerRadius="12">
         <Border.Background>
             <ImageBrush Stretch="None"/>
         </Border.Background>
@@ -36,7 +36,7 @@
                 </LinearGradientBrush>
             </Border.Background>
 
-            <Grid>
+            <Grid Margin="0,0,0,-2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
                     <RowDefinition/>
@@ -291,7 +291,7 @@
                 <StackPanel x:Name="CreateOrUpdateCategory" Width="320"
                    Grid.Row="1"
                    Orientation="Vertical"
-                   Margin="0,35,0,0" Visibility="Visible">
+                   Margin="0,35,0,0" Visibility="Collapsed">
 
 
                     <TextBlock Text=""
@@ -363,7 +363,7 @@
                 <StackPanel x:Name="CreateOrUpdateSupplier" Width="320"
                    Grid.Row="1"
                    Orientation="Vertical"
-                   Margin="0,35,0,0" Visibility="Visible">
+                   Margin="0,35,0,0" Visibility="Collapsed">
 
 
                     <TextBlock Text=""
@@ -455,6 +455,227 @@
                             AlignmentX="Left"/>
                         </TextBox.Background>
                     </TextBox>
+
+                </StackPanel>
+
+                <!-- Product -->
+                <StackPanel x:Name="CreateOrUpdateProduct" Width="320"
+                   Grid.Row="1"
+                   Orientation="Vertical"
+                   Margin="0,35,0,0" Visibility="Visible">
+
+
+                    <TextBlock Text=""
+                      Foreground="LightGray"
+                      FontSize="12"
+                      FontWeight="Medium"
+                      FontFamily="Montserrat"
+                      TextWrapping="Wrap"
+                      TextAlignment="Center"
+                      Margin="0,5,0,0"/>
+
+                    <TextBlock Text="Product Name"
+                      Foreground="DarkGray"
+                      FontSize="12"
+                      FontWeight="Medium"
+                      FontFamily="Montserrat"                             
+                      Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtProductNameInProductContent"
+                    FontSize="13"
+                    FontWeight="Medium"
+                    FontFamily="Montserrat"                            
+                    Foreground="White"
+                    CaretBrush="LightGray"
+                    BorderBrush="DarkGray"
+                    BorderThickness="0,0,0,2"
+                    Height="28"
+                    VerticalContentAlignment="Center"
+                    Margin="0,5,0,0"
+                    Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                               Stretch="None"
+                               AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                    <TextBlock Text="Quantity Per Unit"
+                      Foreground="DarkGray"
+                      FontSize="12"
+                      FontWeight="Medium"
+                      FontFamily="Montserrat"                             
+                      Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtQuantityPerUnitInProductContent"
+                    FontSize="13"
+                    FontWeight="Medium"
+                    FontFamily="Montserrat"                            
+                    Foreground="White"
+                    CaretBrush="LightGray"
+                    BorderBrush="DarkGray"
+                    BorderThickness="0,0,0,2"
+                    Height="28"
+                    VerticalContentAlignment="Center"
+                    Margin="0,5,0,0"
+                    Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                   Stretch="None"
+                   AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                    <TextBlock Text="Unit Price"
+                       Foreground="DarkGray"
+                       FontSize="12"
+                       FontWeight="Medium"
+                       FontFamily="Montserrat"                             
+                       Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtUnitPriceInProductContent"
+                     FontSize="13"
+                     FontWeight="Medium"
+                     FontFamily="Montserrat"                            
+                     Foreground="White"
+                     CaretBrush="LightGray"
+                     BorderBrush="DarkGray"
+                     BorderThickness="0,0,0,2"
+                     Height="28"
+                     VerticalContentAlignment="Center"
+                     Margin="0,5,0,0"
+                     Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                            Stretch="None"
+                            AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                    <TextBlock Text="Units In Stock"
+                   Foreground="DarkGray"
+                   FontSize="12"
+                   FontWeight="Medium"
+                   FontFamily="Montserrat"                             
+                   Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtUnitsInStockInProductContent"
+                     FontSize="13"
+                     FontWeight="Medium"
+                     FontFamily="Montserrat"                            
+                     Foreground="White"
+                     CaretBrush="LightGray"
+                     BorderBrush="DarkGray"
+                     BorderThickness="0,0,0,2"
+                     Height="28"
+                     VerticalContentAlignment="Center"
+                     Margin="0,5,0,0"
+                     Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                        Stretch="None"
+                        AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+                    <WrapPanel Margin="0,10,0,0">
+                        <Button x:Name="btnChooseImageInProductContent"
+          BorderThickness="0"
+          Content="Choose Image"
+          Foreground="White"
+          FontSize="12"
+          FontFamily="Montserrat"
+          Cursor="Hand"
+          Margin="0,10,0,0"
+          Click="btnChooseImageInProductContent_Click">
+
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="#462AD8"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#28AEED"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Width="150" Height="40"
+                      CornerRadius="20"
+                      Background="{TemplateBinding Background}">
+                                        <ContentPresenter VerticalAlignment="Center"
+HorizontalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+
+                        <TextBox x:Name="txImageURLInProductContent"
+                   IsEnabled="False"
+            FontSize="13"
+            FontWeight="Medium"
+            FontFamily="Montserrat"                            
+            Foreground="White"
+            CaretBrush="LightGray"
+            BorderBrush="DarkGray"
+            BorderThickness="0,0,0,2"
+            Height="28"
+            VerticalContentAlignment="Center"
+            Margin="0,5,0,0"
+            Padding="20,0,0,0" Width="170">
+
+                            <TextBox.Background>
+                                <ImageBrush 
+              Stretch="None"
+              AlignmentX="Left"/>
+                            </TextBox.Background>
+                        </TextBox>
+                    </WrapPanel>
+                    <TextBlock Text="Category"
+                    Foreground="DarkGray"
+                    FontSize="12"
+                    FontWeight="Medium"
+                    FontFamily="Montserrat"                             
+                    Margin="0,35,0,0"/>
+
+                    <ComboBox x:Name="cbbCategoryInProductContent"
+                              FontSize="13"
+                              FontWeight="Medium"
+                                FontFamily="Montserrat"
+                              Foreground="White"
+                              BorderBrush="DarkGray"
+                              BorderThickness="0,0,0,2"
+                              Height="28"
+                              VerticalContentAlignment="Center"
+                              Margin="0,5,0,0"
+                              Padding="20,0,0,0"></ComboBox>
+
+                    <TextBlock Text="Supplier"
+                    Foreground="DarkGray"
+                    FontSize="12"
+                    FontWeight="Medium"
+                    FontFamily="Montserrat"                             
+                    Margin="0,35,0,0"/>
+
+                    <ComboBox x:Name="cbbSupplierInProductContent"
+                      FontSize="13"
+                      FontWeight="Medium"
+                        FontFamily="Montserrat"
+                      Foreground="White"
+                      BorderBrush="DarkGray"
+                      BorderThickness="0,0,0,2"
+                      Height="28"
+                      VerticalContentAlignment="Center"
+                      Margin="0,5,0,0"
+                      Padding="20,0,0,0"></ComboBox>
+
+
+                    
 
                 </StackPanel>
 

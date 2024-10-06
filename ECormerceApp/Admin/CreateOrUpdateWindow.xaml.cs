@@ -29,6 +29,7 @@ namespace ECormerceApp.Admin
             Account,
             Category,
             Supplier,
+            Product,
         }
         private enum Type
         {
@@ -41,6 +42,7 @@ namespace ECormerceApp.Admin
         public Accounts updateAccount;
         public Category updateCategory;
         public Supplier updateSupplier;
+        public Product updateProduct;
         private readonly UserManager<Accounts> _userManager;
         private readonly IUnitOfWork _unitOfWork;
 
@@ -59,6 +61,8 @@ namespace ECormerceApp.Admin
             CreateOrUpdateCategory.Visibility = Visibility.Collapsed;
             //Supplier
             CreateOrUpdateSupplier.Visibility = Visibility.Collapsed;
+            //Product
+            CreateOrUpdateProduct.Visibility = Visibility.Collapsed;
 
             stackPanel.Visibility = Visibility.Visible;
         }
@@ -80,6 +84,12 @@ namespace ECormerceApp.Admin
                     case (int)TypeWindow.Supplier:
                         TitleOfCreateOrUpdate.Text = "SUPPLIER";
                         ShowOnlyStackPanel(CreateOrUpdateSupplier);
+                        break;
+                    case (int)TypeWindow.Product:
+                        this.Height = 700;
+                        btnSave.Margin = new Thickness(0, 600, 0, 0);
+                        TitleOfCreateOrUpdate.Text = "PRODUCT";
+                        ShowOnlyStackPanel(CreateOrUpdateProduct);
                         break;
                 }
 
@@ -322,6 +332,17 @@ namespace ECormerceApp.Admin
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+
+        }
+
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
+        }
+
+        private void btnChooseImageInProductContent_Click(object sender, RoutedEventArgs e)
+        {
 
         }
     }

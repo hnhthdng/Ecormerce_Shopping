@@ -30,6 +30,7 @@ namespace ECormerceApp.Admin
         private PaginationHelper<Accounts> paginationHelperAccount;
         private PaginationHelper<Category> paginationHelperCategory;
         private PaginationHelper<Supplier> paginationHelperSupplier;
+        private PaginationHelper<Product> paginationHelperProduct;
 
         public AdminMainWindow(IUnitOfWork unitOfWork, UserManager<Accounts> userManager)
         {
@@ -40,6 +41,7 @@ namespace ECormerceApp.Admin
             paginationHelperAccount = new PaginationHelper<Accounts>(7);
             paginationHelperCategory = new PaginationHelper<Category>(7);
             paginationHelperSupplier = new PaginationHelper<Supplier>(7);
+            paginationHelperProduct = new PaginationHelper<Product>(7);
 
         }
 
@@ -53,6 +55,7 @@ namespace ECormerceApp.Admin
             AccountContent.Visibility = Visibility.Hidden;
             CategoryContent.Visibility = Visibility.Hidden;
             SupplierContent.Visibility = Visibility.Hidden;
+            ProductContent.Visibility = Visibility.Hidden;
 
             // Hiển thị StackPanel mong muốn
             visiblePanel.Visibility = Visibility.Visible;
@@ -590,7 +593,6 @@ namespace ECormerceApp.Admin
             }
 
         }
-        #endregion
 
         private void SupplierDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -608,5 +610,98 @@ namespace ECormerceApp.Admin
             }
 
         }
+
+
+        #endregion
+
+
+        private void Product_Click(object sender, RoutedEventArgs e)
+        {
+            ShowOnlyStackPanel(ProductContent);
+            var products = _unitOfWork.Product.GetAll(includeProperty: "Supplier,Category");
+            LoadFullData<Product>(ProductDataGrid, products);
+            TotalProduct.Text = "Total: " + products.Count().ToString();
+        }
+    
+
+
+        private void textBoxFilter_ProductContent_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                string filter = textBoxFilter_ProductContent.Text;
+                try
+                {
+                    var filteredProducts = _unitOfWork.Product.GetAll(includeProperty: "Supplier,Category")
+                    .Where(a => a.ProductName.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0);
+
+                    LoadFullData(ProductDataGrid, filteredProducts);
+                }
+                catch
+                {
+                    MessageBox.Show("Filter error");
+                }
+            }
+
+        }
+
+        private void AddProduct_Click(object sender, RoutedEventArgs e)
+        {
+            var createOrUpdateWindow = App.ServiceProvider.GetRequiredService<CreateOrUpdateWindow>();
+            createOrUpdateWindow.TypeOfWindow = 3;
+            createOrUpdateWindow.TypeOf = 0;
+            createOrUpdateWindow.ShowDialog();
+        }
+
+
+        private void Btn_UpdateProductInProductContent_Click(object sender, RoutedEventArgs e)
+        {
+            Button updateButton = sender as Button;
+            var selectedProduct = updateButton.DataContext as Product;
+            var createOrUpdateWindow = App.ServiceProvider.GetRequiredService<CreateOrUpdateWindow>();
+            createOrUpdateWindow.TypeOfWindow = 3;
+            createOrUpdateWindow.TypeOf = 1;
+            createOrUpdateWindow.updateProduct = selectedProduct;
+            createOrUpdateWindow.ShowDialog();
+
+        }
+
+        private void Btn_DeleteProductInSupplierContent_Click(object sender, RoutedEventArgs e)
+        {
+
+            Button deleteButton = sender as Button;
+
+            var selectedProduct = deleteButton.DataContext as Product;
+            if (selectedProduct != null)
+            {
+                var result = MessageBox.Show("Are you sure you want to delete this Product?", "Delete Product", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    _unitOfWork.Product.Remove(selectedProduct);
+                    _unitOfWork.Save();
+                    MessageBox.Show("Delete Product successfully");
+                }
+            }
+        }
+
+        private void PreviousPageProductContentButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+            IEnumerable<Product> product;
+            product = _unitOfWork.Product.GetAll(includeProperty: "Supplier,Category");
+            paginationHelperProduct.PreviousPage();
+            LoadDataForPage<Product>(ProductDataGrid, product, paginationHelperProduct);
+
+        }
+
+        private void NextPageProductContentButton_Click(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<Product> product;
+            product = _unitOfWork.Product.GetAll(includeProperty: "Supplier,Category");
+            paginationHelperProduct.NextPage(product);
+            LoadDataForPage<Product>(ProductDataGrid, product, paginationHelperProduct);
+
+        }
+
     }
 }
