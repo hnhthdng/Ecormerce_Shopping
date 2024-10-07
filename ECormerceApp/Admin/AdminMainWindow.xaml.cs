@@ -515,7 +515,6 @@ namespace ECormerceApp.Admin
         }
         #endregion
 
-
         #region Supplier
         private void Supplier_Click(object sender, RoutedEventArgs e)
         {
@@ -619,7 +618,6 @@ namespace ECormerceApp.Admin
 
         #endregion
 
-
         #region Product
 
         private void Product_Click(object sender, RoutedEventArgs e)
@@ -713,7 +711,7 @@ namespace ECormerceApp.Admin
 
         #endregion
 
-
+        #region Ads
 
         private void Advertise_Click(object sender, RoutedEventArgs e)
         {
@@ -834,5 +832,6 @@ namespace ECormerceApp.Admin
             var totalAvailable = ads.Where(x => x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now).ToList();
             LoadFullData<Ads>(AdvertiseDataGrid, totalAvailable);
         }
+        #endregion
     }
 }
