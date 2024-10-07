@@ -3,14 +3,20 @@ using DataObject.Model;
 using ECormerceApp.UserControls;
 using LiveCharts;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Client.NativeInterop;
 using Microsoft.VisualBasic.ApplicationServices;
+using MimeKit;
 using Newtonsoft.Json;
+using System.Drawing;
+using System.IO;
 using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using Utility;
 
 namespace ECormerceApp.Admin
@@ -25,6 +31,7 @@ namespace ECormerceApp.Admin
         public Accounts loggedInUser;
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<Accounts> _userManager;
+        private HubConnection _connection;
 
         //Pagination
         private PaginationHelper<Accounts> paginationHelperAccount;
@@ -62,6 +69,7 @@ namespace ECormerceApp.Admin
             ProductContent.Visibility = Visibility.Hidden;
             AdvertiseContent.Visibility = Visibility.Hidden;
             OrderContent.Visibility = Visibility.Hidden;
+            ChatContent.Visibility = Visibility.Hidden;
 
             // Hiển thị StackPanel mong muốn
             visiblePanel.Visibility = Visibility.Visible;
@@ -957,8 +965,107 @@ namespace ECormerceApp.Admin
 
         #endregion
 
-        private void Chat_Click(object sender, RoutedEventArgs e)
+        #region Chat
+        private string _adminId;
+        private string _customerId;
+        private async void Chat_Click(object sender, RoutedEventArgs e)
         {
+            ShowOnlyStackPanel(ChatContent);
+            // Lấy đường dẫn từ appsettings.json
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+            IConfiguration config = builder.Build();
+            string rootPath = config["SignalR:HubUrl"];
+
+            _connection = new HubConnectionBuilder()
+               .WithUrl(rootPath) // Update the URL with your Razor Page hub URL
+               .Build();
+
+            try
+            {
+                // Sử dụng async/await để chờ kết nối tới hub
+                await _connection.StartAsync();
+
+                // Sau khi kết nối thành công, gọi RegisterUserWWPF với adminId
+                Dispatcher.Invoke(() =>
+                {
+                    ConnectingMessage.Text = "Connected to server";
+                });
+                var adminId = loggedInUser.Id;
+                await _connection.InvokeAsync("RegisterUserWWPF", adminId);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý các lỗi xảy ra khi kết nối hoặc đăng ký user
+                Dispatcher.Invoke(() =>
+                {
+                    MessageBox.Show("Failed to connect or register user: " + ex.Message);
+                });
+            }
+
+            // Xử lý sự kiện khi admin được phân công cho khách hàng
+            _connection.On<string, string, string>("NewCustomerAssigned", (admin, customer, emailUser) =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    _adminId = admin;
+                    _customerId = customer;
+                    ConnectingMessage.Text = $"Connected with customer {emailUser}";
+                });
+            });
+
+            // Xử lý tin nhắn từ khách hàng
+            _connection.On<string, string>("ReceiveMessageFromCustomer", (customerId, message) =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    MessageChat messChat = new MessageChat
+                    {
+                        Message = message,
+                        Color = (System.Windows.Media.Brush)new BrushConverter().ConvertFromString("#68CFA3"),
+                    };
+
+                    MessagesPanel.Height = MessagesPanel.Height + 500;
+                    // Add the new instance to the StackPanel (MessagesPanel)
+                    MessagesPanel.Children.Add(messChat);
+                });
+            });
+
+        }
+
+        // Gửi tin nhắn từ admin tới khách hàng
+        private async void SendMessage_Click(object sender, RoutedEventArgs e)
+        {
+            var message = MessageInput.Text;
+
+            if (!string.IsNullOrEmpty(message) && _customerId != null)
+            {
+                MyMessageChat messChat = new MyMessageChat
+                {
+                    Message = message
+                };
+                // Add the new instance to the StackPanel (MessagesPanel)
+                MessagesPanel.Children.Add(messChat);
+                MessagesPanel.Height = MessagesPanel.Height + 500;
+
+                // Gửi tin nhắn tới khách hàng
+                await _connection.InvokeAsync("SendMessageToCustomer", _customerId, message);
+
+                MessageInput.Clear();
+            }
+        }
+
+        #endregion
+
+        private void Offline_Click(object sender, RoutedEventArgs e)
+        {
+            ShowOnlyStackPanel(Welcome_Dashboard);
+            if (_connection != null)
+            {
+                _connection.StopAsync();
+            }
 
         }
     }

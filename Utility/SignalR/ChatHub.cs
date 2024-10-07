@@ -1,9 +1,16 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using DataObject.Model;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using System.Collections.Concurrent;
 using System.Security.Claims;
 
 public class ChatHub : Hub
 {
+    private readonly UserManager<Accounts> _userManager;
+    public ChatHub(UserManager<Accounts> userManager)
+    {
+        _userManager = userManager;
+    }
     // List of available admins (staff)
     private static ConcurrentBag<string> availableAdmins = new ConcurrentBag<string>();
 
@@ -41,13 +48,29 @@ public class ChatHub : Hub
         // Accessing user claims from the context
         var user = Context.User;
         var role = user.FindFirst(ClaimTypes.Role)?.Value;
-
+        
         if (role == "Staff")
         {
             availableAdmins.Add(connectionId);
         }
         await base.OnConnectedAsync();
     }
+
+    // Method to get admin user after connection
+    public Task RegisterUserWWPF(string userId)
+    {
+        string connectionId = Context.ConnectionId;
+        var user = _userManager.FindByIdAsync(userId).Result;
+        var role = _userManager.GetRolesAsync(user).Result;
+        if (role.Contains("Staff"))
+        {
+            availableAdmins.Add(connectionId);
+        }
+
+        // Return the userId wrapped in Task.FromResult
+        return Task.CompletedTask;
+    }
+
 
     // Handle when a user (customer or admin) disconnects
     public override async Task OnDisconnectedAsync(Exception? exception)

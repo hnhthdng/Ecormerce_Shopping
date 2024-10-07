@@ -6,6 +6,7 @@
             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
             xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+            xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
             xmlns:uc="clr-namespace:ECormerceApp.UserControls"
             WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True"
             Background="Transparent" mc:Ignorable="d" Height="740" Width="1280" Loaded="Window_Loaded">
@@ -97,7 +98,7 @@
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="Chat" Style="{StaticResource menuButton} " Click="Chat_Click">
+                <Button x:Name="Chat" Style="{StaticResource menuButton}" Click="Chat_Click">
                     <StackPanel Orientation="Horizontal">
                         <fa:IconImage Icon="Rocketchat" Style="{StaticResource menuButtonIcon}"/>
                         <TextBlock Text="Admin Chat" Style="{StaticResource menuButtonText}"/>
@@ -696,7 +697,7 @@
                     <!--Page Title-->
                     <TextBlock Text="Order" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="White" HorizontalAlignment="Left"/>
 
-                  
+
                     <!--Seprator-->
                     <Separator Height="1" Grid.Row="3" Background="#DAE2EA" Margin="0 -1 0 10"/>
 
@@ -714,7 +715,7 @@
 
                     <!--Filter Textbox-->
                     <WrapPanel VerticalAlignment="Center" >
-                        
+
                         <Grid Width="300" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="4">
                             <!-- Filter Label -->
                             <TextBlock Text="Start Date: " FontWeight="Bold" FontSize="14" Foreground="WhiteSmoke" VerticalAlignment="Center" Height="22" Margin="0,0,0,0"/>
@@ -793,10 +794,34 @@
                 </StackPanel>
 
                 <StackPanel x:Name="ChatContent" Visibility="Visible"  Margin="10,47,10,100" Grid.RowSpan="2">
-                    <!--<TextBox Name="UserTextBox" PlaceholderText="Your Name" Margin="5" />
-                    <TextBox Name="MessageTextBox" PlaceholderText="Your Message" Margin="5" />
-                    <Button Content="Send" Click="SendMessage_Click" Margin="5"/>
-                    <ListBox Name="MessagesList" Margin="5"/>-->
+                    <WrapPanel>
+                        <TextBlock DockPanel.Dock="Left" Name="ConnectingMessage" Text="Waiting for connection to user..." Margin="10" Foreground="Gray"/>
+
+                        <Button Margin="500,0,0,0" DockPanel.Dock="Right"  Content="Offline" Click="Offline_Click" Width="100" Height="30" />
+                    </WrapPanel>
+
+                    <ScrollViewer VerticalScrollBarVisibility="Hidden"  HorizontalScrollBarVisibility="Disabled" Grid.Row="1" Margin="20 10 20 20" Height="510">
+                        <StackPanel x:Name="MessagesPanel" Grid.Row="1" Margin="20 10 20 20" Height="510">
+
+                        </StackPanel>
+                    </ScrollViewer>
+                    
+                   
+                    <!--Message Bottom Section-->
+                    <Grid Grid.Row="2"
+                        Margin="10 0 10 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--Message Textbox-->
+                        <TextBox Name="MessageInput" Height="30" Margin="0,10,155,10"/>
+
+                        <Button Content="Send" Click="SendMessage_Click" Width="100" Height="30" Margin="880,10,10,10"/>
+
+                    </Grid>
+
                 </StackPanel>
 
             </Grid>
