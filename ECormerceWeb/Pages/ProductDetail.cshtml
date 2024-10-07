@@ -1,0 +1,41 @@
+﻿@page
+@model ECormerceWeb.Pages.ProductDetailModel
+@{
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Product List By Order: @Model.Order.OrderID</h2>
+        </div>
+    </div>
+    <br /> <br />
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>Product Image URL</th>
+                <th>Product Name</th>
+                <th>Unit Price</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var orderDetail in Model.OrderDetail)
+            {
+                <tr>
+                    <td width="16%">
+                        <img class="card-img-top img-fluid d-block mx-auto mb-3"
+                             src="@orderDetail.Product.ProductImageURL"
+                             alt="menuitem image"
+                             style="object-fit: cover; height: 100%; width: 100%;">
+                    </td>
+                    <td width="16%">@orderDetail.Product.ProductName</td>
+                    <td width="16%">@orderDetail.UnitPrice</td>
+                    <td width="16%">@orderDetail.Quantity</td>
+                    <td width="16%">@((@orderDetail.UnitPrice * @orderDetail.Quantity).ToString("C")) </td>
+                    
+                </tr>
+            }
+    </table>
+</div>
