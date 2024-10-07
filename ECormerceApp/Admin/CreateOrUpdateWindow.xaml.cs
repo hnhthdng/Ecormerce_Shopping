@@ -2,9 +2,11 @@
 using DataAccess.Repository.IRepository;
 using DataObject.Model;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +32,7 @@ namespace ECormerceApp.Admin
             Category,
             Supplier,
             Product,
+            Ads,
         }
         private enum Type
         {
@@ -43,6 +46,7 @@ namespace ECormerceApp.Admin
         public Category updateCategory;
         public Supplier updateSupplier;
         public Product updateProduct;
+        public Ads updateAdvertise;
         private readonly UserManager<Accounts> _userManager;
         private readonly IUnitOfWork _unitOfWork;
 
@@ -53,6 +57,7 @@ namespace ECormerceApp.Admin
             _unitOfWork = unitOfWork;
         }
 
+        #region Method
         private void ShowOnlyStackPanel(StackPanel stackPanel)
         {
             //Account
@@ -63,9 +68,74 @@ namespace ECormerceApp.Admin
             CreateOrUpdateSupplier.Visibility = Visibility.Collapsed;
             //Product
             CreateOrUpdateProduct.Visibility = Visibility.Collapsed;
+            //Ads
+            CreateOrUpdateAds.Visibility = Visibility.Collapsed;
 
             stackPanel.Visibility = Visibility.Visible;
         }
+
+        private string UploadOrUpdateImage(string oldImageURL, string newImageURL)
+        {
+            // Lấy đường dẫn từ appsettings.json
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+            IConfiguration config = builder.Build();
+            string rootPath = config["RootPath:Path"];
+
+            // Thư mục lưu trữ hình ảnh
+            string imageFolderPath = System.IO.Path.Combine(rootPath, @"images\products");
+
+            // Nếu có đường dẫn hình ảnh cũ, tiến hành xóa
+            if (!string.IsNullOrEmpty(oldImageURL))
+            {
+                string oldImagePath = System.IO.Path.Combine(rootPath, oldImageURL.TrimStart('\\'));
+                if (File.Exists(oldImagePath))
+                {
+                    try
+                    {
+                        File.Delete(oldImagePath);
+                        MessageBox.Show("Old image deleted successfully.");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error deleting old image: " + ex.Message);
+                    }
+                }
+            }
+
+            // Upload hình ảnh mới
+            string extension = System.IO.Path.GetExtension(newImageURL);
+            string fileName = Guid.NewGuid().ToString();
+            string newFilePath = System.IO.Path.Combine(imageFolderPath, fileName + extension);
+
+            try
+            {
+                // Copy file mới vào thư mục lưu trữ
+                using (var fileStream = new FileStream(newFilePath, FileMode.Create))
+                {
+                    using (var sourceStream = new FileStream(newImageURL, FileMode.Open))
+                    {
+                        sourceStream.CopyTo(fileStream);
+                    }
+                }
+
+                // Cập nhật đường dẫn ProductImageURL mới
+                string productImageURL = @"\images\products\" + fileName + extension;
+
+                MessageBox.Show("Image uploaded successfully. URL: " + productImageURL);
+                return productImageURL;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message);
+            }
+
+            return null;
+        }
+
+        #endregion
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if(TypeOf == (int)Type.Create)
@@ -89,7 +159,13 @@ namespace ECormerceApp.Admin
                         this.Height = 700;
                         btnSave.Margin = new Thickness(0, 600, 0, 0);
                         TitleOfCreateOrUpdate.Text = "PRODUCT";
+                        cbbCategoryInProductContent.ItemsSource = _unitOfWork.Category.GetAll().Select(x => x.CategoryName).ToList();
+                        cbbSupplierInProductContent.ItemsSource = _unitOfWork.Supplier.GetAll().Select(x => x.CompanyName).ToList();
                         ShowOnlyStackPanel(CreateOrUpdateProduct);
+                        break;
+                    case (int)TypeWindow.Ads:
+                        TitleOfCreateOrUpdate.Text = "ADS";
+                        ShowOnlyStackPanel(CreateOrUpdateAds);
                         break;
                 }
 
@@ -131,7 +207,31 @@ namespace ECormerceApp.Admin
                         txtAddressInSupplierContent.Text = updateSupplier.Address;
                         txtPhoneInSupplierContent.Text = updateSupplier.Phone;
                         break;
+                    case (int)TypeWindow.Product:
+                        this.Height = 700;
+                        btnSave.Margin = new Thickness(0, 600, 0, 0);
+                        TitleOfCreateOrUpdate.Text = "PRODUCT";
+                        cbbCategoryInProductContent.ItemsSource = _unitOfWork.Category.GetAll().Select(x => x.CategoryName).ToList();
+                        cbbSupplierInProductContent.ItemsSource = _unitOfWork.Supplier.GetAll().Select(x => x.CompanyName).ToList();
+                        ShowOnlyStackPanel(CreateOrUpdateProduct);
+                        txtProductNameInProductContent.Text = updateProduct.ProductName;
+                        txtQuantityPerUnitInProductContent.Text = updateProduct.QuantityPerUnit;
+                        txtUnitPriceInProductContent.Text = updateProduct.UnitPrice.ToString();
+                        txtUnitsInStockInProductContent.Text = updateProduct.UnitsInStock.ToString();
+                        txImageURLInProductContent.Text = updateProduct.ProductImageURL;
+                        cbbCategoryInProductContent.SelectedValue = updateProduct.Category.CategoryName;
+                        cbbSupplierInProductContent.SelectedValue = updateProduct.Supplier.CompanyName;
+                        break;
+                    case (int)TypeWindow.Ads:
+                        TitleOfCreateOrUpdate.Text = "ADS";
+                        ShowOnlyStackPanel(CreateOrUpdateAds);
+                        txtTitleInAdsContent.Text = updateAdvertise.Title;
+                        txtContentInAdsContent.Text = updateAdvertise.Content;
+                        dpStartDateInAdsContent.SelectedDate = updateAdvertise.StartDate;
+                        dpEndDateInAdsContent.SelectedDate = updateAdvertise.EndDate;
+                        break;
                 }
+
             }
 
             
@@ -241,6 +341,74 @@ namespace ECormerceApp.Admin
                         _unitOfWork.Save();
                         MessageBox.Show("Create supplier successfully");
                         break;
+                    case (int)TypeWindow.Product:
+                        string productName = txtProductNameInProductContent.Text;
+                        string quantityPerUnit = txtQuantityPerUnitInProductContent.Text;
+                        string unitPrice = txtUnitPriceInProductContent.Text;
+                        string unitsInStock = txtUnitsInStockInProductContent.Text;
+                        string imageURL = txImageURLInProductContent.Text;
+                        if (cbbCategoryInProductContent.SelectedItem == null || cbbSupplierInProductContent.SelectedItem == null)
+                        {
+                            MessageBox.Show("Please choose category and supplier");
+                            return;
+                        }
+                        string categoryAdd = cbbCategoryInProductContent.SelectedItem.ToString();
+                        string supplierAdd = cbbSupplierInProductContent.SelectedItem.ToString();
+                        //Check null
+                        if (string.IsNullOrEmpty(productName) || string.IsNullOrEmpty(quantityPerUnit) || string.IsNullOrEmpty(unitPrice) 
+                            || string.IsNullOrEmpty(unitsInStock) || string.IsNullOrEmpty(imageURL) || string.IsNullOrEmpty(categoryAdd) || string.IsNullOrEmpty(supplierAdd))
+
+                        {
+                            MessageBox.Show("Please fill all fields");
+                            return;
+                        }
+
+                        var product = new Product
+                        {
+                            ProductName = productName,
+                            QuantityPerUnit = quantityPerUnit,
+                            UnitPrice = decimal.Parse(unitPrice),
+                            UnitsInStock = int.Parse(unitsInStock),
+                            ProductImageURL = UploadOrUpdateImage(null,imageURL),
+                            CategoryID = _unitOfWork.Category.GetAll().FirstOrDefault(x => x.CategoryName == categoryAdd).CategoryID,
+                            SupplierID = _unitOfWork.Supplier.GetAll().FirstOrDefault(x => x.CompanyName == supplierAdd).SupplierID
+                        };
+                        _unitOfWork.Product.Add(product);
+                        _unitOfWork.Save();
+                        MessageBox.Show("Create product successfully");
+                        break;
+                    case (int)TypeWindow.Ads:
+                        string title = txtTitleInAdsContent.Text;
+                        string content = txtContentInAdsContent.Text;
+                        DateTime startDate = dpStartDateInAdsContent.SelectedDate ?? DateTime.MinValue;
+                        DateTime endDate = dpEndDateInAdsContent.SelectedDate ?? DateTime.MaxValue; // Use MaxValue for endDate for proper filtering
+                        //Check null
+                        if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(content))
+                        {
+                            MessageBox.Show("Please fill all fields");
+                            return;
+                        }
+                        if (startDate == DateTime.MinValue || endDate == DateTime.MaxValue)
+                        {
+                            MessageBox.Show("Please choose start date and end date");
+                            return;
+                        }
+                        if (startDate > endDate)
+                        {
+                            MessageBox.Show("Start date must be less than end date");
+                            return;
+                        }
+                        var ads = new Ads
+                        {
+                            Title = title,
+                            Content = content,
+                            StartDate = startDate,
+                            EndDate = endDate
+                        };
+                        _unitOfWork.Ads.Add(ads);
+                        _unitOfWork.Save();
+                        MessageBox.Show("Create ads successfully");
+                        break;
 
                 }
 
@@ -325,6 +493,73 @@ namespace ECormerceApp.Admin
                         _unitOfWork.Save();
                         MessageBox.Show("Update supplier successfully");
                         break;
+                    case (int)TypeWindow.Product:
+                        string oldImageURL = updateProduct.ProductImageURL;
+                        string productName = txtProductNameInProductContent.Text;
+                        string quantityPerUnit = txtQuantityPerUnitInProductContent.Text;
+                        string unitPrice = txtUnitPriceInProductContent.Text;
+                        string unitsInStock = txtUnitsInStockInProductContent.Text;
+                        string imageURL = txImageURLInProductContent.Text;
+                        if (cbbCategoryInProductContent.SelectedItem == null || cbbSupplierInProductContent.SelectedItem == null)
+                        {
+                            MessageBox.Show("Please choose category and supplier");
+                            return;
+                        }
+                        string categoryUpdate = cbbCategoryInProductContent.SelectedItem.ToString();
+                        string supplierUpdate = cbbSupplierInProductContent.SelectedItem.ToString();
+
+                        //Check null
+                        if (string.IsNullOrEmpty(productName) || string.IsNullOrEmpty(quantityPerUnit) || string.IsNullOrEmpty(unitPrice) 
+                            || string.IsNullOrEmpty(unitsInStock) || string.IsNullOrEmpty(imageURL) || string.IsNullOrEmpty(categoryUpdate) || string.IsNullOrEmpty(supplierUpdate))
+                        {
+                            MessageBox.Show("Please fill all fields");
+                            return;
+                        }
+                        if (oldImageURL == imageURL)
+                        {
+                            MessageBox.Show("Please choose new image");
+                            return;
+                        }
+                        updateProduct.ProductName = productName;
+                        updateProduct.QuantityPerUnit = quantityPerUnit;
+                        updateProduct.UnitPrice = decimal.Parse(unitPrice);
+                        updateProduct.UnitsInStock = int.Parse(unitsInStock);
+                        updateProduct.ProductImageURL = UploadOrUpdateImage(oldImageURL, imageURL);
+                        updateProduct.CategoryID = _unitOfWork.Category.GetAll().FirstOrDefault(x => x.CategoryName == categoryUpdate).CategoryID;
+                        updateProduct.SupplierID = _unitOfWork.Supplier.GetAll().FirstOrDefault(x => x.CompanyName == supplierUpdate).SupplierID;
+                        _unitOfWork.Product.Update(updateProduct);
+                        _unitOfWork.Save();
+                        MessageBox.Show("Update product successfully");
+                        break;
+                    case (int)TypeWindow.Ads:
+                        string title = txtTitleInAdsContent.Text;
+                        string content = txtContentInAdsContent.Text;
+                        DateTime startDate = dpStartDateInAdsContent.SelectedDate ?? DateTime.MinValue;
+                        DateTime endDate = dpEndDateInAdsContent.SelectedDate ?? DateTime.MaxValue; // Use MaxValue for endDate for proper filtering
+                        //Check null
+                        if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(content))
+                        {
+                            MessageBox.Show("Please fill all fields");
+                            return;
+                        }
+                        if (startDate == DateTime.MinValue || endDate == DateTime.MaxValue)
+                        {
+                            MessageBox.Show("Please choose start date and end date");
+                            return;
+                        }
+                        if (startDate > endDate)
+                        {
+                            MessageBox.Show("Start date must be less than end date");
+                            return;
+                        }
+                        updateAdvertise.Title = title;
+                        updateAdvertise.Content = content;
+                        updateAdvertise.StartDate = startDate;
+                        updateAdvertise.EndDate = endDate;
+                        _unitOfWork.Ads.Update(updateAdvertise);
+                        _unitOfWork.Save();
+                        MessageBox.Show("Update ads successfully");
+                        break;
                 }
             }
         }
@@ -343,7 +578,16 @@ namespace ECormerceApp.Admin
 
         private void btnChooseImageInProductContent_Click(object sender, RoutedEventArgs e)
         {
-
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.DefaultExt = ".jpg";
+            dlg.Filter = "Image Files (*.jpg;*.jpeg;*.png)|*.jpg;*.jpeg;*.png";
+            Nullable<bool> result = dlg.ShowDialog();
+            if (result == true)
+            {
+                string filename = dlg.FileName;
+                txImageURLInProductContent.Text = filename;
+                
+            }
         }
     }
 }

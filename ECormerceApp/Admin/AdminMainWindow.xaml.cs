@@ -31,6 +31,8 @@ namespace ECormerceApp.Admin
         private PaginationHelper<Category> paginationHelperCategory;
         private PaginationHelper<Supplier> paginationHelperSupplier;
         private PaginationHelper<Product> paginationHelperProduct;
+        private PaginationHelper<Order> paginationHelperOrder;
+        private PaginationHelper<Ads> paginationHelperAds;
 
         public AdminMainWindow(IUnitOfWork unitOfWork, UserManager<Accounts> userManager)
         {
@@ -42,6 +44,8 @@ namespace ECormerceApp.Admin
             paginationHelperCategory = new PaginationHelper<Category>(7);
             paginationHelperSupplier = new PaginationHelper<Supplier>(7);
             paginationHelperProduct = new PaginationHelper<Product>(7);
+            paginationHelperOrder = new PaginationHelper<Order>(7);
+            paginationHelperAds = new PaginationHelper<Ads>(7);
 
         }
 
@@ -56,6 +60,7 @@ namespace ECormerceApp.Admin
             CategoryContent.Visibility = Visibility.Hidden;
             SupplierContent.Visibility = Visibility.Hidden;
             ProductContent.Visibility = Visibility.Hidden;
+            AdvertiseContent.Visibility = Visibility.Hidden;
 
             // Hiển thị StackPanel mong muốn
             visiblePanel.Visibility = Visibility.Visible;
@@ -615,6 +620,8 @@ namespace ECormerceApp.Admin
         #endregion
 
 
+        #region Product
+
         private void Product_Click(object sender, RoutedEventArgs e)
         {
             ShowOnlyStackPanel(ProductContent);
@@ -661,7 +668,8 @@ namespace ECormerceApp.Admin
             var createOrUpdateWindow = App.ServiceProvider.GetRequiredService<CreateOrUpdateWindow>();
             createOrUpdateWindow.TypeOfWindow = 3;
             createOrUpdateWindow.TypeOf = 1;
-            createOrUpdateWindow.updateProduct = selectedProduct;
+            var product = _unitOfWork.Product.GetFirstOrDefault(x => x.ProductID == selectedProduct.ProductID, includeProperties: "Supplier,Category");
+            createOrUpdateWindow.updateProduct = product;
             createOrUpdateWindow.ShowDialog();
 
         }
@@ -703,5 +711,128 @@ namespace ECormerceApp.Admin
 
         }
 
+        #endregion
+
+
+
+        private void Advertise_Click(object sender, RoutedEventArgs e)
+        {
+            ShowOnlyStackPanel(AdvertiseContent);
+            var ads = _unitOfWork.Ads.GetAll();
+            LoadFullData<Ads>(AdvertiseDataGrid, ads);
+            TotalAdvertise.Text = "Total: " + ads.Count().ToString();
+            int totalAvailable = ads.Where(x => x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now).Count();
+            if (totalAvailable == 0)
+            {
+                TotalAdvertiseAvailable.Text = "Total Available: 0";
+            }
+            else
+            {
+                TotalAdvertiseAvailable.Text = "Advertise Running: " + totalAvailable.ToString();
+            }
+        }
+
+        private void PreviousPageAdvertiseContentButton_Click(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<Ads> ads;
+            ads = _unitOfWork.Ads.GetAll();
+            paginationHelperAds.PreviousPage();
+            LoadDataForPage<Ads>(AdvertiseDataGrid, ads, paginationHelperAds);
+
+        }
+
+        private void NextPageAdvertiseContentButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            IEnumerable<Ads> ads;
+            ads = _unitOfWork.Ads.GetAll();
+            paginationHelperAds.NextPage(ads);
+            LoadDataForPage<Ads>(AdvertiseDataGrid, ads, paginationHelperAds);
+        }
+
+        private void AddAdvertise_Click(object sender, RoutedEventArgs e)
+        {
+            var createOrUpdateWindow = App.ServiceProvider.GetRequiredService<CreateOrUpdateWindow>();
+            createOrUpdateWindow.TypeOfWindow = 4;
+            createOrUpdateWindow.TypeOf = 0;
+            createOrUpdateWindow.ShowDialog();
+
+        }
+
+        private void Btn_UpdateAdvertiseContent_Click(object sender, RoutedEventArgs e)
+        {
+            Button updateButton = sender as Button;
+            var selectedAdvertise = updateButton.DataContext as Ads;
+            var createOrUpdateWindow = App.ServiceProvider.GetRequiredService<CreateOrUpdateWindow>();
+            createOrUpdateWindow.TypeOfWindow = 4;
+            createOrUpdateWindow.TypeOf = 1;
+            createOrUpdateWindow.updateAdvertise = selectedAdvertise;
+            createOrUpdateWindow.ShowDialog();
+
+        }
+
+        private void Btn_DeleteAdvertiseContent_Click(object sender, RoutedEventArgs e)
+        {
+            Button deleteButton = sender as Button;
+            var selectedAdvertise = deleteButton.DataContext as Ads;
+            if (selectedAdvertise != null)
+            {
+                var result = MessageBox.Show("Are you sure you want to delete this Advertise?", "Delete Advertise", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    _unitOfWork.Ads.Remove(selectedAdvertise);
+                    _unitOfWork.Save();
+                    MessageBox.Show("Delete Advertise successfully");
+                }
+            }
+
+        }
+
+        private void Filter_Advertise_Click(object sender, RoutedEventArgs e)
+        {
+            string title = textBoxTitle_AdvertiseContent.Text;
+            DateTime startDate = datePickerStartDate_AdvertiseContent.SelectedDate ?? DateTime.MinValue;
+            DateTime endDate = datePickerEndDate_AdvertiseContent.SelectedDate ?? DateTime.MaxValue; // Use MaxValue for endDate for proper filtering
+
+            // Validate if start date is before end date
+            if (startDate > endDate)
+            {
+                MessageBox.Show("Start date must be before end date");
+            }
+            else
+            {
+                var ads = _unitOfWork.Ads.GetAll();
+
+                // Filter by title if provided
+                if (!string.IsNullOrWhiteSpace(title))
+                {
+                    ads = ads.Where(a => a.Title.IndexOf(title, StringComparison.OrdinalIgnoreCase) >= 0);
+                }
+
+                // Filter by start date (only if a valid date is selected)
+                if (startDate != DateTime.MinValue)
+                {
+                    ads = ads.Where(x => x.StartDate >= startDate);
+                }
+
+                // Filter by end date (only if a valid date is selected)
+                if (endDate != DateTime.MaxValue)
+                {
+                    ads = ads.Where(x => x.EndDate <= endDate);
+                }
+
+                // Load the filtered data into the grid
+                LoadFullData<Ads>(AdvertiseDataGrid, ads);
+            }
+
+
+        }
+
+        private void Total_Available_Ads_Click(object sender, RoutedEventArgs e)
+        {
+            var ads = _unitOfWork.Ads.GetAll();
+            var totalAvailable = ads.Where(x => x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now).ToList();
+            LoadFullData<Ads>(AdvertiseDataGrid, totalAvailable);
+        }
     }
 }

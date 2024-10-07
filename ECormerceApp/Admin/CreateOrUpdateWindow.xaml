@@ -462,7 +462,7 @@
                 <StackPanel x:Name="CreateOrUpdateProduct" Width="320"
                    Grid.Row="1"
                    Orientation="Vertical"
-                   Margin="0,35,0,0" Visibility="Visible">
+                   Margin="0,35,0,0" Visibility="Collapsed">
 
 
                     <TextBlock Text=""
@@ -647,7 +647,7 @@ HorizontalAlignment="Center"/>
                               FontSize="13"
                               FontWeight="Medium"
                                 FontFamily="Montserrat"
-                              Foreground="White"
+                              Foreground="Black"
                               BorderBrush="DarkGray"
                               BorderThickness="0,0,0,2"
                               Height="28"
@@ -666,7 +666,7 @@ HorizontalAlignment="Center"/>
                       FontSize="13"
                       FontWeight="Medium"
                         FontFamily="Montserrat"
-                      Foreground="White"
+                      Foreground="Black"
                       BorderBrush="DarkGray"
                       BorderThickness="0,0,0,2"
                       Height="28"
@@ -678,6 +678,117 @@ HorizontalAlignment="Center"/>
                     
 
                 </StackPanel>
+                
+                <!-- Ads -->
+                <StackPanel x:Name="CreateOrUpdateAds" Width="320"
+                            Grid.Row="1"
+                            Orientation="Vertical"
+                            Margin="0,35,0,0" Visibility="Visible">
+
+
+                    <TextBlock Text=""
+                               Foreground="LightGray"
+                               FontSize="12"
+                               FontWeight="Medium"
+                               FontFamily="Montserrat"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"
+                               Margin="0,5,0,0"/>
+
+                    <TextBlock Text="Title"
+                               Foreground="DarkGray"
+                               FontSize="12"
+                               FontWeight="Medium"
+                               FontFamily="Montserrat"                             
+                               Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtTitleInAdsContent"
+                             FontSize="13"
+                             FontWeight="Medium"
+                             FontFamily="Montserrat"                            
+                             Foreground="White"
+                             CaretBrush="LightGray"
+                             BorderBrush="DarkGray"
+                             BorderThickness="0,0,0,2"
+                             Height="28"
+                             VerticalContentAlignment="Center"
+                             Margin="0,5,0,0"
+                             Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                                        Stretch="None"
+                                        AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+                    <TextBlock Text="Content"
+                       Foreground="DarkGray"
+                       FontSize="12"
+                       FontWeight="Medium"
+                       FontFamily="Montserrat"                             
+                       Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtContentInAdsContent"
+                     FontSize="13"
+                     FontWeight="Medium"
+                     FontFamily="Montserrat"                            
+                     Foreground="White"
+                     CaretBrush="LightGray"
+                     BorderBrush="DarkGray"
+                     BorderThickness="0,0,0,2"
+                     Height="28"
+                     VerticalContentAlignment="Center"
+                     Margin="0,5,0,0"
+                     Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                    Stretch="None"
+                    AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                    <TextBlock Text="Start Date"
+                   Foreground="DarkGray"
+                   FontSize="12"
+                   FontWeight="Medium"
+                   FontFamily="Montserrat"                             
+                   Margin="0,35,0,0"/>
+
+                    <DatePicker x:Name="dpStartDateInAdsContent"
+                                FontSize="13"
+                                FontWeight="Medium"
+                                FontFamily="Montserrat"                            
+                                Foreground="Black"
+                                BorderBrush="DarkGray"
+                                BorderThickness="0,0,0,0"
+                                Height="28"
+                                VerticalContentAlignment="Center"
+                                Margin="0,5,0,0"
+                                Padding="20,0,0,0">
+                    </DatePicker>
+
+                    <TextBlock Text="End Date"
+                    Foreground="DarkGray"
+                    FontSize="12"
+                    FontWeight="Medium"
+                    FontFamily="Montserrat"                             
+                    Margin="0,35,0,0"/>
+
+                    <DatePicker x:Name="dpEndDateInAdsContent"
+                     FontSize="13"
+                     FontWeight="Medium"
+                     FontFamily="Montserrat"                            
+                     Foreground="Black"
+                     BorderBrush="DarkGray"
+                     BorderThickness="0,0,0,0"
+                     Height="28"
+                     VerticalContentAlignment="Center"
+                     Margin="0,5,0,0"
+                     Padding="20,0,0,0">
+                    </DatePicker>
+                </StackPanel>
+
 
 
                 <Button x:Name="btnSave"                          
