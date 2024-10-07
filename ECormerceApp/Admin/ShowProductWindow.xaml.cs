@@ -30,6 +30,7 @@ namespace ECormerceApp.Admin
         public int OfContent { get; set; }
         public int CategoryID { get; set; }
         public int SupplierID { get; set; }
+        public int OrderID { get; set; }
 
         private readonly IUnitOfWork _unitOfWork;
         public ShowProductWindow(IUnitOfWork unitOfWork)
@@ -75,6 +76,11 @@ namespace ECormerceApp.Admin
                     LoadFullData<Product>(ProductOfSupplierDataGrid, productsOfSupplier);
                     break;
                 case (int)OfContentType.Order:
+                    ShowOnlyStackPanel(Border_ProductOfOrder);
+                    var order = _unitOfWork.Order.GetFirstOrDefault(u => u.OrderID == OrderID);
+                    var productsOfOrder = _unitOfWork.OrderDetail.GetAll(u => u.OrderID == OrderID, includeProperty: "Product");
+                    TotalOfThisProduct.Text = "Total Product of Order " + order.OrderID + ": " + productsOfOrder.Count();
+                    LoadFullData<OrderDetail>(ProductOfOrderDataGrid, productsOfOrder);
                     break;
             }
         }

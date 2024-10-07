@@ -61,6 +61,7 @@ namespace ECormerceApp.Admin
             SupplierContent.Visibility = Visibility.Hidden;
             ProductContent.Visibility = Visibility.Hidden;
             AdvertiseContent.Visibility = Visibility.Hidden;
+            OrderContent.Visibility = Visibility.Hidden;
 
             // Hiển thị StackPanel mong muốn
             visiblePanel.Visibility = Visibility.Visible;
@@ -242,6 +243,10 @@ namespace ECormerceApp.Admin
             foreach (var order in orderList)
             {
                 var firtOrderDetail = order.OrderDetails.FirstOrDefault();
+                if (firtOrderDetail == null)
+                {
+                    continue;
+                }
                 var product = _unitOfWork.Product.GetFirstOrDefault(x => x.ProductID == firtOrderDetail.ProductID);
                 var item = new Item
                 {
@@ -833,5 +838,128 @@ namespace ECormerceApp.Admin
             LoadFullData<Ads>(AdvertiseDataGrid, totalAvailable);
         }
         #endregion
+
+        #region Order
+
+        private void Orders_Click(object sender, RoutedEventArgs e)
+        {
+            ShowOnlyStackPanel(OrderContent);
+            var orders = _unitOfWork.Order.GetAll(includeProperty: "Customer,Accounts");
+            LoadFullData<Order>(OrderDataGrid, orders);
+            TotalOrder.Text = "Total: " + orders.Count().ToString();
+            TotalOrderShipped.Text = "Total Shipped: " + orders.Where(x => x.ShippedDate != null).Count().ToString();
+
+        }
+
+        private void Total_Shipped_Order_Click(object sender, RoutedEventArgs e)
+        {
+            var orders = _unitOfWork.Order.GetAll(includeProperty: "Customer,Accounts");
+            var totalAvailable = orders.Where(x => x.ShippedDate != null).ToList();
+            LoadFullData<Order>(OrderDataGrid, totalAvailable);
+
+        }
+
+        private void Filter_Order_Click(object sender, RoutedEventArgs e)
+        {
+            int orderId = textBoxId_OrderContent.Text == "" ? 0 : int.Parse(textBoxId_OrderContent.Text);
+            DateTime startDate = datePickerStartDate_OrderContent.SelectedDate ?? DateTime.MinValue;
+            DateTime endDate = datePickerEndDate_OrderContent.SelectedDate ?? DateTime.MaxValue; // Use MaxValue for endDate for proper filtering
+            string account = textBoxAccount_OrderContent.Text;
+
+            var orders = _unitOfWork.Order.GetAll(includeProperty: "Customer,Accounts");
+            if (orderId != 0)
+            {
+                orders = orders.Where(x => x.OrderID == orderId);
+            }
+            if (startDate != DateTime.MinValue)
+            {
+                orders = orders.Where(x => x.OrderDate >= startDate);
+            }
+
+            if (endDate != DateTime.MaxValue)
+            {
+                orders = orders.Where(x => x.OrderDate <= endDate);
+            }
+            if (!string.IsNullOrWhiteSpace(account))
+            {
+                orders = orders.Where(x => x.Accounts.UserName.IndexOf(account, StringComparison.OrdinalIgnoreCase) >= 0);
+            }
+
+            LoadFullData<Order>(OrderDataGrid, orders);
+
+        }
+
+
+        private void Btn_UpdateOrderContent_Click(object sender, RoutedEventArgs e)
+        {
+            Button updateButton = sender as Button;
+            var selectedOrder = updateButton.DataContext as Order;
+            var createOrUpdateWindow = App.ServiceProvider.GetRequiredService<CreateOrUpdateWindow>();
+            createOrUpdateWindow.TypeOfWindow = 5;
+            createOrUpdateWindow.TypeOf = 1;
+            var order = _unitOfWork.Order.GetFirstOrDefault(x => x.OrderID == selectedOrder.OrderID, includeProperties: "Customer,Accounts");
+            createOrUpdateWindow.updateOrder = order;
+            createOrUpdateWindow.ShowDialog();
+
+        }
+
+        private void Btn_DeleteOrderContent_Click(object sender, RoutedEventArgs e)
+        {
+            Button deleteButton = sender as Button;
+            var selectedOrder = deleteButton.DataContext as Order;
+            if (selectedOrder != null)
+            {
+                var result = MessageBox.Show("Are you sure you want to delete this Order?", "Delete Order", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    _unitOfWork.Order.Remove(selectedOrder);
+                    _unitOfWork.Save();
+                    MessageBox.Show("Delete Order successfully");
+                }
+            }
+
+        }
+
+        private void PreviousPageOrderContentButton_Click(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<Order> orders;
+            orders = _unitOfWork.Order.GetAll(includeProperty: "Customer,Accounts");
+            paginationHelperOrder.PreviousPage();
+            LoadDataForPage<Order>(OrderDataGrid, orders, paginationHelperOrder);
+
+        }
+
+        private void NextPageOrderContentButton_Click(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<Order> orders;
+            orders = _unitOfWork.Order.GetAll(includeProperty: "Customer,Accounts");
+            paginationHelperOrder.NextPage(orders);
+            LoadDataForPage<Order>(OrderDataGrid, orders, paginationHelperOrder);
+
+        }
+
+        private void OrderDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            // Check if the clicked item is a valid row
+            if (sender is DataGrid grid)
+            {
+                var selectedRow = grid.SelectedItem as Order;
+                if (selectedRow != null)
+                {
+                    var showProductOfOrder = App.ServiceProvider.GetRequiredService<ShowProductWindow>();
+                    showProductOfOrder.OfContent = 2;
+                    showProductOfOrder.OrderID = selectedRow.OrderID;
+                    showProductOfOrder.ShowDialog();
+                }
+            }
+
+        }
+
+        #endregion
+
+        private void Chat_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -103,7 +103,7 @@
                Margin="0,10,0,428" Grid.Row="1"/>   
 
                 <!--Main Section-->
-                <Border  x:Name="Border_ProductOfCategory" CornerRadius="0 10 10 0" Height="400" VerticalAlignment="Center" Grid.Row="1">
+                <Border Visibility="Collapsed"  x:Name="Border_ProductOfCategory" CornerRadius="0 10 10 0" Height="400" VerticalAlignment="Center" Grid.Row="1">
                     <!--Category Data Grid-->
                     <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="ProductOfCategoryDataGrid" Style="{DynamicResource DataGridStyle1}" Margin="0,38,0,0" Height="352" VerticalAlignment="Top">
                         <DataGrid.Columns>
@@ -119,7 +119,7 @@
                 </Border>
 
 
-                <Border  x:Name="Border_ProductOfSupplier" CornerRadius="0 10 10 0" Height="400" VerticalAlignment="Center" Grid.Row="1">
+                <Border Visibility="Collapsed" x:Name="Border_ProductOfSupplier" CornerRadius="0 10 10 0" Height="400" VerticalAlignment="Center" Grid.Row="1">
                     <!--Category Data Grid-->
                     <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="ProductOfSupplierDataGrid" Style="{DynamicResource DataGridStyle1}" Margin="0,38,0,0" Height="352" VerticalAlignment="Top">
                         <DataGrid.Columns>
@@ -133,7 +133,19 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>
-                
+
+
+                <Border  x:Name="Border_ProductOfOrder" CornerRadius="0 10 10 0" Height="400" VerticalAlignment="Center" Grid.Row="1">
+                    <!--Product Data Grid-->
+                    <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="ProductOfOrderDataGrid" Style="{DynamicResource DataGridStyle1}" Margin="0,38,0,0" Height="352" VerticalAlignment="Top">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Product Name" Binding="{Binding Product.ProductName}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Unit Price" Binding="{Binding UnitPrice}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" IsReadOnly="True" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+
             </Grid>
 
         </Border>

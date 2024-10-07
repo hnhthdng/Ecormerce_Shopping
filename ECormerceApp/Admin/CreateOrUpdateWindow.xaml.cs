@@ -33,6 +33,7 @@ namespace ECormerceApp.Admin
             Supplier,
             Product,
             Ads,
+            Order,
         }
         private enum Type
         {
@@ -47,6 +48,7 @@ namespace ECormerceApp.Admin
         public Supplier updateSupplier;
         public Product updateProduct;
         public Ads updateAdvertise;
+        public Order updateOrder;
         private readonly UserManager<Accounts> _userManager;
         private readonly IUnitOfWork _unitOfWork;
 
@@ -70,6 +72,8 @@ namespace ECormerceApp.Admin
             CreateOrUpdateProduct.Visibility = Visibility.Collapsed;
             //Ads
             CreateOrUpdateAds.Visibility = Visibility.Collapsed;
+            //Order
+            CreateOrUpdateOrder.Visibility = Visibility.Collapsed;
 
             stackPanel.Visibility = Visibility.Visible;
         }
@@ -230,6 +234,21 @@ namespace ECormerceApp.Admin
                         dpStartDateInAdsContent.SelectedDate = updateAdvertise.StartDate;
                         dpEndDateInAdsContent.SelectedDate = updateAdvertise.EndDate;
                         break;
+                    case (int)TypeWindow.Order:
+                        this.Height = 750;
+                        btnSave.Margin = new Thickness(0, 625, 0, 0);
+                        TitleOfCreateOrUpdate.Text = "ORDER";
+                        ShowOnlyStackPanel(CreateOrUpdateOrder);
+                        txtEmailInOrderContent.Text = updateOrder.Accounts.Email;
+                        txtContactInOrderContent.Text = updateOrder.Customer.ContactName;
+                        dpOrderDateInOrderContent.Text = updateOrder.OrderDate.ToString();
+                        dpRequiredDateInOrderContent.Text = updateOrder.RequiredDate.ToString();
+                        dpShippedDateInOrderContent.Text = updateOrder.ShippedDate.ToString();
+                        txtFreightInOrderContent.Text = updateOrder.Freight.ToString();
+                        txtAddressInOrderContent.Text = updateOrder.ShipAddress;
+                        break;
+
+
                 }
 
             }
@@ -559,6 +578,36 @@ namespace ECormerceApp.Admin
                         _unitOfWork.Ads.Update(updateAdvertise);
                         _unitOfWork.Save();
                         MessageBox.Show("Update ads successfully");
+                        break;
+                    case (int)TypeWindow.Order:
+                        string emailOrder = txtEmailInOrderContent.Text;
+                        string contact = txtContactInOrderContent.Text;
+                        DateTime orderDate = DateTime.Parse(dpOrderDateInOrderContent.Text);
+                        DateTime requiredDate = DateTime.Parse(dpRequiredDateInOrderContent.Text);
+                        DateTime shippedDate = DateTime.Parse(dpShippedDateInOrderContent.Text);
+                        string freight = txtFreightInOrderContent.Text;
+                        string addressOrder = txtAddressInOrderContent.Text;
+                        //Check null
+                        if (string.IsNullOrEmpty(emailOrder) || string.IsNullOrEmpty(contact) || string.IsNullOrEmpty(freight) || string.IsNullOrEmpty(addressOrder))
+                        {
+                            MessageBox.Show("Please fill all fields");
+                            return;
+                        }
+                        if(orderDate > requiredDate || orderDate > shippedDate || requiredDate > shippedDate)
+                        {
+                            MessageBox.Show("Order date must be less than required date and shipped date");
+                            return;
+                        }
+                        updateOrder.Accounts.Email = emailOrder;
+                        updateOrder.Customer.ContactName = contact;
+                        updateOrder.OrderDate = orderDate;
+                        updateOrder.RequiredDate = requiredDate;
+                        updateOrder.ShippedDate = shippedDate;
+                        updateOrder.Freight = decimal.Parse(freight);
+                        updateOrder.ShipAddress = addressOrder;
+                        _unitOfWork.Order.Update(updateOrder);
+                        _unitOfWork.Save();
+                        MessageBox.Show("Update order successfully");
                         break;
                 }
             }
