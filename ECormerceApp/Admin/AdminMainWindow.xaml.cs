@@ -1066,6 +1066,7 @@ namespace ECormerceApp.Admin
             {
                 _connection.StopAsync();
             }
+            MessagesPanel.Children.Clear();
 
         }
     }
