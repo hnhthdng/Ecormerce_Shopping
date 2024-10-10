@@ -80,13 +80,7 @@ namespace ECormerceApp
                         }
                         else
                         {
-                            // Lấy MainWindow từ ServiceProvider để inject các dependency (nếu có)
-                            var userMainWindow = App.ServiceProvider.GetRequiredService<UserMainWindow>();
-                            userMainWindow.Show();
-                            this.Hide();
-
-                            // Hiển thị lại cửa sổ Login khi MainWindow đóng
-                            userMainWindow.Closed += (s, args) => this.Show();
+                            MessageBox.Show("You are not Staff, do not have permission to login !");
                         }
                     }
                     else
