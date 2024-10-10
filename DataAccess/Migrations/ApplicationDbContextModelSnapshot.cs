@@ -440,7 +440,7 @@ namespace DataAccess.Migrations
                     b.HasOne("DataObject.Model.Accounts", "Accounts")
                         .WithMany("Customers")
                         .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Accounts");
@@ -457,7 +457,7 @@ namespace DataAccess.Migrations
                     b.HasOne("DataObject.Model.Customer", "Customer")
                         .WithMany("Orders")
                         .HasForeignKey("CustomerID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Accounts");

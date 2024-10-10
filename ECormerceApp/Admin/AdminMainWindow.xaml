@@ -5,6 +5,8 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+            xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+            xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
             xmlns:uc="clr-namespace:ECormerceApp.UserControls"
             WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True"
             Background="Transparent" mc:Ignorable="d" Height="740" Width="1280" Loaded="Window_Loaded">
@@ -54,49 +56,49 @@
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="Account" Style="{StaticResource menuButton}">
+                <Button x:Name="Account" Style="{StaticResource menuButton}" Click="Account_Click">
                     <StackPanel Orientation="Horizontal">
                         <fa:IconImage Icon="AddressBook" Style="{StaticResource menuButtonIcon}"/>
                         <TextBlock Text="Account" Style="{StaticResource menuButtonText}"/>
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="Category" Style="{StaticResource menuButton}">
+                <Button x:Name="Category" Style="{StaticResource menuButton}" Click="Category_Click">
                     <StackPanel Orientation="Horizontal">
                         <fa:IconImage Icon="CalendarAlt" Style="{StaticResource menuButtonIcon}"/>
                         <TextBlock Text="Category" Style="{StaticResource menuButtonText}"/>
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="Supplier" Style="{StaticResource menuButton}">
+                <Button x:Name="Supplier" Style="{StaticResource menuButton}" Click="Supplier_Click">
                     <StackPanel Orientation="Horizontal">
                         <fa:IconImage Icon="PeopleArrows" Style="{StaticResource menuButtonIcon}"/>
                         <TextBlock Text="Supplier" Style="{StaticResource menuButtonText}"/>
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="Orders" Style="{StaticResource menuButton}">
+                <Button x:Name="Orders" Style="{StaticResource menuButton}" Click="Orders_Click">
                     <StackPanel Orientation="Horizontal">
                         <fa:IconImage Icon="ShoppingCart" Style="{StaticResource menuButtonIcon}"/>
                         <TextBlock Text="Orders" Style="{StaticResource menuButtonText}"/>
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="Product" Style="{StaticResource menuButton}">
+                <Button x:Name="Product" Style="{StaticResource menuButton}" Click="Product_Click">
                     <StackPanel Orientation="Horizontal">
                         <fa:IconImage Icon="ProductHunt" Style="{StaticResource menuButtonIcon}"/>
                         <TextBlock Text="Product" Style="{StaticResource menuButtonText}"/>
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="Advertise" Style="{StaticResource menuButton}">
+                <Button x:Name="Advertise" Style="{StaticResource menuButton}" Click="Advertise_Click">
                     <StackPanel Orientation="Horizontal">
                         <fa:IconImage Icon="Adversal" Style="{StaticResource menuButtonIcon}"/>
                         <TextBlock Text="Advertise" Style="{StaticResource menuButtonText}"/>
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="Chat" Style="{StaticResource menuButton}">
+                <Button x:Name="Chat" Style="{StaticResource menuButton}" Click="Chat_Click">
                     <StackPanel Orientation="Horizontal">
                         <fa:IconImage Icon="Rocketchat" Style="{StaticResource menuButtonIcon}"/>
                         <TextBlock Text="Admin Chat" Style="{StaticResource menuButtonText}"/>
@@ -114,7 +116,7 @@
         </Border>
 
         <!--Main Section-->
-        <Border Grid.Column="1" CornerRadius="0 10 10 0" MouseDown="Border_MouseDown">
+        <Border Grid.Column="1" CornerRadius="0 10 10 0" MouseDown="Border_MouseDown" Height="740" VerticalAlignment="Bottom">
             <Border.Background>
                 <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
                     <GradientStop Color="#41518F" Offset="0" />
@@ -167,7 +169,7 @@
                         <Button x:Name="btnChangePasswordInProfileContent" Content="Change Password" FontSize="16" FontWeight="Bold" Background="#5B60C4" Foreground="White" Padding="10" Margin="40 20 0 0" Width="183" HorizontalAlignment="Center" Click="btnChangePasswordInProfileContent_Click"/>
                     </WrapPanel>
                 </StackPanel>
-                
+
                 <StackPanel x:Name="ChangePasswordContent" Visibility="Hidden" Margin="275,116,314,184">
                     <TextBlock Text="Change Password" FontSize="26" FontWeight="Bold" Foreground="#CCD7FF" Margin="0 0 0 20"/>
 
@@ -187,9 +189,9 @@
 
                     <!-- Change Password Button -->
                 </StackPanel>
-                
-                <StackPanel x:Name="Welcome_Dashboard" Visibility="Visible">
-                    
+
+                <StackPanel x:Name="Welcome_Dashboard" Visibility="Collapsed">
+
                     <!--Title-->
                     <TextBlock x:Name="txtWelcomeUser" FontSize="26" Foreground="#CCD7FF" Margin="50 35 0 20" Text="Good Afternoon, Perman" HorizontalAlignment="Left"/>
 
@@ -318,8 +320,511 @@
                     </Grid>
                 </StackPanel>
 
+                <StackPanel x:Name="AccountContent" Visibility="Collapsed" Margin="10,47,10,100" Grid.RowSpan="2">
+
+                    <!--Page Title-->
+                    <TextBlock Text="Account" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="White" HorizontalAlignment="Left"/>
+
+                    <!--Add Button-->
+                    <Button Click="AddAccount_Click" Style="{StaticResource addButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="Plus" VerticalAlignment="Center" Margin="0 1 8 0" Width="11" Height="11"/>
+                            <TextBlock Text="Add New Account"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!--Seprator-->
+                    <Separator Height="1" Grid.Row="3" Background="#DAE2EA" Margin="0 -1 0 10"/>
+
+                    <!--Tab buttons-->
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0 10 0 0">
+                        <Button Style="{StaticResource tabButton}" Foreground="White" Content="Admin" Click="btn_Account_Admin_GetTotal_Click"/>
+                        <Button Style="{StaticResource tabButton}" Foreground="White" Content="Normal User" Click="btn_Account_NormalUser_GetTotal_Click" Width="104"/>
+                    </StackPanel>
+
+                    <!--Counter Title-->
+                    <TextBlock x:Name="TotalAccountWithType" Text="68 Admin" Grid.Row="4" FontSize="18" Margin="15,0,0,0" FontWeight="SemiBold" Foreground="White" HorizontalAlignment="Left" Width="86"/>
+
+                    <!--Filter Textbox-->
+                    <Grid Width="400" HorizontalAlignment="Right" Grid.Row="4">
+                        <!-- Filter Label -->
+                        <TextBlock Text="Filter By Email: " FontWeight="Bold" FontSize="14" Foreground="WhiteSmoke" VerticalAlignment="Center" Height="22"/>
+                        <TextBox Name="textBoxFilter_AccountContent" Style="{StaticResource filterTextBox}" KeyDown="textBoxFilter_AccountContent_KeyDown" Margin="112,0,0,0"/>
+                    </Grid>
+
+                    <!--Members Data Grid-->
+                    <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="AccountDataGrid" Style="{DynamicResource DataGridStyle1}" Height="338">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="#" IsReadOnly="True" Width="auto" Binding="{Binding Id}"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding FullName}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="User Name" Binding="{Binding UserName}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Email Address" Binding="{Binding Email}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" IsReadOnly="True" Width="*"/>
+                            <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button x:Name="Btn_UpdateUserInAccountContent" Style="{StaticResource gridEditButton}" Click="Btn_UpdateUserInAccountContent_Click">
+                                                <Icon:PackIconMaterial Kind="PencilOutline" Style="{StaticResource gridButtonIcon}"/>
+                                            </Button>
+                                            <Button x:Name="Btn_DeleteUserInAccountContent" Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="Btn_DeleteUserInAccountContent_Click">
+                                                <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Border Grid.Row="6" HorizontalAlignment="Right" BorderBrush="#DEE4EC" BorderThickness="1" CornerRadius="5" Padding="5" Background="#ffffff" Margin="0 10 10 10">
+                        <StackPanel Orientation="Horizontal">
+                            <!-- Nút Previous -->
+                            <Button Style="{StaticResource pagingButton}" Click="PreviousPageAccountContentButton_Click">
+                                <Icon:PackIconMaterial Kind="ChevronLeft" Style="{StaticResource pagingButtonIcon}"/>
+                            </Button>
+
+                            <!-- Nút Next -->
+                            <Button Style="{StaticResource pagingButton}" Click="NextPageAccountContentButton_Click">
+                                <Icon:PackIconMaterial Kind="ChevronRight" Style="{StaticResource pagingButtonIcon}"/>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+
+
+                </StackPanel>
+
+                <StackPanel x:Name="CategoryContent" Visibility="Collapsed" Margin="10,47,10,100" Grid.RowSpan="2">
+
+                    <!--Page Title-->
+                    <TextBlock Text="Category" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="White" HorizontalAlignment="Left"/>
+
+                    <!--Add Button-->
+                    <Button Click="AddCategory_Click" Style="{StaticResource addButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="Plus" VerticalAlignment="Center" Margin="0 1 8 0" Width="11" Height="11"/>
+                            <TextBlock Text="Add New Category"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!--Seprator-->
+                    <Separator Height="1" Grid.Row="3" Background="#DAE2EA" Margin="0 -1 0 10"/>
+
+
+                    <!--Counter Title-->
+                    <TextBlock x:Name="TotalCategory" Text="68 Category" Grid.Row="4" FontSize="18" Margin="15,0,0,0" FontWeight="SemiBold" Foreground="White" HorizontalAlignment="Left" Width="110" Height="27"/>
+
+                    <!--Filter Textbox-->
+                    <Grid Width="400" HorizontalAlignment="Right" Grid.Row="4">
+                        <!-- Filter Label -->
+                        <TextBlock Text="Filter By Name: " FontWeight="Bold" FontSize="14" Foreground="WhiteSmoke" VerticalAlignment="Center" Height="22"/>
+                        <TextBox Name="textBoxFilter_CategoryContent" Style="{StaticResource filterTextBox}" KeyDown="textBoxFilter_CategoryContent_KeyDown" Margin="112,0,0,0"/>
+                    </Grid>
+
+                    <!--Category Data Grid-->
+                    <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="CategoryDataGrid" MouseDoubleClick="CategoryDataGrid_MouseDoubleClick" Style="{DynamicResource DataGridStyle1}" Height="338">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="#" IsReadOnly="True" Width="auto" Binding="{Binding CategoryID}"/>
+                            <DataGridTextColumn Header="Category Name" Binding="{Binding CategoryName}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Description" Binding="{Binding Description}" IsReadOnly="True" Width="*"/>
+                            <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button x:Name="Btn_UpdateCategoryInCategoryContent" Style="{StaticResource gridEditButton}" Click="Btn_UpdateCategoryInCategoryContent_Click">
+                                                <Icon:PackIconMaterial Kind="PencilOutline" Style="{StaticResource gridButtonIcon}"/>
+                                            </Button>
+                                            <Button x:Name="Btn_DeleteCategoryInCategoryContent" Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="Btn_DeleteCategoryInCategoryContent_Click">
+                                                <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Border Grid.Row="6" HorizontalAlignment="Right" BorderBrush="#DEE4EC" BorderThickness="1" CornerRadius="5" Padding="5" Background="#ffffff" Margin="0 10 10 10">
+                        <StackPanel Orientation="Horizontal">
+                            <!-- Nút Previous -->
+                            <Button Style="{StaticResource pagingButton}" Click="PreviousPageCategoryContentButton_Click">
+                                <Icon:PackIconMaterial Kind="ChevronLeft" Style="{StaticResource pagingButtonIcon}"/>
+                            </Button>
+
+                            <!-- Nút Next -->
+                            <Button Style="{StaticResource pagingButton}" Click="NextPageCategoryContentButton_Click">
+                                <Icon:PackIconMaterial Kind="ChevronRight" Style="{StaticResource pagingButtonIcon}"/>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+
+
+                </StackPanel>
+
+                <StackPanel x:Name="SupplierContent" Visibility="Collapsed" Margin="10,47,10,100" Grid.RowSpan="2">
+
+                    <!--Page Title-->
+                    <TextBlock Text="Supplier" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="White" HorizontalAlignment="Left"/>
+
+                    <!--Add Button-->
+                    <Button Click="AddSupplier_Click" Style="{StaticResource addButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="Plus" VerticalAlignment="Center" Margin="0 1 8 0" Width="11" Height="11"/>
+                            <TextBlock Text="Add New Supplier"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!--Seprator-->
+                    <Separator Height="1" Grid.Row="3" Background="#DAE2EA" Margin="0 -1 0 10"/>
+
+
+                    <!--Counter Title-->
+                    <TextBlock x:Name="TotalSupplier" Text="68 Supplier" Grid.Row="4" FontSize="18" Margin="15,0,0,0" FontWeight="SemiBold" Foreground="White" HorizontalAlignment="Left" Width="110" Height="27"/>
+
+                    <!--Filter Textbox-->
+                    <Grid Width="400" HorizontalAlignment="Right" Grid.Row="4">
+                        <!-- Filter Label -->
+                        <TextBlock Text="Filter By Name: " FontWeight="Bold" FontSize="14" Foreground="WhiteSmoke" VerticalAlignment="Center" Height="22"/>
+                        <TextBox Name="textBoxFilter_SupplierContent" Style="{StaticResource filterTextBox}" KeyDown="textBoxFilter_SupplierContent_KeyDown" Margin="112,0,0,0"/>
+                    </Grid>
+
+                    <!--Category Data Grid-->
+                    <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="SupplierDataGrid" MouseDoubleClick="SupplierDataGrid_MouseDoubleClick" Style="{DynamicResource DataGridStyle1}" Height="338">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="#" IsReadOnly="True" Width="auto" Binding="{Binding SupplierID}"/>
+                            <DataGridTextColumn Header="Company Name" Binding="{Binding CompanyName}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Address" Binding="{Binding Address}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Phone" Binding="{Binding Phone}" IsReadOnly="True" Width="*"/>
+                            <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button x:Name="Btn_UpdateSupplierInSupplierContent" Style="{StaticResource gridEditButton}" Click="Btn_UpdateSupplierInSupplierContent_Click">
+                                                <Icon:PackIconMaterial Kind="PencilOutline" Style="{StaticResource gridButtonIcon}"/>
+                                            </Button>
+                                            <Button x:Name="Btn_DeleteSupplierInSupplierContent" Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="Btn_DeleteSupplierInSupplierContent_Click">
+                                                <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Border Grid.Row="6" HorizontalAlignment="Right" BorderBrush="#DEE4EC" BorderThickness="1" CornerRadius="5" Padding="5" Background="#ffffff" Margin="0 10 10 10">
+                        <StackPanel Orientation="Horizontal">
+                            <!-- Nút Previous -->
+                            <Button Style="{StaticResource pagingButton}" Click="PreviousPageSupplierContentButton_Click">
+                                <Icon:PackIconMaterial Kind="ChevronLeft" Style="{StaticResource pagingButtonIcon}"/>
+                            </Button>
+
+                            <!-- Nút Next -->
+                            <Button Style="{StaticResource pagingButton}" Click="NextPageSupplierContentButton_Click">
+                                <Icon:PackIconMaterial Kind="ChevronRight" Style="{StaticResource pagingButtonIcon}"/>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+
+
+                </StackPanel>
+
+                <StackPanel x:Name="ProductContent" Visibility="Collapsed" Margin="10,47,10,100" Grid.RowSpan="2">
+
+                    <!--Page Title-->
+                    <TextBlock Text="Product" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="White" HorizontalAlignment="Left"/>
+
+                    <!--Add Button-->
+                    <Button Click="AddProduct_Click" Style="{StaticResource addButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="Plus" VerticalAlignment="Center" Margin="0 1 8 0" Width="11" Height="11"/>
+                            <TextBlock Text="Add New Product"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!--Seprator-->
+                    <Separator Height="1" Grid.Row="3" Background="#DAE2EA" Margin="0 -1 0 10"/>
+
+
+                    <!--Counter Title-->
+                    <TextBlock x:Name="TotalProduct" Text="68 Product" Grid.Row="4" FontSize="18" Margin="15,0,0,0" FontWeight="SemiBold" Foreground="White" HorizontalAlignment="Left" Width="110" Height="27"/>
+
+                    <!--Filter Textbox-->
+                    <Grid Width="400" HorizontalAlignment="Right" Grid.Row="4">
+                        <!-- Filter Label -->
+                        <TextBlock Text="Filter By Name: " FontWeight="Bold" FontSize="14" Foreground="WhiteSmoke" VerticalAlignment="Center" Height="22"/>
+                        <TextBox Name="textBoxFilter_ProductContent" Style="{StaticResource filterTextBox}" KeyDown="textBoxFilter_ProductContent_KeyDown" Margin="112,0,0,0"/>
+                    </Grid>
+
+                    <!--Product Data Grid-->
+                    <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="ProductDataGrid"  Style="{DynamicResource DataGridStyle1}" Height="338">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="#" IsReadOnly="True" Width="auto" Binding="{Binding ProductID}"/>
+                            <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Quantity Per Unit" Binding="{Binding QuantityPerUnit}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Unit Price" Binding="{Binding UnitPrice}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Product Image URL" Binding="{Binding ProductImageURL}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Units In Stock" Binding="{Binding UnitsInStock}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Category" Binding="{Binding Category.CategoryName}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Supplier" Binding="{Binding Supplier.CompanyName}" IsReadOnly="True" Width="*"/>
+                            <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button x:Name="Btn_UpdateProductInProductContent" Style="{StaticResource gridEditButton}" Click="Btn_UpdateProductInProductContent_Click">
+                                                <Icon:PackIconMaterial Kind="PencilOutline" Style="{StaticResource gridButtonIcon}"/>
+                                            </Button>
+                                            <Button x:Name="Btn_DeleteProductInSupplierContent" Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="Btn_DeleteProductInSupplierContent_Click">
+                                                <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Border Grid.Row="6" HorizontalAlignment="Right" BorderBrush="#DEE4EC" BorderThickness="1" CornerRadius="5" Padding="5" Background="#ffffff" Margin="0 10 10 10">
+                        <StackPanel Orientation="Horizontal">
+                            <!-- Nút Previous -->
+                            <Button Style="{StaticResource pagingButton}" Click="PreviousPageProductContentButton_Click">
+                                <Icon:PackIconMaterial Kind="ChevronLeft" Style="{StaticResource pagingButtonIcon}"/>
+                            </Button>
+
+                            <!-- Nút Next -->
+                            <Button Style="{StaticResource pagingButton}" Click="NextPageProductContentButton_Click">
+                                <Icon:PackIconMaterial Kind="ChevronRight" Style="{StaticResource pagingButtonIcon}"/>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+
+
+                </StackPanel>
+
+                <StackPanel x:Name="AdvertiseContent" Visibility="Collapsed" Margin="10,47,10,100" Grid.RowSpan="2">
+
+                    <!--Page Title-->
+                    <TextBlock Text="Advertise" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="White" HorizontalAlignment="Left"/>
+
+                    <!--Add Button-->
+                    <Button Click="AddAdvertise_Click" Style="{StaticResource addButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="Plus" VerticalAlignment="Center" Margin="0 1 8 0" Width="11" Height="11"/>
+                            <TextBlock Text="Add New Advertise"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!--Seprator-->
+                    <Separator Height="1" Grid.Row="3" Background="#DAE2EA" Margin="0 -1 0 10"/>
+
+
+                    <!--Counter Title-->
+                    <WrapPanel>
+                        <TextBlock x:Name="TotalAdvertise" Text="68 Advertise" Grid.Row="4" FontSize="18" FontWeight="SemiBold" Foreground="White" HorizontalAlignment="Left" Width="145" Height="27"/>
+                        <TextBlock x:Name="TotalAdvertiseAvailable" Text="Total Available: 10" Grid.Row="4" FontSize="18" FontWeight="SemiBold" Foreground="White" HorizontalAlignment="Left" Width="174" Height="27"/>
+                        <Button Margin="10" Click="Total_Available_Ads_Click" Style="{StaticResource addButton}" Width="120" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Advertise Running"/>
+                            </StackPanel>
+                        </Button>
+                    </WrapPanel>
+
+                    <!--Filter Textbox-->
+                    <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Grid Width="300" HorizontalAlignment="Left" Grid.Row="4">
+                            <!-- Filter Label -->
+                            <TextBlock Text="Title: " FontWeight="Bold" FontSize="14" Foreground="WhiteSmoke" VerticalAlignment="Center" Height="22"/>
+                            <TextBox Name="textBoxTitle_AdvertiseContent" Style="{StaticResource filterTextBox}" Margin="40,0,40,0" />
+                        </Grid>
+
+                        <Grid Width="300" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="4">
+                            <!-- Filter Label -->
+                            <TextBlock Text="Start Date: " FontWeight="Bold" FontSize="14" Foreground="WhiteSmoke" VerticalAlignment="Center" Height="22" Margin="0,0,0,0"/>
+                            <DatePicker Name="datePickerStartDate_AdvertiseContent" Margin="90,0,0,0" />
+                        </Grid>
+
+                        <Grid Width="300" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="4">
+                            <!-- Filter Label -->
+                            <TextBlock Text="End Date: " FontWeight="Bold" FontSize="14" Foreground="WhiteSmoke" VerticalAlignment="Center" Height="22" Margin="10,0,0,0"/>
+                            <DatePicker Name="datePickerEndDate_AdvertiseContent" Margin="90,0,0,0" />
+                        </Grid>
+                        <Button Click="Filter_Advertise_Click" Style="{StaticResource addButton}" Width="59" Margin="10">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Filter"/>
+                            </StackPanel>
+                        </Button>
+                    </WrapPanel>
+
+                    <!--Product Data Grid-->
+                    <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="AdvertiseDataGrid"  Style="{DynamicResource DataGridStyle1}" Height="338">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="#" IsReadOnly="True" Width="auto" Binding="{Binding Id}"/>
+                            <DataGridTextColumn Header="Title" Binding="{Binding Title}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Content" Binding="{Binding Content}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate, StringFormat=\{0:MM/dd/yyyy\}}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="End Date" Binding="{Binding EndDate, StringFormat=\{0:MM/dd/yyyy\}}" Width="*"/>
+                            <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button x:Name="Btn_UpdateAdvertiseContent" Style="{StaticResource gridEditButton}" Click="Btn_UpdateAdvertiseContent_Click">
+                                                <Icon:PackIconMaterial Kind="PencilOutline" Style="{StaticResource gridButtonIcon}"/>
+                                            </Button>
+                                            <Button x:Name="Btn_DeleteAdvertiseContent" Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="Btn_DeleteAdvertiseContent_Click">
+                                                <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Border Grid.Row="6" HorizontalAlignment="Right" BorderBrush="#DEE4EC" BorderThickness="1" CornerRadius="5" Padding="5" Background="#ffffff" Margin="0 10 10 10">
+                        <StackPanel Orientation="Horizontal">
+                            <!-- Nút Previous -->
+                            <Button Style="{StaticResource pagingButton}" Click="PreviousPageAdvertiseContentButton_Click">
+                                <Icon:PackIconMaterial Kind="ChevronLeft" Style="{StaticResource pagingButtonIcon}"/>
+                            </Button>
+
+                            <!-- Nút Next -->
+                            <Button Style="{StaticResource pagingButton}" Click="NextPageAdvertiseContentButton_Click">
+                                <Icon:PackIconMaterial Kind="ChevronRight" Style="{StaticResource pagingButtonIcon}"/>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+
+
+                </StackPanel>
+
+                <StackPanel x:Name="OrderContent" Visibility="Collapsed" Margin="10,47,10,100" Grid.RowSpan="2">
+
+                    <!--Page Title-->
+                    <TextBlock Text="Order" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="White" HorizontalAlignment="Left"/>
+
+
+                    <!--Seprator-->
+                    <Separator Height="1" Grid.Row="3" Background="#DAE2EA" Margin="0 -1 0 10"/>
+
+
+                    <!--Counter Title-->
+                    <WrapPanel>
+                        <TextBlock x:Name="TotalOrder" Text="68 Order" Grid.Row="4" FontSize="18" FontWeight="SemiBold" Foreground="White" HorizontalAlignment="Left" Width="145" Height="27"/>
+                        <TextBlock x:Name="TotalOrderShipped" Text="Total Shipped: 10" Grid.Row="4" FontSize="18" FontWeight="SemiBold" Foreground="White" HorizontalAlignment="Left" Width="174" Height="27"/>
+                        <Button Margin="10" Click="Total_Shipped_Order_Click" Style="{StaticResource addButton}" Width="120" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Order Shipped"/>
+                            </StackPanel>
+                        </Button>
+                    </WrapPanel>
+
+                    <!--Filter Textbox-->
+                    <WrapPanel VerticalAlignment="Center" >
+
+                        <Grid Width="300" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="4">
+                            <!-- Filter Label -->
+                            <TextBlock Text="Start Date: " FontWeight="Bold" FontSize="14" Foreground="WhiteSmoke" VerticalAlignment="Center" Height="22" Margin="0,0,0,0"/>
+                            <DatePicker Name="datePickerStartDate_OrderContent" Margin="90,0,0,0" />
+                        </Grid>
+
+                        <Grid Width="300" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="4">
+                            <!-- Filter Label -->
+                            <TextBlock Text="End Date: " FontWeight="Bold" FontSize="14" Foreground="WhiteSmoke" VerticalAlignment="Center" Height="22" Margin="10,0,0,0"/>
+                            <DatePicker Name="datePickerEndDate_OrderContent" Margin="90,0,0,0" />
+                        </Grid>
+                        <Button Click="Filter_Order_Click" Style="{StaticResource addButton}" Width="59" Margin="100,10,10,10">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Filter"/>
+                            </StackPanel>
+                        </Button>
+                    </WrapPanel>
+
+                    <WrapPanel Margin="15,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <Grid Width="300" HorizontalAlignment="Left" Grid.Row="4">
+                            <!-- Filter Label -->
+                            <TextBlock Text="Order Id: " FontWeight="Bold" FontSize="14" Foreground="WhiteSmoke" VerticalAlignment="Center" Height="22"/>
+                            <TextBox Name="textBoxId_OrderContent" Style="{StaticResource filterTextBox}" Margin="80,0,0,0" />
+                        </Grid>
+
+                        <Grid  Margin="80,0,0,0" Width="300" HorizontalAlignment="Left" Grid.Row="4">
+                            <!-- Filter Label -->
+                            <TextBlock  Text="Account: " FontWeight="Bold" FontSize="14" Foreground="WhiteSmoke" VerticalAlignment="Center" Height="22"/>
+                            <TextBox  Name="textBoxAccount_OrderContent" Style="{StaticResource filterTextBox}" Margin="80,0,0,0" />
+                        </Grid>
+                    </WrapPanel>
+
+                    <!--Order Data Grid-->
+                    <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="OrderDataGrid"  Style="{DynamicResource DataGridStyle1}" MouseDoubleClick="OrderDataGrid_MouseDoubleClick" Height="338">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="#" IsReadOnly="True" Width="auto" Binding="{Binding OrderID}"/>
+                            <DataGridTextColumn Header="Account" Binding="{Binding Accounts.Email}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Customer" Binding="{Binding Customer.ContactName}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Order Date" Binding="{Binding OrderDate, StringFormat=\{0:MM/dd/yyyy\}}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Required Date" Binding="{Binding RequiredDate, StringFormat=\{0:MM/dd/yyyy\}}" Width="*"/>
+                            <DataGridTextColumn Header="Shipped Date" Binding="{Binding ShippedDate, StringFormat=\{0:MM/dd/yyyy\}}" Width="*"/>
+                            <DataGridTextColumn Header="Freight" Binding="{Binding Freight}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Ship Address" Binding="{Binding ShipAddress}" IsReadOnly="True" Width="*"/>
+
+                            <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button x:Name="Btn_UpdateOrderContent" Style="{StaticResource gridEditButton}" Click="Btn_UpdateOrderContent_Click">
+                                                <Icon:PackIconMaterial Kind="PencilOutline" Style="{StaticResource gridButtonIcon}"/>
+                                            </Button>
+                                            <Button x:Name="Btn_DeleteOrderContent" Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="Btn_DeleteOrderContent_Click">
+                                                <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Border Grid.Row="6" HorizontalAlignment="Right" BorderBrush="#DEE4EC" BorderThickness="1" CornerRadius="5" Padding="5" Background="#ffffff" Margin="0 10 10 10">
+                        <StackPanel Orientation="Horizontal">
+                            <!-- Nút Previous -->
+                            <Button Style="{StaticResource pagingButton}" Click="PreviousPageOrderContentButton_Click">
+                                <Icon:PackIconMaterial Kind="ChevronLeft" Style="{StaticResource pagingButtonIcon}"/>
+                            </Button>
+
+                            <!-- Nút Next -->
+                            <Button Style="{StaticResource pagingButton}" Click="NextPageOrderContentButton_Click">
+                                <Icon:PackIconMaterial Kind="ChevronRight" Style="{StaticResource pagingButtonIcon}"/>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+
+
+                </StackPanel>
+
+                <StackPanel x:Name="ChatContent" Visibility="Visible"  Margin="10,47,10,100" Grid.RowSpan="2">
+                    <WrapPanel>
+                        <TextBlock DockPanel.Dock="Left" Name="ConnectingMessage" Text="Waiting for connection to user..." Margin="10" Foreground="Gray"/>
+
+                        <Button Margin="500,0,0,0" DockPanel.Dock="Right"  Content="Offline" Click="Offline_Click" Width="100" Height="30" />
+                    </WrapPanel>
+
+                    <ScrollViewer VerticalScrollBarVisibility="Hidden"  HorizontalScrollBarVisibility="Disabled" Grid.Row="1" Margin="20 10 20 20" Height="510">
+                        <StackPanel x:Name="MessagesPanel" Grid.Row="1" Margin="20 10 20 20" Height="510">
+
+                        </StackPanel>
+                    </ScrollViewer>
+                    
+                   
+                    <!--Message Bottom Section-->
+                    <Grid Grid.Row="2"
+                        Margin="10 0 10 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--Message Textbox-->
+                        <TextBox Name="MessageInput" Height="30" Margin="0,10,155,10"/>
+
+                        <Button Content="Send" Click="SendMessage_Click" Width="100" Height="30" Margin="880,10,10,10"/>
+
+                    </Grid>
+
+                </StackPanel>
+
             </Grid>
         </Border>
-
     </Grid>
 </Window>

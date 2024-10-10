@@ -1,0 +1,1021 @@
+﻿<Window x:Class="ECormerceApp.Admin.CreateOrUpdateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ECormerceApp.Admin"
+                mc:Ignorable="d"
+        Title="LoginView" Height="635" Width="370"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Background="Transparent"
+        AllowsTransparency="True" Loaded="Window_Loaded">
+
+    <Border MouseDown="Border_MouseDown" CornerRadius="12">
+        <Border.Background>
+            <ImageBrush Stretch="None"/>
+        </Border.Background>
+
+        <Border CornerRadius="10"                    
+            BorderThickness="2"
+            Opacity="0.95">
+
+            <Border.BorderBrush>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#462AD8" Offset="0"/>
+                    <GradientStop Color="#DA34AE" Offset="0.75"/>
+                    <GradientStop Color="#8A16C1" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.BorderBrush>
+
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                    <GradientStop Color="#060531" Offset="0"/>
+                    <GradientStop Color="#1B1448" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+
+            <Grid Margin="0,0,0,-2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition Width="5"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock x:Name="txtBanner" Text="CREATEOUPDATE"
+                               Foreground="DarkGray"
+                               FontSize="10"
+                               FontFamily="Montserrat"
+                               Grid.Column="0"
+                               VerticalAlignment="Center"
+                               Margin="10,0,0,0"/>
+
+
+                    <Button x:Name="btnClose"                          
+                            BorderThickness="0"
+                            Content="X"
+                            Foreground="White"
+                            FontSize="12"
+                            FontFamily="Montserrat"
+                            Cursor="Hand"
+                            Grid.Column="2"
+                            Click="btnClose_Click">
+
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="#DA34AE"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#C62DAE"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Width="18" Height="18"
+                                        CornerRadius="9"
+                                        Background="{TemplateBinding Background}">
+                                    <ContentPresenter VerticalAlignment="Center"
+                                                      HorizontalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+                <TextBlock x:Name="TitleOfCreateOrUpdate" Text="CREATE OR UPDATE"
+                   Foreground="White"
+                   FontSize="25"
+                   FontWeight="Medium"
+                   FontFamily="Montserrat"
+                   HorizontalAlignment="Center"
+                   Margin="0,10,0,547" Grid.Row="1"/>
+
+                <!-- Account -->
+                <StackPanel x:Name="CreateOrUpdateAccount" Width="320"
+                            Grid.Row="1"
+                            Orientation="Vertical"
+                            Margin="0,35,0,0" Visibility="Collapsed">
+
+
+                    <TextBlock Text=""
+                               Foreground="LightGray"
+                               FontSize="12"
+                               FontWeight="Medium"
+                               FontFamily="Montserrat"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"
+                               Margin="0,5,0,0"/>
+
+                    <TextBlock Text="Email"
+                               Foreground="DarkGray"
+                               FontSize="12"
+                               FontWeight="Medium"
+                               FontFamily="Montserrat"                             
+                               Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtEmailInAccountContent"
+                             FontSize="13"
+                             FontWeight="Medium"
+                             FontFamily="Montserrat"                            
+                             Foreground="White"
+                             CaretBrush="LightGray"
+                             BorderBrush="DarkGray"
+                             BorderThickness="0,0,0,2"
+                             Height="28"
+                             VerticalContentAlignment="Center"
+                             Margin="0,5,0,0"
+                             Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                                        Stretch="None"
+                                        AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                    <TextBlock x:Name="txtBlockPassInAccountContent" Text="Password"
+                               Foreground="DarkGray"
+                               FontSize="12"
+                               FontWeight="Medium"
+                               FontFamily="Montserrat"                             
+                               Margin="0,15,0,0"/>
+
+                    <TextBox x:Name="txtPassInAccountContent"
+                             FontSize="13"
+                             FontWeight="Medium"
+                             FontFamily="Montserrat"                            
+                             Foreground="White"
+                             CaretBrush="LightGray"
+                             BorderBrush="DarkGray"
+                             BorderThickness="0,0,0,2"
+                             Height="28"
+                             VerticalContentAlignment="Center"
+                             Margin="0,5,0,0"
+                             Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                                        Stretch="None"
+                                        AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                    <TextBlock x:Name="txtBlockPassConfirmInAccountContent" Text="Confirm Password"
+                   Foreground="DarkGray"
+                   FontSize="12"
+                   FontWeight="Medium"
+                   FontFamily="Montserrat"                             
+                   Margin="0,15,0,0"/>
+
+                    <TextBox x:Name="txtConfirmPassInAccountContent"
+         FontSize="13"
+         FontWeight="Medium"
+         FontFamily="Montserrat"                            
+         Foreground="White"
+         CaretBrush="LightGray"
+         BorderBrush="DarkGray"
+         BorderThickness="0,0,0,2"
+         Height="28"
+         VerticalContentAlignment="Center"
+         Margin="0,5,0,0"
+         Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                    Stretch="None"
+                    AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                    <TextBlock Text="Full Name"
+           Foreground="DarkGray"
+           FontSize="12"
+           FontWeight="Medium"
+           FontFamily="Montserrat"                             
+           Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtFullNameInAccountContent"
+         FontSize="13"
+         FontWeight="Medium"
+         FontFamily="Montserrat"                            
+         Foreground="White"
+         CaretBrush="LightGray"
+         BorderBrush="DarkGray"
+         BorderThickness="0,0,0,2"
+         Height="28"
+         VerticalContentAlignment="Center"
+         Margin="0,5,0,0"
+         Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                    Stretch="None"
+                    AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                    <TextBlock Text="Phone"
+           Foreground="DarkGray"
+           FontSize="12"
+           FontWeight="Medium"
+           FontFamily="Montserrat"                             
+           Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtPhoneInAccountContent"
+         FontSize="13"
+         FontWeight="Medium"
+         FontFamily="Montserrat"                            
+         Foreground="White"
+         CaretBrush="LightGray"
+         BorderBrush="DarkGray"
+         BorderThickness="0,0,0,2"
+         Height="28"
+         VerticalContentAlignment="Center"
+         Margin="0,5,0,0"
+         Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                    Stretch="None"
+                    AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                    <TextBlock Text="Type User"
+                    Foreground="DarkGray"
+                    FontSize="12"
+                    FontWeight="Medium"
+                    FontFamily="Montserrat"                             
+                    Margin="0,35,0,0"/>
+
+                    <WrapPanel Margin="0,10,0,0">
+                        <RadioButton x:Name="rdoStaffInAccountContent" Margin="0,0,100,0" Tag="1" GroupName="AccountType">
+                            <RadioButton.Content>
+                                <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="Staff"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   FontWeight="Medium"
+                                   FontFamily="Montserrat"/>
+                                </WrapPanel>
+                            </RadioButton.Content>
+                        </RadioButton>
+
+                        <RadioButton x:Name="rdoNormalUserInAccountContent" Tag="2" GroupName="AccountType">
+                            <RadioButton.Content>
+                                <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="Normal User"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   FontWeight="Medium"
+                                   FontFamily="Montserrat"/>
+                                </WrapPanel>
+                            </RadioButton.Content>
+                        </RadioButton>
+
+                    </WrapPanel>
+                </StackPanel>
+
+                <!-- Category -->
+                <StackPanel x:Name="CreateOrUpdateCategory" Width="320"
+                   Grid.Row="1"
+                   Orientation="Vertical"
+                   Margin="0,35,0,0" Visibility="Collapsed">
+
+
+                    <TextBlock Text=""
+                      Foreground="LightGray"
+                      FontSize="12"
+                      FontWeight="Medium"
+                      FontFamily="Montserrat"
+                      TextWrapping="Wrap"
+                      TextAlignment="Center"
+                      Margin="0,5,0,0"/>
+
+                    <TextBlock Text="Name"
+                      Foreground="DarkGray"
+                      FontSize="12"
+                      FontWeight="Medium"
+                      FontFamily="Montserrat"                             
+                      Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtNameInCategoryContent"
+                    FontSize="13"
+                    FontWeight="Medium"
+                    FontFamily="Montserrat"                            
+                    Foreground="White"
+                    CaretBrush="LightGray"
+                    BorderBrush="DarkGray"
+                    BorderThickness="0,0,0,2"
+                    Height="28"
+                    VerticalContentAlignment="Center"
+                    Margin="0,5,0,0"
+                    Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                               Stretch="None"
+                               AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                    <TextBlock Text="Description"
+                      Foreground="DarkGray"
+                      FontSize="12"
+                      FontWeight="Medium"
+                      FontFamily="Montserrat"                             
+                      Margin="0,35,0,0"/>   
+
+                    <TextBox x:Name="txtDescriptionInCategoryContent"
+                    FontSize="13"
+                    FontWeight="Medium"
+                    FontFamily="Montserrat"                            
+                    Foreground="White"
+                    CaretBrush="LightGray"
+                    BorderBrush="DarkGray"
+                    BorderThickness="0,0,0,2"
+                    Height="28"
+                    VerticalContentAlignment="Center"
+                    Margin="0,5,0,0"
+                    Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                   Stretch="None"
+                   AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                </StackPanel>
+                
+                <!-- Supplier -->
+                <StackPanel x:Name="CreateOrUpdateSupplier" Width="320"
+                   Grid.Row="1"
+                   Orientation="Vertical"
+                   Margin="0,35,0,0" Visibility="Collapsed">
+
+
+                    <TextBlock Text=""
+                      Foreground="LightGray"
+                      FontSize="12"
+                      FontWeight="Medium"
+                      FontFamily="Montserrat"
+                      TextWrapping="Wrap"
+                      TextAlignment="Center"
+                      Margin="0,5,0,0"/>
+
+                    <TextBlock Text="Company Name"
+                      Foreground="DarkGray"
+                      FontSize="12"
+                      FontWeight="Medium"
+                      FontFamily="Montserrat"                             
+                      Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtCompanyNameInSupplierContent"
+                    FontSize="13"
+                    FontWeight="Medium"
+                    FontFamily="Montserrat"                            
+                    Foreground="White"
+                    CaretBrush="LightGray"
+                    BorderBrush="DarkGray"
+                    BorderThickness="0,0,0,2"
+                    Height="28"
+                    VerticalContentAlignment="Center"
+                    Margin="0,5,0,0"
+                    Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                               Stretch="None"
+                               AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                    <TextBlock Text="Address"
+                      Foreground="DarkGray"
+                      FontSize="12"
+                      FontWeight="Medium"
+                      FontFamily="Montserrat"                             
+                      Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtAddressInSupplierContent"
+                    FontSize="13"
+                    FontWeight="Medium"
+                    FontFamily="Montserrat"                            
+                    Foreground="White"
+                    CaretBrush="LightGray"
+                    BorderBrush="DarkGray"
+                    BorderThickness="0,0,0,2"
+                    Height="28"
+                    VerticalContentAlignment="Center"
+                    Margin="0,5,0,0"
+                    Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                   Stretch="None"
+                   AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                    <TextBlock Text="Phone"
+                       Foreground="DarkGray"
+                       FontSize="12"
+                       FontWeight="Medium"
+                       FontFamily="Montserrat"                             
+                       Margin="0,35,0,0"/>
+
+                                        <TextBox x:Name="txtPhoneInSupplierContent"
+                     FontSize="13"
+                     FontWeight="Medium"
+                     FontFamily="Montserrat"                            
+                     Foreground="White"
+                     CaretBrush="LightGray"
+                     BorderBrush="DarkGray"
+                     BorderThickness="0,0,0,2"
+                     Height="28"
+                     VerticalContentAlignment="Center"
+                     Margin="0,5,0,0"
+                     Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                            Stretch="None"
+                            AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                </StackPanel>
+
+                <!-- Product -->
+                <StackPanel x:Name="CreateOrUpdateProduct" Width="320"
+                   Grid.Row="1"
+                   Orientation="Vertical"
+                   Margin="0,35,0,0" Visibility="Collapsed">
+
+
+                    <TextBlock Text=""
+                      Foreground="LightGray"
+                      FontSize="12"
+                      FontWeight="Medium"
+                      FontFamily="Montserrat"
+                      TextWrapping="Wrap"
+                      TextAlignment="Center"
+                      Margin="0,5,0,0"/>
+
+                    <TextBlock Text="Product Name"
+                      Foreground="DarkGray"
+                      FontSize="12"
+                      FontWeight="Medium"
+                      FontFamily="Montserrat"                             
+                      Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtProductNameInProductContent"
+                    FontSize="13"
+                    FontWeight="Medium"
+                    FontFamily="Montserrat"                            
+                    Foreground="White"
+                    CaretBrush="LightGray"
+                    BorderBrush="DarkGray"
+                    BorderThickness="0,0,0,2"
+                    Height="28"
+                    VerticalContentAlignment="Center"
+                    Margin="0,5,0,0"
+                    Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                               Stretch="None"
+                               AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                    <TextBlock Text="Quantity Per Unit"
+                      Foreground="DarkGray"
+                      FontSize="12"
+                      FontWeight="Medium"
+                      FontFamily="Montserrat"                             
+                      Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtQuantityPerUnitInProductContent"
+                    FontSize="13"
+                    FontWeight="Medium"
+                    FontFamily="Montserrat"                            
+                    Foreground="White"
+                    CaretBrush="LightGray"
+                    BorderBrush="DarkGray"
+                    BorderThickness="0,0,0,2"
+                    Height="28"
+                    VerticalContentAlignment="Center"
+                    Margin="0,5,0,0"
+                    Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                   Stretch="None"
+                   AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                    <TextBlock Text="Unit Price"
+                       Foreground="DarkGray"
+                       FontSize="12"
+                       FontWeight="Medium"
+                       FontFamily="Montserrat"                             
+                       Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtUnitPriceInProductContent"
+                     FontSize="13"
+                     FontWeight="Medium"
+                     FontFamily="Montserrat"                            
+                     Foreground="White"
+                     CaretBrush="LightGray"
+                     BorderBrush="DarkGray"
+                     BorderThickness="0,0,0,2"
+                     Height="28"
+                     VerticalContentAlignment="Center"
+                     Margin="0,5,0,0"
+                     Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                            Stretch="None"
+                            AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                    <TextBlock Text="Units In Stock"
+                   Foreground="DarkGray"
+                   FontSize="12"
+                   FontWeight="Medium"
+                   FontFamily="Montserrat"                             
+                   Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtUnitsInStockInProductContent"
+                     FontSize="13"
+                     FontWeight="Medium"
+                     FontFamily="Montserrat"                            
+                     Foreground="White"
+                     CaretBrush="LightGray"
+                     BorderBrush="DarkGray"
+                     BorderThickness="0,0,0,2"
+                     Height="28"
+                     VerticalContentAlignment="Center"
+                     Margin="0,5,0,0"
+                     Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                        Stretch="None"
+                        AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+                    <WrapPanel Margin="0,10,0,0">
+                        <Button x:Name="btnChooseImageInProductContent"
+          BorderThickness="0"
+          Content="Choose Image"
+          Foreground="White"
+          FontSize="12"
+          FontFamily="Montserrat"
+          Cursor="Hand"
+          Margin="0,10,0,0"
+          Click="btnChooseImageInProductContent_Click">
+
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="#462AD8"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#28AEED"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Width="150" Height="40"
+                      CornerRadius="20"
+                      Background="{TemplateBinding Background}">
+                                        <ContentPresenter VerticalAlignment="Center"
+HorizontalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+
+                        <TextBox x:Name="txImageURLInProductContent"
+                   IsEnabled="False"
+            FontSize="13"
+            FontWeight="Medium"
+            FontFamily="Montserrat"                            
+            Foreground="White"
+            CaretBrush="LightGray"
+            BorderBrush="DarkGray"
+            BorderThickness="0,0,0,2"
+            Height="28"
+            VerticalContentAlignment="Center"
+            Margin="0,5,0,0"
+            Padding="20,0,0,0" Width="170">
+
+                            <TextBox.Background>
+                                <ImageBrush 
+              Stretch="None"
+              AlignmentX="Left"/>
+                            </TextBox.Background>
+                        </TextBox>
+                    </WrapPanel>
+                    <TextBlock Text="Category"
+                    Foreground="DarkGray"
+                    FontSize="12"
+                    FontWeight="Medium"
+                    FontFamily="Montserrat"                             
+                    Margin="0,35,0,0"/>
+
+                    <ComboBox x:Name="cbbCategoryInProductContent"
+                              FontSize="13"
+                              FontWeight="Medium"
+                                FontFamily="Montserrat"
+                              Foreground="Black"
+                              BorderBrush="DarkGray"
+                              BorderThickness="0,0,0,2"
+                              Height="28"
+                              VerticalContentAlignment="Center"
+                              Margin="0,5,0,0"
+                              Padding="20,0,0,0"></ComboBox>
+
+                    <TextBlock Text="Supplier"
+                    Foreground="DarkGray"
+                    FontSize="12"
+                    FontWeight="Medium"
+                    FontFamily="Montserrat"                             
+                    Margin="0,35,0,0"/>
+
+                    <ComboBox x:Name="cbbSupplierInProductContent"
+                      FontSize="13"
+                      FontWeight="Medium"
+                        FontFamily="Montserrat"
+                      Foreground="Black"
+                      BorderBrush="DarkGray"
+                      BorderThickness="0,0,0,2"
+                      Height="28"
+                      VerticalContentAlignment="Center"
+                      Margin="0,5,0,0"
+                      Padding="20,0,0,0"></ComboBox>
+
+
+                    
+
+                </StackPanel>
+                
+                <!-- Ads -->
+                <StackPanel x:Name="CreateOrUpdateAds" Width="320"
+                            Grid.Row="1"
+                            Orientation="Vertical"
+                            Margin="0,35,0,0" Visibility="Collapsed">
+
+
+                    <TextBlock Text=""
+                               Foreground="LightGray"
+                               FontSize="12"
+                               FontWeight="Medium"
+                               FontFamily="Montserrat"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"
+                               Margin="0,5,0,0"/>
+
+                    <TextBlock Text="Title"
+                               Foreground="DarkGray"
+                               FontSize="12"
+                               FontWeight="Medium"
+                               FontFamily="Montserrat"                             
+                               Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtTitleInAdsContent"
+                             FontSize="13"
+                             FontWeight="Medium"
+                             FontFamily="Montserrat"                            
+                             Foreground="White"
+                             CaretBrush="LightGray"
+                             BorderBrush="DarkGray"
+                             BorderThickness="0,0,0,2"
+                             Height="28"
+                             VerticalContentAlignment="Center"
+                             Margin="0,5,0,0"
+                             Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                                        Stretch="None"
+                                        AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+                    <TextBlock Text="Content"
+                       Foreground="DarkGray"
+                       FontSize="12"
+                       FontWeight="Medium"
+                       FontFamily="Montserrat"                             
+                       Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtContentInAdsContent"
+                     FontSize="13"
+                     FontWeight="Medium"
+                     FontFamily="Montserrat"                            
+                     Foreground="White"
+                     CaretBrush="LightGray"
+                     BorderBrush="DarkGray"
+                     BorderThickness="0,0,0,2"
+                     Height="28"
+                     VerticalContentAlignment="Center"
+                     Margin="0,5,0,0"
+                     Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                    Stretch="None"
+                    AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                    <TextBlock Text="Start Date"
+                   Foreground="DarkGray"
+                   FontSize="12"
+                   FontWeight="Medium"
+                   FontFamily="Montserrat"                             
+                   Margin="0,35,0,0"/>
+
+                    <DatePicker x:Name="dpStartDateInAdsContent"
+                                FontSize="13"
+                                FontWeight="Medium"
+                                FontFamily="Montserrat"                            
+                                Foreground="Black"
+                                BorderBrush="DarkGray"
+                                BorderThickness="0,0,0,0"
+                                Height="28"
+                                VerticalContentAlignment="Center"
+                                Margin="0,5,0,0"
+                                Padding="20,0,0,0">
+                    </DatePicker>
+
+                    <TextBlock Text="End Date"
+                    Foreground="DarkGray"
+                    FontSize="12"
+                    FontWeight="Medium"
+                    FontFamily="Montserrat"                             
+                    Margin="0,35,0,0"/>
+
+                    <DatePicker x:Name="dpEndDateInAdsContent"
+                     FontSize="13"
+                     FontWeight="Medium"
+                     FontFamily="Montserrat"                            
+                     Foreground="Black"
+                     BorderBrush="DarkGray"
+                     BorderThickness="0,0,0,0"
+                     Height="28"
+                     VerticalContentAlignment="Center"
+                     Margin="0,5,0,0"
+                     Padding="20,0,0,0">
+                    </DatePicker>
+                </StackPanel>
+
+                <!--Order-->
+                <StackPanel x:Name="CreateOrUpdateOrder" Width="320"
+                            Grid.Row="1"
+                            Orientation="Vertical"
+                            Margin="0,35,0,0" Visibility="Visible">
+
+
+                    <TextBlock Text=""
+                               Foreground="LightGray"
+                               FontSize="12"
+                               FontWeight="Medium"
+                               FontFamily="Montserrat"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"
+                               Margin="0,5,0,0"/>
+
+                    <TextBlock Text="Email"
+                               Foreground="DarkGray"
+                               FontSize="12"
+                               FontWeight="Medium"
+                               FontFamily="Montserrat"                             
+                               Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtEmailInOrderContent"
+                             IsEnabled="False"
+                             FontSize="13"
+                             FontWeight="Medium"
+                             FontFamily="Montserrat"                            
+                             Foreground="White"
+                             CaretBrush="LightGray"
+                             BorderBrush="DarkGray"
+                             BorderThickness="0,0,0,2"
+                             Height="28"
+                             VerticalContentAlignment="Center"
+                             Margin="0,5,0,0"
+                             Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                                        Stretch="None"
+                                        AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+                    <TextBlock Text="Contact Name"
+                       Foreground="DarkGray"
+                       FontSize="12"
+                       FontWeight="Medium"
+                       FontFamily="Montserrat"                             
+                       Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtContactInOrderContent"
+                             IsEnabled="False"
+                     FontSize="13"
+                     FontWeight="Medium"
+                     FontFamily="Montserrat"                            
+                     Foreground="White"
+                     CaretBrush="LightGray"
+                     BorderBrush="DarkGray"
+                     BorderThickness="0,0,0,2"
+                     Height="28"
+                     VerticalContentAlignment="Center"
+                     Margin="0,5,0,0"
+                     Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                    Stretch="None"
+                    AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                    <TextBlock Text="Order Date"
+                   Foreground="DarkGray"
+                   FontSize="12"
+                   FontWeight="Medium"
+                   FontFamily="Montserrat"                             
+                   Margin="0,35,0,0"/>
+
+                    <DatePicker x:Name="dpOrderDateInOrderContent"
+                                IsEnabled="False"
+                                FontSize="13"
+                                FontWeight="Medium"
+                                FontFamily="Montserrat"                            
+                                Foreground="Black"
+                                BorderBrush="DarkGray"
+                                BorderThickness="0,0,0,0"
+                                Height="28"
+                                VerticalContentAlignment="Center"
+                                Margin="0,5,0,0"
+                                Padding="20,0,0,0">
+                    </DatePicker>
+
+                    <TextBlock Text="Required Date"
+                    Foreground="DarkGray"
+                    FontSize="12"
+                    FontWeight="Medium"
+                    FontFamily="Montserrat"                             
+                    Margin="0,35,0,0"/>
+
+                    <DatePicker x:Name="dpRequiredDateInOrderContent"
+                     FontSize="13"
+                     FontWeight="Medium"
+                     FontFamily="Montserrat"                            
+                     Foreground="Black"
+                     BorderBrush="DarkGray"
+                     BorderThickness="0,0,0,0"
+                     Height="28"
+                     VerticalContentAlignment="Center"
+                     Margin="0,5,0,0"
+                     Padding="20,0,0,0">
+                    </DatePicker>
+                    
+                    <TextBlock Text="Shipped Date"
+                    Foreground="DarkGray"
+                    FontSize="12"
+                    FontWeight="Medium"
+                    FontFamily="Montserrat"                             
+                    Margin="0,35,0,0"/>
+
+                    <DatePicker x:Name="dpShippedDateInOrderContent"
+                     FontSize="13"
+                     FontWeight="Medium"
+                     FontFamily="Montserrat"                            
+                     Foreground="Black"
+                     BorderBrush="DarkGray"
+                     BorderThickness="0,0,0,0"
+                     Height="28"
+                     VerticalContentAlignment="Center"
+                     Margin="0,5,0,0"
+                     Padding="20,0,0,0">
+                    </DatePicker>
+
+                    <TextBlock Text="Freight"
+                       Foreground="DarkGray"
+                       FontSize="12"
+                       FontWeight="Medium"
+                       FontFamily="Montserrat"                             
+                       Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtFreightInOrderContent"
+                 FontSize="13"
+                 FontWeight="Medium"
+                 FontFamily="Montserrat"                            
+                 Foreground="White"
+                 CaretBrush="LightGray"
+                 BorderBrush="DarkGray"
+                 BorderThickness="0,0,0,2"
+                 Height="28"
+                 VerticalContentAlignment="Center"
+                 Margin="0,5,0,0"
+                 Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                Stretch="None"
+                AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+                    <TextBlock Text="Ship Address"
+                   Foreground="DarkGray"
+                   FontSize="12"
+                   FontWeight="Medium"
+                   FontFamily="Montserrat"                             
+                   Margin="0,35,0,0"/>
+
+                    <TextBox x:Name="txtAddressInOrderContent"
+                     FontSize="13"
+                     FontWeight="Medium"
+                     FontFamily="Montserrat"                            
+                     Foreground="White"
+                     CaretBrush="LightGray"
+                     BorderBrush="DarkGray"
+                     BorderThickness="0,0,0,2"
+                     Height="28"
+                     VerticalContentAlignment="Center"
+                     Margin="0,5,0,0"
+                     Padding="20,0,0,0">
+
+                        <TextBox.Background>
+                            <ImageBrush 
+                Stretch="None"
+                AlignmentX="Left"/>
+                        </TextBox.Background>
+                    </TextBox>
+
+
+                </StackPanel>
+
+
+                <Button x:Name="btnSave"                          
+                            BorderThickness="0"
+                            Content="SAVE"
+                            Foreground="White"
+                            FontSize="12"
+                            FontFamily="Montserrat"
+                            Cursor="Hand"                           
+                            Margin="0,526,0,0"
+                            Click="btnSave_Click" Grid.Row="1" Height="64" VerticalAlignment="Top">
+
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="#462AD8"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#28AEED"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="150" Height="40"
+                                        CornerRadius="20"
+                                        Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center"
+                                                      HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+            </Grid>
+
+        </Border>
+
+    </Border>
+
+</Window>
