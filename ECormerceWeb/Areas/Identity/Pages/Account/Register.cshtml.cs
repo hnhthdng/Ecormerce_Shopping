@@ -98,29 +98,14 @@ using System.ComponentModel.DataAnnotations;
             {
                 var user = CreateUser();
                 string role = Request.Form["rdUserRole"].ToString();
-                if (role == "1")
-                {
-                    user.Type = 1;
-                }
-                else
-                {
-                    user.Type = 2;
-                }
+                user.Type = 2;
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
-                    if (role == "1")
-                    {
-                        await _userManager.AddToRoleAsync(user, "Staff");
-
-                    }
-                    else
-                    {
-                        await _userManager.AddToRoleAsync(user, "NormalUser");
-                    }
+                    await _userManager.AddToRoleAsync(user, "NormalUser");
                     _logger.LogInformation("User created a new account with password.");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
