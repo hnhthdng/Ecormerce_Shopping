@@ -56,8 +56,8 @@ namespace ECormerceApp
                 var result = _userManager.CreateAsync(user, password).GetAwaiter().GetResult();
                 if (result.Succeeded)
                 {
-                    _userManager.AddToRoleAsync(user, "NormalUser");
-                    user.Type = 2;
+                    _userManager.AddToRoleAsync(user, "Staff");
+                    user.Type = 1;
                     _userManager.UpdateAsync(user);
                     MessageBox.Show("User created successfully");
                     var loginWindow = App.ServiceProvider.GetRequiredService<LoginWindow>();
